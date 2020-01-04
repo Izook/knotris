@@ -5,7 +5,6 @@
 
 [node name="Tile" type="Node2D"]
 script = ExtResource( 1 )
-tile_rotation = 1
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 16.0362, 15.9896 )
