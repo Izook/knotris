@@ -1,10 +1,10 @@
 extends Node2D
 
 # Constant board parameters
-const BOARD_WIDTH = 6
-const BOARD_HEIGHT = 13
+const BOARD_WIDTH = Global.BOARD_WIDTH
+const BOARD_HEIGHT = Global.BOARD_HEIGHT
 
-# 2D Array representing tiles placed on board
+# 2D matrix representing tiles placed on board
 var tileBoard = [[0]]
 
 # Called when the node enters the scene tree for the first time.

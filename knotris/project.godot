@@ -18,6 +18,10 @@ _global_script_class_icons={
 config/name="New Game Project"
 config/icon="res://icon.png"
 
+[autoload]
+
+Global="*res://scenes/GlobalConstants.tscn"
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
