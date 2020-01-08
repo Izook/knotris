@@ -46,6 +46,7 @@ func init(type, rotation):
 	connection_points.left = unrotated_points[(2 + rotation) % 4]
 	connection_points.bottom = unrotated_points[(3 + rotation) % 4]
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Sprite.set_texture(tile_textures[tile_type])

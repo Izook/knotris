@@ -47,3 +47,4 @@ const TILE_TYPES = {
 	"D" : TILE_D,
 	"E" : TILE_E,
 }
+const TILE_TYPE_KEYS = ["A", "B", "C", "D", "E"]
