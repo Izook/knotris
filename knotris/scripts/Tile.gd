@@ -40,7 +40,7 @@ func init(type, rotation):
 		Global.TILE_TYPES[tile_type].left,
 	]
 	
-	# Rotate connection points
+	# Rotate connection points (counter clockwise rotations)
 	connection_points.top = unrotated_points[0 + tile_rotation % 4] 
 	connection_points.right = unrotated_points[(1 + tile_rotation) % 4]
 	connection_points.bottom = unrotated_points[(2 + tile_rotation) % 4]

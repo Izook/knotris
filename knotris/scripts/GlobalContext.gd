@@ -54,8 +54,9 @@ const left_connected_combinations = []
 const left_disconnected_combinations = []
 
 func _ready():
-		# Determine left connected tile + rotation combinations for board initialization
+	# Determine left connected tile + rotation combinations for board initialization
 	for key in TILE_TYPE_KEYS:
+		# Iterate through counterclockwise rotations
 		for j in range(4):
 			if TILE_TYPES[key].values()[(3 + j) % 4]:
 				left_connected_combinations.append([key,j])
