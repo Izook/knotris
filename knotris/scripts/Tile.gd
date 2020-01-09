@@ -36,19 +36,20 @@ func init(type, rotation):
 	var unrotated_points = [
 		Global.TILE_TYPES[tile_type].top,
 		Global.TILE_TYPES[tile_type].right,
-		Global.TILE_TYPES[tile_type].left,
 		Global.TILE_TYPES[tile_type].bottom,
+		Global.TILE_TYPES[tile_type].left,
 	]
 	
 	# Rotate connection points
-	connection_points.top = unrotated_points[rotation] 
-	connection_points.right = unrotated_points[(1 + rotation) % 4]
-	connection_points.left = unrotated_points[(2 + rotation) % 4]
-	connection_points.bottom = unrotated_points[(3 + rotation) % 4]
+	connection_points.top = unrotated_points[0 + tile_rotation % 4] 
+	connection_points.right = unrotated_points[(1 + tile_rotation) % 4]
+	connection_points.bottom = unrotated_points[(2 + tile_rotation) % 4]
+	connection_points.left = unrotated_points[(3 + tile_rotation) % 4]
+
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Sprite.set_texture(tile_textures[tile_type])
-	$Sprite.set_rotation((tile_rotation % 4) * (PI/2))
+	$Sprite.set_rotation((tile_rotation % 4) * (-PI/2))
 	pass 
