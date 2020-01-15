@@ -1,6 +1,7 @@
 extends Node2D
 
-var tile = preload("res://scenes/Tile.tscn") 
+var tile = preload("res://scenes/Tile.tscn")
+var player = preload("res://scenes/Player.tscn") 
 
 # Constant board parameters
 const BOARD_WIDTH = Global.BOARD_WIDTH
@@ -16,10 +17,13 @@ const LEFT_DISCONN_TILE_COMBOS = Global.left_disconnected_combinations
 # 2D matrix representing tiles placed on board
 var tile_board = []
 
+# Node representing the player
+var curr_player;
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print(LEFT_DISCONN_TILE_COMBOS)
-	
+		
 	# Populate tile_board with empty values
 	for i in range(BOARD_WIDTH):
 		tile_board.append([])
@@ -43,6 +47,11 @@ func _ready():
 				var y_pos = (j * Global.TILE_SIZE) + OFFSET_Y
 				tile_board[i][j].position = Vector2(x_pos, y_pos) 
 				add_child(tile_board[i][j])
+	
+	# Add the Player to the board
+	curr_player = player.instance()
+	add_child(curr_player)
+
 
 # Returns tile instantiated with random parameters
 func get_random_tile():
@@ -52,8 +61,9 @@ func get_random_tile():
 	var random_rotation = randi() % 4
 	new_tile.init(random_type, random_rotation)
 	return new_tile
-	
-	# Returns tile instantiated with random parameters
+
+
+# Returns tile instantiated with random parameters
 func get_random_connected_tile(left_connected):
 	randomize()
 	var random_index
