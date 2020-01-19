@@ -12,7 +12,6 @@ const INPUTS = {
 	"move_right": Vector2.RIGHT,
 	"move_down": Vector2.DOWN,
 	"move_left": Vector2.LEFT,
-	"move_up": Vector2.UP,
 }
 
 # Current tile position
@@ -20,6 +19,9 @@ var tile_position = Vector2(0,0)
 
 # Node representing the player
 var curr_tile;
+
+# Time between drops during descent (seconds)
+var drop_time = 1;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,7 +31,13 @@ func _ready():
 	var x_pos = (tile_position.x * TILE_SIZE) + OFFSET_X
 	var y_pos = (tile_position.y * TILE_SIZE) + OFFSET_Y
 	curr_tile.position = Vector2(x_pos, y_pos) 
-	add_child(curr_tile)	
+	add_child(curr_tile)
+	
+	# Start DropTimer and connect timeout signal
+	$DropTimer.wait_time = drop_time
+	$DropTimer.start()
+	$DropTimer.connect("timeout", self, "_on_DropTimer_timeout")
+	
 
 
 # Called every frame (delta = time passed since last frame)
@@ -48,3 +56,9 @@ func _unhandled_input(event):
     for direction in INPUTS.keys():
         if event.is_action_pressed(direction):
             move(direction)
+
+
+# Move down one tile on timeout
+func _on_DropTimer_timeout():
+	move('move_down')
+	pass
