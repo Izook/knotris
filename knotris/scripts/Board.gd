@@ -15,7 +15,7 @@ const LEFT_CONN_TILE_COMBOS = Global.left_connected_combinations
 const LEFT_DISCONN_TILE_COMBOS = Global.left_disconnected_combinations
 
 # 2D matrix representing tiles placed on board
-var tile_board = []
+var tile_board = [] setget , get_tile_board
 
 # Node representing the player
 var curr_player;
@@ -53,6 +53,11 @@ func _ready():
 	add_child(curr_player)
 
 
+# Called every frame, delta represents time passed since last processing 
+func _process(delta):
+	pass
+
+
 # Returns tile instantiated with random parameters
 func get_random_tile():
 	randomize()
@@ -79,3 +84,17 @@ func get_random_connected_tile(left_connected):
 	var random_rotation = random_combo[1]
 	new_tile.init(random_type, random_rotation)
 	return new_tile
+
+
+# Adds new tile to the board at a declared position
+func add_tile(tile, tile_pos):
+	if (tile_board[tile_pos.x][tile_pos.y] == null):
+		tile_board[tile_pos.x][tile_pos.y] = tile
+	else:
+		print("Illegal tile addition attempted.")
+		tile.queue_free()
+
+
+# Returns tile board
+func get_tile_board():
+	return tile_board
