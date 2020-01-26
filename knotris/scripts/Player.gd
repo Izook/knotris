@@ -49,14 +49,18 @@ func move_tile(direction):
 		get_parent().add_tile(curr_tile, tile_position)
 		reset_tile() 
 	elif direction == 'move_down' && board[next_position.x][next_position.y] != null:
-		get_parent().add_tile(curr_tile, tile_position)
-		reset_tile() 
+		if tile_position.y == 0:
+			print("GAME OVER!!!")
+			get_parent().queue_free()
+		else:
+			get_parent().add_tile(curr_tile, tile_position)
+			reset_tile() 
 	elif next_position.x > BOARD_WIDTH - 1 || next_position.x < 0:
 		print("Illegal move attempted")
 	elif board[next_position.x][next_position.y] != null:
 		print("Illegal move attempted")
 	else:
-		tile_position += MOVE_INPUTS[direction]
+		tile_position = next_position
 		curr_tile.position += MOVE_INPUTS[direction] * TILE_SIZE
 
 
@@ -79,12 +83,10 @@ func _process(delta):
 func _unhandled_input(event):
 	for direction in MOVE_INPUTS.keys():
 		if event.is_action_pressed(direction):
-			print(direction)
 			move_tile(direction)
 			return
 	for rotation in ROT_INPUTS.keys():
 		if event.is_action_pressed(rotation):
-			print(ROT_INPUTS[rotation])
 			curr_tile.rotate(ROT_INPUTS[rotation])
 			return
 
