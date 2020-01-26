@@ -10,10 +10,14 @@ const BOARD_WIDTH = Global.BOARD_WIDTH
 const TILE_SIZE = Global.TILE_SIZE
 
 # Define inputs from input map
-const INPUTS = {
+const MOVE_INPUTS = {
 	"move_right": Vector2.RIGHT,
 	"move_down": Vector2.DOWN,
 	"move_left": Vector2.LEFT,
+}
+const ROT_INPUTS = {
+	"rotate_right": 3,
+	"rotate_left": 1,
 }
 
 # Current tile position
@@ -40,8 +44,8 @@ func _ready():
 # Move tile based towards a direction
 func move_tile(direction):
 	var board = get_parent().get_tile_board()
-	var next_position = tile_position + INPUTS[direction]
-	if tile_position.y + INPUTS[direction].y >= BOARD_HEIGHT:
+	var next_position = tile_position + MOVE_INPUTS[direction]
+	if tile_position.y + MOVE_INPUTS[direction].y >= BOARD_HEIGHT:
 		get_parent().add_tile(curr_tile, tile_position)
 		reset_tile() 
 	elif direction == 'move_down' && board[next_position.x][next_position.y] != null:
@@ -52,8 +56,8 @@ func move_tile(direction):
 	elif board[next_position.x][next_position.y] != null:
 		print("Illegal move attempted")
 	else:
-		tile_position += INPUTS[direction]
-		curr_tile.position += INPUTS[direction] * TILE_SIZE
+		tile_position += MOVE_INPUTS[direction]
+		curr_tile.position += MOVE_INPUTS[direction] * TILE_SIZE
 
 
 # Get set current tile to a random tile and place it on the board
@@ -73,9 +77,16 @@ func _process(delta):
 
 # Called when an InputEvent hasn't been consumed by _input() or any GUI.
 func _unhandled_input(event):
-	for direction in INPUTS.keys():
+	for direction in MOVE_INPUTS.keys():
 		if event.is_action_pressed(direction):
-	        move_tile(direction)
+			print(direction)
+			move_tile(direction)
+			return
+	for rotation in ROT_INPUTS.keys():
+		if event.is_action_pressed(rotation):
+			print(ROT_INPUTS[rotation])
+			curr_tile.rotate(ROT_INPUTS[rotation])
+			return
 
 
 # Move down one tile on timeout

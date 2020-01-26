@@ -14,42 +14,52 @@ var tile_textures = {
 	"E" : tileE_texture,
 }
 
+# Global tile properties
+const TILE_TYPES = Global.TILE_TYPES
+
 # Tile properties
 var tile_type
 var tile_rotation
 
 # Tile connection points
-var connection_points = {
-	"top" : false,
-	"right" : false,
-	"left" : false,
-	"bottom" : false,
-}
+var connection_points = [
+	false, # top
+	false, # right
+	false, # bottom
+	false  # left
+]
 
 # Called after instancing scene, but before added to tree.
 func init(type, rotation):
 	# Define tile properties
 	tile_type = type
-	tile_rotation = rotation % 4
+	tile_rotation = 0
 	
 	# Define connection points
-	var unrotated_points = [
-		Global.TILE_TYPES[tile_type].top,
-		Global.TILE_TYPES[tile_type].right,
-		Global.TILE_TYPES[tile_type].bottom,
-		Global.TILE_TYPES[tile_type].left,
+	connection_points = [
+		TILE_TYPES[tile_type].top,
+		TILE_TYPES[tile_type].right,
+		TILE_TYPES[tile_type].bottom,
+		TILE_TYPES[tile_type].left
 	]
 	
-	# Rotate connection points (counter clockwise rotations)
-	connection_points.top = unrotated_points[0 + tile_rotation % 4] 
-	connection_points.right = unrotated_points[(1 + tile_rotation) % 4]
-	connection_points.bottom = unrotated_points[(2 + tile_rotation) % 4]
-	connection_points.left = unrotated_points[(3 + tile_rotation) % 4]
-
+	# Rotate tile
+	rotate(rotation)
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Sprite.set_texture(tile_textures[tile_type])
+
+
+# Used to rotate the tile in 90 degree parts
+func rotate(rotation):
+	tile_rotation += rotation % 4
+	
+	# Rotate connection points (counter clockwise rotations)
+	var prev_connection_points = connection_points
+	for i in range(4):
+		connection_points[i] = prev_connection_points[(i + tile_rotation) % 4] 
+	
+	# Rotate sprite appropriately 
 	$Sprite.set_rotation((tile_rotation % 4) * (-PI/2))
-	pass 

@@ -34,7 +34,7 @@ func _ready():
 	for i in range(BOARD_WIDTH):
 		if i > 0:
 			var prev_tile = tile_board[i - 1][BOARD_HEIGHT - 1]
-			tile_board[i][BOARD_HEIGHT - 1] = get_random_connected_tile(prev_tile.connection_points["right"])
+			tile_board[i][BOARD_HEIGHT - 1] = get_random_connected_tile(prev_tile.connection_points[1])
 		else:
 			tile_board[i][BOARD_HEIGHT - 1] = get_random_tile()
 
