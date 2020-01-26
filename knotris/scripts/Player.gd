@@ -3,6 +3,8 @@ extends Node2D
 # Constant board parameters
 const OFFSET_X = Global.BOARD_OFFSET_X
 const OFFSET_Y = Global.BOARD_OFFSET_Y
+const BOARD_HEIGHT = Global.BOARD_HEIGHT
+const BOARD_WIDTH = Global.BOARD_WIDTH
 
 # Constant tile parameters
 const TILE_SIZE = Global.TILE_SIZE
@@ -37,17 +39,21 @@ func _ready():
 
 # Move tile based towards a direction
 func move_tile(direction):
-	if direction != "move_down":
+	var board = get_parent().get_tile_board()
+	var next_position = tile_position + INPUTS[direction]
+	if tile_position.y + INPUTS[direction].y >= BOARD_HEIGHT:
+		get_parent().add_tile(curr_tile, tile_position)
+		reset_tile() 
+	elif direction == 'move_down' && board[next_position.x][next_position.y] != null:
+		get_parent().add_tile(curr_tile, tile_position)
+		reset_tile() 
+	elif next_position.x > BOARD_WIDTH - 1 || next_position.x < 0:
+		print("Illegal move attempted")
+	elif board[next_position.x][next_position.y] != null:
+		print("Illegal move attempted")
+	else:
 		tile_position += INPUTS[direction]
 		curr_tile.position += INPUTS[direction] * TILE_SIZE
-	else:
-		var board = get_parent().get_tile_board()
-		if board[tile_position.x][tile_position.y + 1] != null:
-			get_parent().add_tile(curr_tile, tile_position)
-			reset_tile()
-		else:
-			tile_position += INPUTS[direction]
-			curr_tile.position += INPUTS[direction] * TILE_SIZE
 
 
 # Get set current tile to a random tile and place it on the board
