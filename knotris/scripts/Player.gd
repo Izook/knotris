@@ -64,8 +64,12 @@ func move_tile(direction):
 		curr_tile.position += MOVE_INPUTS[direction] * TILE_SIZE
 
 
-# Get set current tile to a random tile and place it on the board
+# Check board for SC rows & set current tile to a random tile and place it on the board
 func reset_tile():
+	# Check board for complete rows
+	get_parent().check_rows()
+	
+	# Reset tile
 	tile_position.y = 0
 	curr_tile = get_parent().get_random_tile()
 	var x_pos = (tile_position.x * TILE_SIZE) + OFFSET_X

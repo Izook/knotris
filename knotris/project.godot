@@ -22,6 +22,11 @@ config/icon="res://icon.png"
 
 Global="*res://scenes/GlobalContext.tscn"
 
+[display]
+
+window/size/width=224
+window/size/height=448
+
 [input]
 
 move_right={

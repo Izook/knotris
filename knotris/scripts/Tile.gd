@@ -57,7 +57,7 @@ func rotate(rotation):
 	tile_rotation += rotation % 4
 	
 	# Rotate connection points (counter clockwise rotations)
-	var prev_connection_points = connection_points
+	var prev_connection_points = connection_points.duplicate()
 	for i in range(4):
 		connection_points[i] = prev_connection_points[(i + tile_rotation) % 4] 
 	

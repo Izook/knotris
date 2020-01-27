@@ -98,3 +98,62 @@ func add_tile(tile, tile_pos):
 # Returns tile board
 func get_tile_board():
 	return tile_board
+
+
+# Clear a row that is internally and externally suitably connected and moves all other rows down appropriately
+func _clear_row(row_index):
+	print("CLEARING ROW: " + row_index as String)
+	for j in range(row_index, 0, -1):
+		print("Moving row: " + j as String)
+		var empty_row = true
+		for i in range(BOARD_WIDTH):
+			# Move tiles down
+			var above_tile = null
+			if j > 0:
+				above_tile = tile_board[i][j - 1]
+			tile_board[i][j - 1] = above_tile
+			
+			# Only continue if row isn't empty 
+			if above_tile != null:
+				empty_row = false
+		if empty_row:
+			break
+
+
+# Checks rows for internal and external suitable connectedness
+# Returns false if row was cleared, true if no rows can be cleared
+func check_rows():
+	print("Checking Rows")
+	print(range(BOARD_HEIGHT - 1, -1, -1))
+	for j in range(BOARD_HEIGHT - 1, -1, -1):
+		var empty_row = false
+		var should_clear = true
+		print("Checking Row: " + j as String)
+		for i in range(BOARD_WIDTH):
+			var curr_tile = tile_board[i][j]
+			
+			# Is row non empty?
+			if curr_tile == null: 
+				empty_row = true
+				break
+				
+			# Is row externally suitably connected?
+			var above_tile = tile_board[i][j - 1]
+			if above_tile == null || curr_tile.connection_points[0] != above_tile.connection_points[2]:
+				print("Externally unsuitably connected at index " + i as String)
+				should_clear = false
+				break
+				
+			# Is row internally suitably connected?
+			if i < BOARD_WIDTH - 2:
+				var right_tile = tile_board[i + 1][j]
+				if right_tile == null || curr_tile.connection_points[1] != right_tile.connection_points[3]:
+					print("Internally unsuitably connected at index " + i as String )
+					should_clear = false;
+					break
+		if empty_row:
+			break
+		if should_clear:
+			_clear_row(j)
+			return false
+	return true
