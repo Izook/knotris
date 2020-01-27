@@ -13,6 +13,7 @@ const OFFSET_Y = Global.BOARD_OFFSET_Y
 const TILE_KEYS = Global.TILE_TYPE_KEYS
 const LEFT_CONN_TILE_COMBOS = Global.left_connected_combinations
 const LEFT_DISCONN_TILE_COMBOS = Global.left_disconnected_combinations
+const TILE_SIZE = Global.TILE_SIZE
 
 # 2D matrix representing tiles placed on board
 var tile_board = [] setget , get_tile_board
@@ -43,14 +44,20 @@ func _ready():
 	for i in range(BOARD_WIDTH):
 		for j in range(BOARD_HEIGHT):
 			if tile_board[i][j] != null:
-				var x_pos = (i * Global.TILE_SIZE) + OFFSET_X
-				var y_pos = (j * Global.TILE_SIZE) + OFFSET_Y
-				tile_board[i][j].position = Vector2(x_pos, y_pos) 
 				add_child(tile_board[i][j])
+				_draw_tile(i, j)
 	
 	# Add the Player to the board
 	curr_player = player.instance()
 	add_child(curr_player)
+
+
+# Draw specified tile on at correct position on board
+func _draw_tile(x_coord, y_coord):
+	if tile_board[x_coord][y_coord] != null:
+		var x_pos = (x_coord * TILE_SIZE) + OFFSET_X
+		var y_pos = (y_coord * TILE_SIZE) + OFFSET_Y
+		tile_board[x_coord][y_coord].position = Vector2(x_pos, y_pos) 
 
 
 # Called every frame, delta represents time passed since last processing 
@@ -102,16 +109,21 @@ func get_tile_board():
 
 # Clear a row that is internally and externally suitably connected and moves all other rows down appropriately
 func _clear_row(row_index):
-	print("CLEARING ROW: " + row_index as String)
 	for j in range(row_index, 0, -1):
-		print("Moving row: " + j as String)
 		var empty_row = true
 		for i in range(BOARD_WIDTH):
+			
+			# Remove tile from board if from cleared row
+			if j == row_index:
+				tile_board[i][j].queue_free()
+				tile_board[i][j] = null
+			
 			# Move tiles down
 			var above_tile = null
 			if j > 0:
 				above_tile = tile_board[i][j - 1]
-			tile_board[i][j - 1] = above_tile
+			tile_board[i][j] = above_tile
+			_draw_tile(i, j)
 			
 			# Only continue if row isn't empty 
 			if above_tile != null:
@@ -123,12 +135,9 @@ func _clear_row(row_index):
 # Checks rows for internal and external suitable connectedness
 # Returns false if row was cleared, true if no rows can be cleared
 func check_rows():
-	print("Checking Rows")
-	print(range(BOARD_HEIGHT - 1, -1, -1))
 	for j in range(BOARD_HEIGHT - 1, -1, -1):
 		var empty_row = false
 		var should_clear = true
-		print("Checking Row: " + j as String)
 		for i in range(BOARD_WIDTH):
 			var curr_tile = tile_board[i][j]
 			
@@ -140,7 +149,6 @@ func check_rows():
 			# Is row externally suitably connected?
 			var above_tile = tile_board[i][j - 1]
 			if above_tile == null || curr_tile.connection_points[0] != above_tile.connection_points[2]:
-				print("Externally unsuitably connected at index " + i as String)
 				should_clear = false
 				break
 				
@@ -148,7 +156,6 @@ func check_rows():
 			if i < BOARD_WIDTH - 2:
 				var right_tile = tile_board[i + 1][j]
 				if right_tile == null || curr_tile.connection_points[1] != right_tile.connection_points[3]:
-					print("Internally unsuitably connected at index " + i as String )
 					should_clear = false;
 					break
 		if empty_row:
