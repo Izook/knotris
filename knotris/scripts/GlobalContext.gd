@@ -1,13 +1,13 @@
 extends Node2D
 
+# Tile constants
+const TILE_SIZE = 40
+
 # Board constants
 const BOARD_WIDTH = 6
 const BOARD_HEIGHT = 13
-const BOARD_OFFSET_X = 16
-const BOARD_OFFSET_Y = 16
-
-# Tile constants
-const TILE_SIZE = 32
+const BOARD_OFFSET_X = TILE_SIZE / 2
+const BOARD_OFFSET_Y = TILE_SIZE / 2
 
 # Tile types
 const TILE_A = {
@@ -18,9 +18,9 @@ const TILE_A = {
 }
 const TILE_B = {
 	"top" : false,
-	"right" : false,
+	"right" : true,
 	"bottom" : true,
-	"left" : true,
+	"left" : false,
 }
 const TILE_C = {
 	"top" : true,
