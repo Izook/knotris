@@ -15,9 +15,11 @@ _global_script_class_icons={
 
 [application]
 
-config/name="New Game Project"
-run/main_scene="res://scenes/Board.tscn"
-config/icon="res://icon.png"
+config/name="Knotris"
+run/main_scene="res://scenes/Game.tscn"
+boot_splash/image="res://assets/tile_textures/tile_E.png"
+boot_splash/bg_color=Color( 1, 1, 1, 1 )
+config/icon="res://assets/tile_textures/tile_D.png"
 
 [autoload]
 
