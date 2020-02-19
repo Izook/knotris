@@ -63,3 +63,19 @@ func rotate(turns):
 	
 	# Rotate sprite appropriately 
 	$Sprite.set_rotation((tile_rotation % 4) * (-PI/2))
+
+
+# Used to update the tile type 
+func update_type(type):
+	
+	# Update properties
+	tile_type = type
+	$Sprite.set_texture(tile_textures[tile_type])
+	
+	# Redefine connection points
+	connection_points = [
+		TILE_TYPES[tile_type].top,
+		TILE_TYPES[tile_type].right,
+		TILE_TYPES[tile_type].bottom,
+		TILE_TYPES[tile_type].left
+	]

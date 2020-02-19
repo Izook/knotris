@@ -19,11 +19,17 @@ const TILE_SIZE = Global.TILE_SIZE
 var tile_board = [] setget , get_tile_board
 
 # Node representing the player
-var curr_player;
+var curr_player
+
+# Reference to tile_bag sibling node
+var tile_bag
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	# Populate tile_bag reference
+	tile_bag = get_parent().get_node("TileBag")
 		
 	# Populate tile_board with empty values
 	for i in range(BOARD_WIDTH):
@@ -60,22 +66,20 @@ func _draw_tile(x_coord, y_coord):
 		tile_board[x_coord][y_coord].position = Vector2(x_pos, y_pos) 
 
 
-# Called every frame, delta represents time passed since last processing 
-func _process(delta):
-	pass
-
-
 # Returns tile instantiated with random parameters
 func get_random_tile():
 	randomize()
-	var new_tile = tile.instance()
+	
 	var random_type = TILE_KEYS[randi() % TILE_KEYS.size()]
 	var random_rotation = randi() % 4
-	new_tile.init(random_type, random_rotation)
-	return new_tile
+	
+	var random_tile = tile.instance()
+	random_tile.init(random_type, random_rotation)
+	
+	return random_tile
 
 
-# Returns tile instantiated with random parameters
+# Returns tile instantiated with random parameters connected to the left
 func get_random_connected_tile(left_connected):
 	randomize()
 	var random_index

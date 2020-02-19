@@ -27,7 +27,7 @@ Global="*res://scenes/GlobalContext.tscn"
 
 [display]
 
-window/size/width=280
+window/size/width=560
 window/size/height=560
 
 [input]
@@ -65,4 +65,5 @@ rotate_left={
 
 [rendering]
 
+environment/default_clear_color=Color( 0.733333, 0.733333, 0.733333, 1 )
 environment/default_environment="res://default_env.tres"

@@ -29,8 +29,13 @@ var curr_tile;
 # Time between drops during descent (seconds)
 var drop_time = 1;
 
+# Reference to ancestor TileBag node
+var tile_bag
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Populate TileBag refernce
+	tile_bag = get_parent().get_parent().get_node("TileBag")
 	
 	# Set current tile
 	reset_tile()
@@ -71,7 +76,7 @@ func reset_tile():
 	
 	# Reset tile
 	tile_position.y = 0
-	curr_tile = get_parent().get_random_tile()
+	curr_tile = tile_bag.get_next_tile()
 	var x_pos = (tile_position.x * TILE_SIZE) + OFFSET_X
 	var y_pos = (tile_position.y * TILE_SIZE) + OFFSET_Y
 	curr_tile.position = Vector2(x_pos, y_pos) 
