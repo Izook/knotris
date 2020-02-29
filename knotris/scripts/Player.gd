@@ -32,10 +32,17 @@ var drop_time = 1;
 # Reference to ancestor TileBag node
 var tile_bag
 
+# Reference to parent Board node
+var tile_board;
+
+# Has the player held this tile already?
+var has_held_tile = false;
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Populate TileBag refernce
+	# Populate TileBag and Board refernce
 	tile_bag = get_parent().get_parent().get_node("TileBag")
+	tile_board = get_parent()
 	
 	# Set current tile
 	reset_tile()
@@ -48,7 +55,7 @@ func _ready():
 
 # Move tile based towards a direction
 func move_tile(direction):
-	var board = get_parent().get_tile_board()
+	var board = tile_board.get_tile_board()
 	var next_position = tile_position + MOVE_INPUTS[direction]
 	if tile_position.y + MOVE_INPUTS[direction].y >= BOARD_HEIGHT:
 		get_parent().add_tile(curr_tile, tile_position)
@@ -56,9 +63,9 @@ func move_tile(direction):
 	elif direction == 'move_down' && board[next_position.x][next_position.y] != null:
 		if tile_position.y == 0:
 			print("GAME OVER!!!")
-			get_parent().queue_free()
+			tile_board.queue_free()
 		else:
-			get_parent().add_tile(curr_tile, tile_position)
+			tile_board.add_tile(curr_tile, tile_position)
 			reset_tile() 
 	elif next_position.x > BOARD_WIDTH - 1 || next_position.x < 0:
 		print("Illegal move attempted")
@@ -72,15 +79,22 @@ func move_tile(direction):
 # Check board for SC rows & set current tile to a random tile and place it on the board
 func reset_tile():
 	# Check board for complete rows
-	get_parent().check_rows()
+	tile_board.check_rows()
 	
-	# Reset tile
-	tile_position.y = 0
+	# Reset tile holding functionality
+	has_held_tile = false
+	
 	curr_tile = tile_bag.get_next_tile()
+	reposition_tile()
+	add_child(curr_tile)
+
+
+# Resets the position of the tile to the top of the screen
+func reposition_tile():
+	tile_position.y = 0
 	var x_pos = (tile_position.x * TILE_SIZE) + OFFSET_X
 	var y_pos = (tile_position.y * TILE_SIZE) + OFFSET_Y
 	curr_tile.position = Vector2(x_pos, y_pos) 
-	add_child(curr_tile)
 
 
 # Called every frame, delta represents time passed since last processing 
@@ -90,6 +104,11 @@ func _process(delta):
 
 # Called when an InputEvent hasn't been consumed by _input() or any GUI.
 func _unhandled_input(event):
+	if event.is_action_pressed("hold_tile"):
+		if !has_held_tile: 
+			has_held_tile = true
+			curr_tile.update_type(tile_bag.get_held_tile_key(curr_tile.tile_type))
+			reposition_tile()
 	for direction in MOVE_INPUTS.keys():
 		if event.is_action_pressed(direction):
 			move_tile(direction)

@@ -5,22 +5,22 @@ var tile = preload("res://scenes/Tile.tscn")
 # Global parameters
 const TILE_SIZE = Global.TILE_SIZE
 const BOARD_WIDTH = Global.BOARD_WIDTH
+const BOARD_X_OFFSET = TILE_SIZE * 4
 
 # Tile Bag 
 const bag_distribution = ["A", "B", "B", "C", "C", "D", "E"]
 
-# Positioning parameters
-const BOARD_X_OFFSET = TILE_SIZE * 4
+var upcoming_tiles = []
+var upcoming_tile_keys = []
+
 var upcoming_tile_positions = [
 	Vector2(TILE_SIZE * (BOARD_WIDTH + 6), TILE_SIZE * 2),
 	Vector2(TILE_SIZE * (BOARD_WIDTH + 6), TILE_SIZE * 4),
 	Vector2(TILE_SIZE * (BOARD_WIDTH + 6), TILE_SIZE * 6)
 ]
 
-var upcoming_tiles = []
-var upcoming_tile_keys = []
-
-var cleared_tiles = []
+var held_tile;
+var held_tile_position = Vector2(TILE_SIZE*1, TILE_SIZE*2);
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -51,7 +51,7 @@ func _update_tiles():
 		upcoming_tiles[i].update_type(upcoming_tile_keys[i])
 
 
-# Returns the a tile with the type of the next tile in the tile bag
+# Returns the a tile with the type of the next tile in the tile bag and updates the upcoming tiles
 func get_next_tile():
 	if upcoming_tile_keys.size() <= 3:
 		_populate_tile_bag()
@@ -63,3 +63,31 @@ func get_next_tile():
 	_update_tiles()
 	
 	return new_tile
+
+
+# Returns the tile type the next tile in the tile bag and updates the upcoming tiles
+func get_next_tile_type():
+	if upcoming_tile_keys.size() <= 3:
+		_populate_tile_bag()
+	
+	var next_tile_type = upcoming_tile_keys.pop_front()
+	
+	_update_tiles()
+	
+	return next_tile_type
+
+
+# Takes players current tile type and switches it for the held tile type (or the next tile).
+func get_held_tile_key(curr_tile_type):
+	if held_tile == null:
+		held_tile = tile.instance()
+		held_tile.init(curr_tile_type, 0)
+		held_tile.position = held_tile_position
+		add_child(held_tile)
+		
+		return get_next_tile_type()
+	else:
+		var held_tile_type = held_tile.tile_type
+		held_tile.update_type(curr_tile_type)
+		
+		return held_tile_type
