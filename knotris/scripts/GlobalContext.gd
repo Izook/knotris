@@ -1,5 +1,9 @@
 extends Node2D
 
+# Game constants
+const GAME_WIDTH = 520
+const GAME_HEIGHT = 560
+
 # Tile constants
 const TILE_SIZE = 40
 
