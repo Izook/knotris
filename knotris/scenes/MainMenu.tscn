@@ -93,6 +93,7 @@ icon = ExtResource( 4 )
 flat = true
 
 [node name="ControlsPopup" type="WindowDialog" parent="."]
+editor/display_folded = true
 visible = true
 margin_left = 163.289
 margin_top = 241.864

@@ -20,6 +20,9 @@ const ROT_INPUTS = {
 	"rotate_left": 1,
 }
 
+# Refernce to ancestor HUD node
+var hud
+
 # Current tile position
 var tile_position = Vector2(0,0)
 
@@ -40,6 +43,10 @@ var has_held_tile = false;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	# Populate hud node reference
+	hud = get_parent().get_parent().get_node("HUD")
+	
 	# Populate TileBag and Board refernce
 	tile_bag = get_parent().get_parent().get_node("TileBag")
 	tile_board = get_parent()
@@ -62,8 +69,7 @@ func move_tile(direction):
 		reset_tile() 
 	elif direction == 'move_down' && board[next_position.x][next_position.y] != null:
 		if tile_position.y == 0:
-			print("GAME OVER!!!")
-			tile_board.queue_free()
+			hud.game_over()
 		else:
 			tile_board.add_tile(curr_tile, tile_position)
 			reset_tile() 

@@ -19,7 +19,7 @@ func _ready():
 	
 	# Instantiate and place HUD
 	var hud_instance = hud.instance()
-	hud_instance.position = Vector2(0,0)
+	hud_instance.rect_position = Vector2(0,0)
 	add_child(hud_instance) 
 	
 	# Instantiate and place tilebag

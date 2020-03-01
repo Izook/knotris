@@ -3,5 +3,4 @@
 [ext_resource path="res://scripts/Board.gd" type="Script" id=1]
 
 [node name="Board" type="Node2D"]
-editor/display_folded = true
 script = ExtResource( 1 )
