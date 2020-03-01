@@ -24,12 +24,16 @@ var curr_player
 # Reference to tile_bag sibling node
 var tile_bag
 
+# Reference to HUD sibling node
+var hud
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	# Populate tile_bag reference
+	# Populate tile_bag + hud reference
 	tile_bag = get_parent().get_node("TileBag")
+	hud = get_parent().get_node("HUD")
 		
 	# Populate tile_board with empty values
 	for i in range(BOARD_WIDTH):
@@ -111,14 +115,18 @@ func get_tile_board():
 	return tile_board
 
 
-# Clear a row that is internally and externally suitably connected and moves all other rows down appropriately
+# Clear a row that is internally and externally suitably connected and moves 
+# all other rows down appropriately. Also sends values of row to be cleared
+# to HUD to increment score.
 func _clear_row(row_index):
+	var row_value = 0
 	for j in range(row_index, 0, -1):
 		var empty_row = true
 		for i in range(BOARD_WIDTH):
 			
 			# Remove tile from board if from cleared row
 			if j == row_index:
+				row_value += tile_board[i][j].tile_score
 				tile_board[i][j].queue_free()
 				tile_board[i][j] = null
 			
@@ -134,6 +142,7 @@ func _clear_row(row_index):
 				empty_row = false
 		if empty_row:
 			break
+	hud.increment_score(row_value)
 
 
 # Checks rows for internal and external suitable connectedness

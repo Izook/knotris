@@ -14,9 +14,9 @@ var upcoming_tiles = []
 var upcoming_tile_keys = []
 
 var upcoming_tile_positions = [
-	Vector2(TILE_SIZE * (BOARD_WIDTH + 6), TILE_SIZE * 2),
-	Vector2(TILE_SIZE * (BOARD_WIDTH + 6), TILE_SIZE * 4),
-	Vector2(TILE_SIZE * (BOARD_WIDTH + 6), TILE_SIZE * 6)
+	Vector2(TILE_SIZE * (BOARD_WIDTH + 5), TILE_SIZE * 2),
+	Vector2(TILE_SIZE * (BOARD_WIDTH + 5), TILE_SIZE * 4),
+	Vector2(TILE_SIZE * (BOARD_WIDTH + 5), TILE_SIZE * 6)
 ]
 
 var held_tile;

@@ -20,6 +20,7 @@ const TILE_TYPES = Global.TILE_TYPES
 # Tile properties
 var tile_type
 var tile_rotation
+var tile_score
 
 # Tile connection points
 var connection_points = [
@@ -34,6 +35,7 @@ func init(type, rotation):
 	# Define tile properties
 	tile_type = type
 	tile_rotation = 0
+	tile_score = 100
 	
 	# Define connection points
 	connection_points = [

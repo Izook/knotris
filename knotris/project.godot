@@ -27,7 +27,7 @@ Global="*res://scenes/GlobalContext.tscn"
 
 [display]
 
-window/size/width=560
+window/size/width=520
 window/size/height=560
 
 [input]
