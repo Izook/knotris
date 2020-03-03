@@ -166,7 +166,7 @@ func check_rows():
 				break
 				
 			# Is row internally suitably connected?
-			if i < BOARD_WIDTH - 2:
+			if i < BOARD_WIDTH - 1:
 				var right_tile = tile_board[i + 1][j]
 				if right_tile == null || curr_tile.connection_points[1] != right_tile.connection_points[3]:
 					should_clear = false;
@@ -175,5 +175,5 @@ func check_rows():
 			break
 		if should_clear:
 			_clear_row(j)
-			return false
-	return true
+			return 1 + check_rows()
+	return 0
