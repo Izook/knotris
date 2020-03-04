@@ -112,15 +112,21 @@ func _process(delta):
 
 # Called when an InputEvent hasn't been consumed by _input() or any GUI.
 func _unhandled_input(event):
+	
+	if event.is_action_pressed("pause_game"):
+		hud.pause()
+		
 	if event.is_action_pressed("hold_tile"):
 		if !has_held_tile: 
 			has_held_tile = true
 			curr_tile.update_type(tile_bag.get_held_tile_key(curr_tile.tile_type))
 			reposition_tile()
+			
 	for direction in MOVE_INPUTS.keys():
 		if event.is_action_pressed(direction):
 			move_tile(direction)
 			return
+			
 	for rotation in ROT_INPUTS.keys():
 		if event.is_action_pressed(rotation):
 			curr_tile.rotate(ROT_INPUTS[rotation])

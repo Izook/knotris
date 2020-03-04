@@ -112,7 +112,8 @@ size_flags_vertical = 3
 text = "Arrow Keys:  Move Tile
 Z: Rotate Left
 X: Rotate Right
-C: Hold Tile"
+C: Hold Tile
+P: Pause Game"
 scroll_active = false
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/PlayContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/ControlsContainer/ControlsButton" to="." method="_on_ControlsButton_pressed"]

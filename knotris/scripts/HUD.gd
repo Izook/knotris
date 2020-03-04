@@ -39,6 +39,12 @@ func game_over():
 	$GameOverPopup.visible = true
 
 
+# Stops game and opens Pause menu
+func pause():
+	get_tree().paused = true
+	$PausedPopup.visible = true
+
+
 # Unpause and go back to main menu
 func _on_ToMainMenu_pressed():
 	get_tree().paused = false
@@ -49,3 +55,9 @@ func _on_ToMainMenu_pressed():
 func _on_ReTry_pressed():
 	get_tree().paused = false
 	get_tree().change_scene("res://scenes/Game.tscn")
+
+
+func _on_UnPause_pressed():
+	$PausedPopup.visible = false
+	get_tree().paused = false
+

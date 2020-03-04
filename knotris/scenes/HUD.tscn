@@ -17,6 +17,7 @@ autowrap = true
 
 [node name="GameOverPopup" type="Popup" parent="."]
 pause_mode = 2
+editor/display_folded = true
 margin_right = 520.0
 margin_bottom = 560.0
 
@@ -78,6 +79,58 @@ margin_top = 175.0
 margin_right = 164.0
 margin_bottom = 195.0
 text = "Try Again"
+
+[node name="PausedPopup" type="Popup" parent="."]
+pause_mode = 2
+visible = true
+margin_right = 520.0
+margin_bottom = 560.0
+
+[node name="ColorRect" type="ColorRect" parent="PausedPopup"]
+margin_right = 520.0
+margin_bottom = 560.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 0, 0.180392, 1, 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PausedPopup"]
+margin_right = 520.0
+margin_bottom = 560.0
+
+[node name="CenterContainer" type="CenterContainer" parent="PausedPopup/VBoxContainer"]
+margin_right = 520.0
+margin_bottom = 185.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="PausedPopup/VBoxContainer/CenterContainer"]
+margin_left = 237.0
+margin_top = 85.0
+margin_right = 283.0
+margin_bottom = 99.0
+text = "Paused"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PausedPopup/VBoxContainer"]
+margin_top = 189.0
+margin_right = 520.0
+margin_bottom = 560.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="UnPauseContainer" type="CenterContainer" parent="PausedPopup/VBoxContainer/HBoxContainer"]
+margin_right = 520.0
+margin_bottom = 371.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="UnPause" type="Button" parent="PausedPopup/VBoxContainer/HBoxContainer/UnPauseContainer"]
+margin_left = 203.0
+margin_top = 175.0
+margin_right = 316.0
+margin_bottom = 195.0
+text = "Resume Playing"
 [connection signal="button_down" from="GameOverPopup/VBoxContainer/HBoxContainer/MainMenuContainer/ToMainMenu" to="." method="_on_ToMainMenu_button_down"]
 [connection signal="pressed" from="GameOverPopup/VBoxContainer/HBoxContainer/MainMenuContainer/ToMainMenu" to="." method="_on_ToMainMenu_pressed"]
 [connection signal="pressed" from="GameOverPopup/VBoxContainer/HBoxContainer/ReTryContainer/ReTry" to="." method="_on_ReTry_pressed"]
+[connection signal="pressed" from="PausedPopup/VBoxContainer/HBoxContainer/UnPauseContainer/UnPause" to="." method="_on_UnPause_pressed"]
