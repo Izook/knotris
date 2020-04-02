@@ -1,0 +1,57 @@
+body {
+  background-color: #f7f7f7;
+  margin: 0px;
+}
+
+.header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #008765;
+}
+
+.knotrisContainer {
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#knotris {
+  border-width: 5px;
+  border-radius: 5px;
+  border-color: #000;
+  outline: none;
+
+  min-width: 520px;
+  min-height: 560px;
+}
+
+.footer {
+  padding: 10px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: #807060;
+}
+
+.projectByContainer {
+  height: 100%;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoContainer {
+  padding: 5px;
+  width: auto;
+  height: 100px;
+}
+
+.logo {
+  width: auto;
+  height: 100%;
+}
