@@ -2,6 +2,13 @@
 .import/
 export.cfg
 export_presets.cfg
+/**/*.import
+
+# Export Ignores
+/knotris/exports/android/*
+/knotris/exports/mac/*
+/knotris/exports/windows/*
+/knotris/exports/*.zip
 
 # Mono-specific ignores
 .mono/
