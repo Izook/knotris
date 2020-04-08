@@ -61,3 +61,6 @@ func _on_UnPause_pressed():
 	$PausedPopup.visible = false
 	get_tree().paused = false
 
+
+func _on_PauseButton_pressed():
+	pause()

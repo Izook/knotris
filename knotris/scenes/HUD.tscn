@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=1]
+[ext_resource path="res://assets/pause.png" type="Texture" id=2]
 
 [node name="HUD" type="Control"]
 script = ExtResource( 1 )
@@ -82,7 +83,7 @@ text = "Try Again"
 
 [node name="PausedPopup" type="Popup" parent="."]
 pause_mode = 2
-visible = true
+editor/display_folded = true
 margin_right = 520.0
 margin_bottom = 560.0
 
@@ -130,7 +131,16 @@ margin_top = 175.0
 margin_right = 316.0
 margin_bottom = 195.0
 text = "Resume Playing"
+
+[node name="PauseButton" type="TextureButton" parent="."]
+margin_left = 20.0
+margin_top = 500.0
+margin_right = 123.0
+margin_bottom = 599.0
+rect_scale = Vector2( 0.4, 0.4 )
+texture_normal = ExtResource( 2 )
 [connection signal="button_down" from="GameOverPopup/VBoxContainer/HBoxContainer/MainMenuContainer/ToMainMenu" to="." method="_on_ToMainMenu_button_down"]
 [connection signal="pressed" from="GameOverPopup/VBoxContainer/HBoxContainer/MainMenuContainer/ToMainMenu" to="." method="_on_ToMainMenu_pressed"]
 [connection signal="pressed" from="GameOverPopup/VBoxContainer/HBoxContainer/ReTryContainer/ReTry" to="." method="_on_ReTry_pressed"]
 [connection signal="pressed" from="PausedPopup/VBoxContainer/HBoxContainer/UnPauseContainer/UnPause" to="." method="_on_UnPause_pressed"]
+[connection signal="pressed" from="PauseButton" to="." method="_on_PauseButton_pressed"]
