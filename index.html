@@ -30,7 +30,10 @@
       }
       gtag("js", new Date());
 
-      gtag("config", "UA-162642839-1");
+      gtag("config", "UA-162642839-1", {
+        anonymize_ip: true,
+        cookie_expires: 0,
+      });
     </script>
 
     <!-- Google AdSense Tag -->
