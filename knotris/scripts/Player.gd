@@ -32,6 +32,12 @@ var curr_tile;
 # Time between drops during descent (seconds)
 var drop_time = 1;
 
+# Starting position of swipes
+var swipe_start;
+
+# The minimum length a swipe needs to meet
+const MINIMUM_DRAG = 100;
+
 # Reference to ancestor TileBag node
 var tile_bag
 
@@ -82,6 +88,16 @@ func move_tile(direction):
 		curr_tile.position += MOVE_INPUTS[direction] * TILE_SIZE
 
 
+# Moves the tile as low as it can go
+func drop_tile(): 
+	var board = tile_board.get_tile_board()
+	var next_position = tile_position + MOVE_INPUTS["move_down"]
+	while board[next_position.x][next_position.y] == null:
+		move_tile("move_down")
+		board = tile_board.get_tile_board()
+		next_position = tile_position + MOVE_INPUTS["move_down"]
+
+
 # Check board for SC rows & set current tile to a random tile and place it on the board
 func reset_tile():
 	# Check board for complete rows
@@ -95,6 +111,15 @@ func reset_tile():
 	curr_tile = tile_bag.get_next_tile()
 	reposition_tile()
 	add_child(curr_tile)
+
+
+# Updates the held tile with the currently active tile.
+func hold_tile():
+	if !has_held_tile: 
+		has_held_tile = true
+		curr_tile.update_type(tile_bag.get_held_tile_key(curr_tile.tile_type))
+		reposition_tile()
+		return
 
 
 # Resets the position of the tile to the top of the screen
@@ -115,22 +140,48 @@ func _unhandled_input(event):
 	
 	if event.is_action_pressed("pause_game"):
 		hud.pause()
+		return
 		
 	if event.is_action_pressed("hold_tile"):
-		if !has_held_tile: 
-			has_held_tile = true
-			curr_tile.update_type(tile_bag.get_held_tile_key(curr_tile.tile_type))
-			reposition_tile()
+		hold_tile()
 			
+	if event.is_action_pressed("drop_tile"):
+		drop_tile()
+	
 	for direction in MOVE_INPUTS.keys():
 		if event.is_action_pressed(direction):
 			move_tile(direction)
 			return
 			
+	if event.is_action_pressed("click"):
+		swipe_start = event.position
+
+	if event.is_action_released("click"):
+		_calculate_swipe(event.position)
+		
 	for rotation in ROT_INPUTS.keys():
 		if event.is_action_pressed(rotation):
 			curr_tile.rotate(ROT_INPUTS[rotation])
 			return
+
+# Called whenever a swipe ends, determines what action to trigger.
+func _calculate_swipe(swipe_end):	
+	if swipe_start == null: 
+		return
+		
+	var swipe = swipe_end - swipe_start
+	
+	if swipe.y > MINIMUM_DRAG * 2:
+		drop_tile()
+	elif swipe.y > MINIMUM_DRAG:
+		move_tile("move_down")
+	elif abs(swipe.x) > MINIMUM_DRAG:
+		if swipe.x > 0:
+			move_tile("move_right")
+		else:
+			move_tile("move_left")
+	else:
+		hold_tile()
 
 
 # Move down one tile on timeout
