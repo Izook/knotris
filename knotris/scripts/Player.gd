@@ -153,6 +153,12 @@ func _unhandled_input(event):
 			move_tile(direction)
 			return
 			
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			swipe_start = event.position
+		else:
+			_calculate_swipe(event.position)
+			
 	if event.is_action_pressed("click"):
 		swipe_start = event.position
 
