@@ -171,6 +171,8 @@ func _calculate_swipe(swipe_end):
 		
 	var swipe = swipe_end - swipe_start
 	
+	if swipe.y < 0 - MINIMUM_DRAG:
+		hold_tile()
 	if swipe.y > MINIMUM_DRAG * 2:
 		drop_tile()
 	elif swipe.y > MINIMUM_DRAG:
@@ -181,7 +183,7 @@ func _calculate_swipe(swipe_end):
 		else:
 			move_tile("move_left")
 	else:
-		hold_tile()
+		curr_tile.rotate(3)
 
 
 # Move down one tile on timeout

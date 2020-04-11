@@ -92,10 +92,10 @@ flat = true
 
 [node name="ControlsPopup" type="WindowDialog" parent="."]
 visible = true
-margin_left = 163.289
-margin_top = 241.864
-margin_right = 363.289
-margin_bottom = 391.864
+margin_left = 163.0
+margin_top = 242.0
+margin_right = 363.0
+margin_bottom = 424.0
 rect_pivot_offset = Vector2( 20, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -103,10 +103,9 @@ popup_exclusive = true
 window_title = "Controls"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ControlsPopup"]
-margin_left = -6.10352e-005
-margin_top = -1.22777
-margin_right = 200.0
-margin_bottom = 148.772
+margin_top = 0.470184
+margin_right = 212.0
+margin_bottom = 177.47
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Arrow Keys:  Move Tile
@@ -117,7 +116,8 @@ P: Pause Game
 D: Drop Tile
 
 If on mobile, swipe to move tiles.
-Tap to hold/switch tile."
+Swipe up to hold tile. 
+Tap to rotate tile."
 scroll_active = false
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/PlayContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/VBoxContainer/ControlsContainer/ControlsButton" to="." method="_on_ControlsButton_pressed"]
