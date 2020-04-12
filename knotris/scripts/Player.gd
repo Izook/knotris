@@ -197,7 +197,7 @@ func _calculate_swipe(swipe_end):
 	
 	if swipe.y < 0 - MINIMUM_DRAG:
 		hold_tile()
-	if swipe.y > MINIMUM_DRAG * 2:
+	if swipe.y > MINIMUM_DRAG * 1.5:
 		drop_tile()
 	elif swipe.y > MINIMUM_DRAG:
 		move_tile("move_down")
