@@ -77,8 +77,7 @@ func move_tile(direction):
 		if tile_position.y == 0:
 			hud.game_over()
 		else:
-			tile_board.add_tile(curr_tile, tile_position)
-			reset_tile() 
+			place_tile(tile_position)
 	elif next_position.x > BOARD_WIDTH - 1 || next_position.x < 0:
 		print("Illegal move attempted")
 	elif board[next_position.x][next_position.y] != null:
@@ -88,14 +87,32 @@ func move_tile(direction):
 		curr_tile.position += MOVE_INPUTS[direction] * TILE_SIZE
 
 
-# Moves the tile as low as it can go
+# Rotates the tile
+func rotate_tile(rotation):
+	$RotateSound.play()
+	curr_tile.rotate(ROT_INPUTS[rotation])
+
+
+# Places the tile on the board and resets the players tile
+func place_tile(tile_position):
+	$DropSound.play()
+	tile_board.add_tile(curr_tile, tile_position)
+	reset_tile() 
+
+
+# Moves the tile as low as it can go and palce it
 func drop_tile(): 
 	var board = tile_board.get_tile_board()
 	var next_position = tile_position + MOVE_INPUTS["move_down"]
+	
+	# As low as possible
 	while board[next_position.x][next_position.y] == null:
 		move_tile("move_down")
 		board = tile_board.get_tile_board()
 		next_position = tile_position + MOVE_INPUTS["move_down"]
+	
+	# Place the tile
+	move_tile("move_down")
 
 
 # Check board for SC rows & set current tile to a random tile and place it on the board
@@ -167,8 +184,9 @@ func _unhandled_input(event):
 		
 	for rotation in ROT_INPUTS.keys():
 		if event.is_action_pressed(rotation):
-			curr_tile.rotate(ROT_INPUTS[rotation])
-			return
+			rotate_tile(rotation)
+
+
 
 # Called whenever a swipe ends, determines what action to trigger.
 func _calculate_swipe(swipe_end):	
@@ -189,7 +207,7 @@ func _calculate_swipe(swipe_end):
 		else:
 			move_tile("move_left")
 	else:
-		curr_tile.rotate(3)
+		rotate_tile("rotate_right")
 
 
 # Move down one tile on timeout

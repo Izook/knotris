@@ -9,9 +9,12 @@ func _ready():
 
 # On play start game of knotris 
 func _on_PlayButton_pressed():
+	$StartSound.play()
+	yield($StartSound, "finished")
 	get_tree().change_scene("res://scenes/Game.tscn")
 
 
 # On controls press open pop-up
 func _on_ControlsButton_pressed():
+	$MenuSound.play()
 	$ControlsPopup.visible = true

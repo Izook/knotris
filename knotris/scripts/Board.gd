@@ -21,6 +21,9 @@ var tile_board = [] setget , get_tile_board
 # Node representing the player
 var curr_player
 
+# Current level of difficulty
+var level = 1
+
 # Reference to tile_bag sibling node
 var tile_bag
 
@@ -60,6 +63,9 @@ func _ready():
 	# Add the Player to the board
 	curr_player = player.instance()
 	add_child(curr_player)
+	
+	# Start background music
+	$BackgroundMusic.play()
 
 
 # Draw specified tile on at correct position on board
@@ -177,3 +183,12 @@ func check_rows():
 			_clear_row(j)
 			return 1 + check_rows()
 	return 0
+
+
+# On end of background music track play correct track 
+# according to level
+func _on_BackgroundMusic_finished():
+	var file_path = "res://assets/audio/main_loop_level_" + str(level) + ".wav"
+	var music_file = load(file_path)
+	$BackgroundMusic.stream = music_file
+	$BackgroundMusic.play()
