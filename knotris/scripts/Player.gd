@@ -214,8 +214,10 @@ func _calculate_swipe(event_position):
 		else:
 			move_tile("move_left")
 	else:
+		_secret_debug("Rotating tile")
 		rotate_tile("rotate_right")
 	
+	_secret_debug("End of Swipe")
 	swipe_start = null
 	swipe_end = null
 

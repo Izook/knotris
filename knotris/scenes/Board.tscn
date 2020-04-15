@@ -10,8 +10,8 @@ script = ExtResource( 1 )
 stream = ExtResource( 2 )
 
 [node name="SecretDebugger" type="RichTextLabel" parent="."]
-margin_left = 223.0
-margin_top = 339.0
-margin_right = 393.0
-margin_bottom = 475.0
+margin_left = 227.0
+margin_top = 305.0
+margin_right = 397.0
+margin_bottom = 536.0
 [connection signal="finished" from="BackgroundMusic" to="." method="_on_BackgroundMusic_finished"]
