@@ -38,14 +38,21 @@ var swipe_start;
 # Ending position of swipes
 var swipe_end;
 
+# Minimum time in seconds between any touch input
+# NOTE: This only exists for iOS Web Support
+var input_lag = 0.2
+
 # The minimum length a swipe needs to meet
 const MINIMUM_DRAG = 80;
+
+# Reference to the input timer incharge of touch input lag
+var input_timer
 
 # Reference to ancestor TileBag node
 var tile_bag
 
 # Reference to parent Board node
-var tile_board;
+var tile_board
 
 # Has the player held this tile already?
 var has_held_tile = false;
@@ -175,14 +182,13 @@ func _unhandled_input(event):
 			move_tile(direction)
 			return
 			
-	if event is InputEventMouseButton:
-		if event.pressed:
-			swipe_start = event.position
-			return
-		else:
-			_secret_debug(event.as_text())
-			_calculate_swipe(event.position)
-			return
+	if event.is_action_pressed("click"):
+		swipe_start = event.position
+		return
+	elif event.is_action_released("click"):
+		_secret_debug(event.as_text())
+		_calculate_swipe(event.position)
+		return
 	
 	for rotation in ROT_INPUTS.keys():
 		if event.is_action_pressed(rotation):
@@ -196,9 +202,14 @@ func _calculate_swipe(event_position):
 	if swipe_start == null or swipe_end != null: 
 		_secret_debug("Invalid Swipe!")
 		return
+		
+	if $InputTimer.get_time_left() != 0:
+		_secret_debug("Swipe too soon!")
+		return
 	
 	_secret_debug("Valid Swipe!")
 	swipe_end = event_position
+	$InputTimer.start(input_lag)
 
 	var swipe = event_position - swipe_start
 	
