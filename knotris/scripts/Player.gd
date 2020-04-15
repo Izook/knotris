@@ -173,6 +173,7 @@ func _unhandled_input(event):
 			return
 			
 	if event is InputEventScreenTouch or event is InputEventMouseButton:
+		_secret_debug(event.get_class())
 		if event.pressed:
 			swipe_start = event.position
 			return
@@ -207,9 +208,17 @@ func _calculate_swipe(swipe_end):
 		else:
 			move_tile("move_left")
 	else:
+		_secret_debug("Rotated Tile");
 		rotate_tile("rotate_right")
 
 
 # Move down one tile on timeout
 func _on_DropTimer_timeout():
 	move_tile("move_down")
+
+
+# Send message to secret debugger
+func _secret_debug(message):
+	var secret_debugger = get_parent().get_node("SecretDebugger")
+	var current_message = secret_debugger.get_text()
+	secret_debugger.set_text(current_message + "/n" + message)
