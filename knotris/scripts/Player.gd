@@ -35,6 +35,9 @@ var drop_time = 1;
 # Starting position of swipes
 var swipe_start;
 
+# Ending position of swipes
+var swipe_end;
+
 # The minimum length a swipe needs to meet
 const MINIMUM_DRAG = 80;
 
@@ -179,7 +182,7 @@ func _unhandled_input(event):
 		else:
 			_calculate_swipe(event.position)
 			return
-		
+	
 	for rotation in ROT_INPUTS.keys():
 		if event.is_action_pressed(rotation):
 			rotate_tile(rotation)
@@ -187,13 +190,14 @@ func _unhandled_input(event):
 
 
 # Called whenever a swipe ends, determines what action to trigger.
-func _calculate_swipe(swipe_end):	
-	if swipe_start == null: 
+func _calculate_swipe(event_position):
+	
+	if swipe_start == null or swipe_end != null: 
 		return
+	else: 
+		swipe_end = event_position
 
-	var swipe = swipe_end - swipe_start
-		
-	swipe_start = null # Make null to prevent double swipes from registering
+	var swipe = event_position - swipe_start
 	
 	if swipe.y < 0 - MINIMUM_DRAG:
 		hold_tile()
@@ -208,6 +212,9 @@ func _calculate_swipe(swipe_end):
 			move_tile("move_left")
 	else:
 		rotate_tile("rotate_right")
+	
+	swipe_start = null
+	swipe_end = null
 
 
 # Move down one tile on timeout
