@@ -40,7 +40,7 @@ var swipe_end;
 
 # Minimum time in seconds between any touch input
 # NOTE: This only exists for iOS Web Support
-var input_lag = 0.2
+var input_lag = 0.1
 
 # The minimum length a swipe needs to meet
 const MINIMUM_DRAG = 80;
