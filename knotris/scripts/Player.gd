@@ -199,10 +199,9 @@ func _unhandled_input(event):
 func _calculate_swipe(event_position):
 	
 	if swipe_start == null or swipe_end != null: 
-		_secret_debug("Invalid Swipe!")
 		return
 		
-	if $InputTimer.get_time_left() != 0:
+	if $InputTimer.get_time_left() != 0 and OS.has_feature("iOS"):
 		return
 	
 	swipe_end = event_position
