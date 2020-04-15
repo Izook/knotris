@@ -36,7 +36,7 @@ var drop_time = 1;
 var swipe_start;
 
 # The minimum length a swipe needs to meet
-const MINIMUM_DRAG = 100;
+const MINIMUM_DRAG = 80;
 
 # Reference to ancestor TileBag node
 var tile_bag
@@ -161,39 +161,39 @@ func _unhandled_input(event):
 		
 	if event.is_action_pressed("hold_tile"):
 		hold_tile()
+		return
 			
 	if event.is_action_pressed("drop_tile"):
 		drop_tile()
+		return
 	
 	for direction in MOVE_INPUTS.keys():
 		if event.is_action_pressed(direction):
 			move_tile(direction)
 			return
 			
-	if event is InputEventScreenTouch:
+	if event is InputEventScreenTouch or event is InputEventMouseButton:
 		if event.pressed:
 			swipe_start = event.position
+			return
 		else:
 			_calculate_swipe(event.position)
-			
-	if event.is_action_pressed("click"):
-		swipe_start = event.position
-
-	if event.is_action_released("click"):
-		_calculate_swipe(event.position)
+			return
 		
 	for rotation in ROT_INPUTS.keys():
 		if event.is_action_pressed(rotation):
 			rotate_tile(rotation)
-
+			return
 
 
 # Called whenever a swipe ends, determines what action to trigger.
 func _calculate_swipe(swipe_end):	
 	if swipe_start == null: 
 		return
-		
+
 	var swipe = swipe_end - swipe_start
+		
+	swipe_start = null # Make null to prevent double swipes from registering
 	
 	if swipe.y < 0 - MINIMUM_DRAG:
 		hold_tile()
