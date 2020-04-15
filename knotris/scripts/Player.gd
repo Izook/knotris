@@ -221,4 +221,4 @@ func _on_DropTimer_timeout():
 func _secret_debug(message):
 	var secret_debugger = get_parent().get_node("SecretDebugger")
 	var current_message = secret_debugger.get_text()
-	secret_debugger.set_text(current_message + "/n" + message)
+	secret_debugger.set_text(current_message + "\n" + message)
