@@ -180,7 +180,7 @@ func _unhandled_input(event):
 			swipe_start = event.position
 			return
 		else:
-			_secret_debug(event.get_class())
+			_secret_debug(event.as_text())
 			_calculate_swipe(event.position)
 			return
 	
