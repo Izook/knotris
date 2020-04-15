@@ -74,6 +74,8 @@ func _ready():
 	$DropTimer.wait_time = drop_time
 	$DropTimer.start()
 	$DropTimer.connect("timeout", self, "_on_DropTimer_timeout")
+	
+	_secret_debug("Running on OS: " + str(OS.get_name()))
 
 
 # Move tile based towards a direction
@@ -186,7 +188,6 @@ func _unhandled_input(event):
 		swipe_start = event.position
 		return
 	elif event.is_action_released("click"):
-		_secret_debug(event.as_text())
 		_calculate_swipe(event.position)
 		return
 	
@@ -204,10 +205,8 @@ func _calculate_swipe(event_position):
 		return
 		
 	if $InputTimer.get_time_left() != 0:
-		_secret_debug("Swipe too soon!")
 		return
 	
-	_secret_debug("Valid Swipe!")
 	swipe_end = event_position
 	$InputTimer.start(input_lag)
 
@@ -225,10 +224,8 @@ func _calculate_swipe(event_position):
 		else:
 			move_tile("move_left")
 	else:
-		_secret_debug("Rotating tile")
 		rotate_tile("rotate_right")
 	
-	_secret_debug("End of Swipe")
 	swipe_start = null
 	swipe_end = null
 
