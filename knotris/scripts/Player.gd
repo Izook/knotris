@@ -180,6 +180,7 @@ func _unhandled_input(event):
 			swipe_start = event.position
 			return
 		else:
+			_secret_debug(event.get_class())
 			_calculate_swipe(event.position)
 			return
 	
@@ -193,8 +194,10 @@ func _unhandled_input(event):
 func _calculate_swipe(event_position):
 	
 	if swipe_start == null or swipe_end != null: 
+		_secret_debug("Invalid Swipe")
 		return
-	else: 
+	else:
+		_secret_debug("Valid Swipe")
 		swipe_end = event_position
 
 	var swipe = event_position - swipe_start
