@@ -154,6 +154,7 @@ func _process(delta):
 
 # Called when an InputEvent hasn't been consumed by _input() or any GUI.
 func _unhandled_input(event):
+	_secret_debug(event.get_class())
 	
 	if event.is_action_pressed("pause_game"):
 		hud.pause()
@@ -173,7 +174,6 @@ func _unhandled_input(event):
 			return
 			
 	if event is InputEventScreenTouch or event is InputEventMouseButton:
-		_secret_debug(event.get_class())
 		if event.pressed:
 			swipe_start = event.position
 			return
