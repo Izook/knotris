@@ -74,9 +74,6 @@ func _ready():
 	$DropTimer.wait_time = drop_time
 	$DropTimer.start()
 	$DropTimer.connect("timeout", self, "_on_DropTimer_timeout")
-	
-	_secret_debug("Running on OS: " + str(OS.get_name()))
-	_secret_debug("Running on Device: " + str(OS.get_model_name()))
 
 
 # Move tile based towards a direction

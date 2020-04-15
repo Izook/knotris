@@ -44,9 +44,15 @@
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
     ></script>
 
-    <!-- iOS Touch Listener -->
+    <!-- iOS Compatability Scripting -->
     <script>
-      window.addEventListener("touchstart", {});
+      let iOS =
+        /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      if (iOS) {
+        window.addEventListener("touchstart", {});
+        document.getElementById("knotris").src =
+          "knotris/exports/web/iOS/knotris.html";
+      }
     </script>
   </head>
 

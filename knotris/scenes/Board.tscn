@@ -10,6 +10,7 @@ script = ExtResource( 1 )
 stream = ExtResource( 2 )
 
 [node name="SecretDebugger" type="RichTextLabel" parent="."]
+visible = false
 margin_left = -58.0
 margin_top = 370.0
 margin_right = 397.0

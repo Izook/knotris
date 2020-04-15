@@ -7,7 +7,7 @@ func _ready():
 	VisualServer.set_default_clear_color(Color(1, 1, 1, 1))
 	
 	# Mute game if running on HTML iOS Export
-	if OS.get_name() == "iOS":
+	if OS.has_feature("iOS"):
 		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), 0)
 
 
