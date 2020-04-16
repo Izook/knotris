@@ -47,7 +47,7 @@
 
   <body>
     <div class="header">
-      <img src="knotris/assets/title.png" />
+      <img id="titleImage " src="assets/TitleAnimation.gif" />
     </div>
 
     <div class="content">
@@ -74,6 +74,8 @@
   <script defer>
     let iOS =
       !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+    alert("Detected Platform: " + navigator.platform);
+    alert("Is iOS: " + iOS);
     if (iOS == true) {
       window.addEventListener("touchstart", {});
       document.getElementById("knotris").src =
