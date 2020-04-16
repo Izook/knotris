@@ -7,9 +7,9 @@ func _ready():
 	VisualServer.set_default_clear_color(Color(1, 1, 1, 1))
 	
 	# Mute game if running on HTML iOS Export
-	if OS.has_feature("iOS"):
+	if OS.has_feature("iOSWeb"):
 		AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), 0)
-
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), true)
 
 # On play start game of knotris 
 func _on_PlayButton_pressed():

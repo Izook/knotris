@@ -201,7 +201,7 @@ func _calculate_swipe(event_position):
 	if swipe_start == null or swipe_end != null: 
 		return
 		
-	if $InputTimer.get_time_left() != 0 and OS.has_feature("iOS"):
+	if $InputTimer.get_time_left() != 0 and OS.has_feature("iOSWeb"):
 		return
 	
 	swipe_end = event_position

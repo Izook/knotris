@@ -74,8 +74,6 @@
   <script defer>
     let iOS =
       !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
-    alert("iOS Status: " + iOS);
-    alert("using iOS version: " + (iOS == true));
     if (iOS == true) {
       window.addEventListener("touchstart", {});
       document.getElementById("knotris").src =
