@@ -47,13 +47,13 @@
     <!-- iOS Compatability Scripting -->
     <script>
       let iOS =
-        /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+      alert("iOS Status: " + iOS);
       if (iOS) {
         window.addEventListener("touchstart", {});
         document.getElementById("knotris").src =
           "knotris/exports/web/iOS/knotris.html";
       }
-      alert("iOS Status: " + iOS);
     </script>
   </head>
 
