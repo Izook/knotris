@@ -43,18 +43,6 @@
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
     ></script>
-
-    <!-- iOS Compatability Scripting -->
-    <script>
-      let iOS =
-        !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
-      alert("iOS Status: " + iOS);
-      if (iOS) {
-        window.addEventListener("touchstart", {});
-        document.getElementById("knotris").src =
-          "knotris/exports/web/iOS/knotris.html";
-      }
-    </script>
   </head>
 
   <body>
@@ -81,4 +69,17 @@
       </div>
     </div>
   </body>
+
+  <!-- iOS Compatability Scripting -->
+  <script defer>
+    let iOS =
+      !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+    alert("iOS Status: " + iOS);
+    alert("using iOS version: " + (iOS == true));
+    if (iOS == true) {
+      window.addEventListener("touchstart", {});
+      document.getElementById("knotris").src =
+        "knotris/exports/web/iOS/knotris.html";
+    }
+  </script>
 </html>
