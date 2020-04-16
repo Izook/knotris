@@ -72,11 +72,9 @@
 
   <!-- iOS Compatability Scripting -->
   <script defer>
-    let iOS =
-      !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
-    alert("Detected Platform: " + navigator.platform);
-    alert("Is iOS: " + iOS);
-    if (iOS == true) {
+    let apple =
+      !!navigator.platform && /Mac|iPad|iPhone|iPod/.test(navigator.platform);
+    if (apple == true) {
       window.addEventListener("touchstart", {});
       document.getElementById("knotris").src =
         "knotris/exports/web/iOS/knotris.html";
