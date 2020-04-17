@@ -4,7 +4,7 @@ extends Control
 func _ready():
 	
 	# Set background to white
-	VisualServer.set_default_clear_color(Color(1, 1, 1, 1))
+	VisualServer.set_default_clear_color(Color(0.7, 0.7, 0.7, 1))
 	
 	# Mute game if running on HTML iOS Export
 	if OS.has_feature("iOSWeb"):
