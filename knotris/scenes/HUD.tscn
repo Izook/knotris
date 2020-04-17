@@ -5,6 +5,9 @@
 
 [node name="HUD" type="Control"]
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Score" type="Label" parent="."]
 margin_left = 440.0
@@ -18,7 +21,6 @@ autowrap = true
 
 [node name="GameOverPopup" type="Popup" parent="."]
 pause_mode = 2
-editor/display_folded = true
 margin_right = 520.0
 margin_bottom = 560.0
 
@@ -83,7 +85,6 @@ text = "Try Again"
 
 [node name="PausedPopup" type="Popup" parent="."]
 pause_mode = 2
-editor/display_folded = true
 margin_right = 520.0
 margin_bottom = 560.0
 

@@ -284,7 +284,7 @@ position = Vector2( 9.15784, -9.46033 )
 scale = Vector2( 0.3, 0.3 )
 frames = SubResource( 46 )
 animation = "TitleScroll"
-frame = 18
+frame = 17
 playing = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
