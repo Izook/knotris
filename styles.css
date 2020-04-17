@@ -27,7 +27,7 @@ body {
   min-height: calc(100% - 300px);
   width: 100%;
   position: relative;
-  padding: 20px 0px;
+  padding: 30px 0px;
 
   display: flex;
   align-items: center;
@@ -81,20 +81,24 @@ body {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 20px 0;
+  margin-top: 20px;
 }
 
 .projectByContainer {
   height: 100%;
   width: auto;
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: center;
+  padding-right: 20px;
 }
 
 .logoContainer {
-  padding: 5px;
+  padding: 10px;
   width: auto;
-  height: 100px;
+  height: 50px;
 }
 
 .logo {
