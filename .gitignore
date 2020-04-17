@@ -4,6 +4,13 @@ export.cfg
 export_presets.cfg
 /**/*.import
 
+
+# Design Ignores
+/design/RECOVER*.fla
+/design/DataStore/
+/design/DataStore/
+/design/*.swf
+
 # Export Ignores
 /knotris/exports/android/*
 /knotris/exports/mac/*
