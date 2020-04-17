@@ -64,3 +64,14 @@ func _on_UnPause_pressed():
 
 func _on_PauseButton_pressed():
 	pause()
+
+
+func _on_AudioButton_pressed():
+	if Global.muted:
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), false)
+		$PausedPopup.get_node("AudioButton").set_normal_texture(load("res://assets/AudioOffIcon.png"))
+		Global.muted = false
+	else:
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), true)
+		$PausedPopup.get_node("AudioButton").set_normal_texture(load("res://assets/AudioOnIcon.png"))
+		Global.muted = true

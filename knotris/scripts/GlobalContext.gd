@@ -57,6 +57,9 @@ const TILE_TYPE_KEYS = ["A", "B", "C", "D", "E"]
 const left_connected_combinations = []
 const left_disconnected_combinations = []
 
+# Whether or not audio is muted
+var muted = false
+
 func _ready():
 	# Determine left connected tile + rotation combinations for board initialization
 	for key in TILE_TYPE_KEYS:
@@ -66,4 +69,9 @@ func _ready():
 				left_connected_combinations.append([key,j])
 			else:
 				left_disconnected_combinations.append([key,j])
-
+	
+	# Mute game if running on HTML iOS Export
+	if OS.has_feature("iOSWeb"):
+		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), true)
+		$AudioButton.set_normal_texture(load("res://assets/AudioOnIcon.png"))
+		muted = true
