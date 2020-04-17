@@ -19,7 +19,6 @@ body {
   width: auto;
   max-width: 100%;
   border-radius: 10px;
-  border: 5px solid #fff;
 }
 
 .content {
@@ -90,7 +89,7 @@ body {
   height: 100%;
   width: auto;
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-content: center;
   padding-right: 20px;
 }
