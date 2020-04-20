@@ -1,5 +1,6 @@
 body {
   font-family: "Hammersmith One", sans-serif;
+  color: #fff;
   background-color: #9cbffb;
   margin: 0px;
   width: 100%;
@@ -15,6 +16,22 @@ body {
   padding: 20px 0px;
 }
 
+.navMenu {
+  height: 50px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navButton {
+  margin: 0 25px;
+  border-bottom: 5px solid #fff;
+  width: 125px;
+  text-align: center;
+  cursor: pointer;
+}
+
 #titleImage {
   height: 100%;
   width: auto;
@@ -24,7 +41,7 @@ body {
 
 .content {
   height: auto;
-  min-height: calc(100% - 300px);
+  min-height: calc(100% - 430px);
   width: 100%;
   position: relative;
   padding: 30px 0px;
@@ -43,11 +60,10 @@ body {
   border-radius: 10px;
 }
 
-.aboutKnotris {
+.knotrisInfo {
   margin: 5px;
-  margin-top: 20px;
+  margin-top: 30px;
   background-color: rgba(1, 1, 1, 0.1);
-  color: white;
   padding: 15px;
   border-radius: 10px;
   text-align: center;
@@ -55,9 +71,9 @@ body {
   max-width: 40%;
 }
 
-.aboutKnotris a,
-.aboutKnotris a:hover,
-.aboutKnotris a:visited {
+a,
+a:hover,
+a:visited {
   color: #5e068a;
   text-decoration: none;
 }
@@ -72,8 +88,25 @@ body {
     padding: 20px;
   }
 
-  .aboutKnotris {
+  .knotrisInfo {
     max-width: calc(100% - 10px);
+  }
+
+  .howToPlay {
+    justify-content: center;
+  }
+
+  .popUp iframe {
+    max-height: 50%;
+  }
+
+  .popUp h1 {
+    font-size: 24px;
+  }
+
+  .popUp p {
+    max-width: 100%;
+    font-size: 18px;
   }
 }
 
@@ -97,6 +130,63 @@ body {
   width: 100%;
   height: 100%;
   border-radius: 10px;
+}
+
+.popUp {
+  display: none;
+  flex-direction: column;
+  justify-content: start;
+  align-content: center;
+  text-align: center;
+  margin: 15px;
+  width: calc(100% - 70px);
+  height: calc(100% - 70px);
+  min-height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(1, 1, 1, 0.7);
+  border-radius: 10px;
+  text-align: center;
+  padding: 20px;
+  overflow-y: none;
+  overflow-x: none;
+}
+
+#howToPlayPopUp {
+  justify-content: center;
+}
+
+#aboutPopUp {
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.popUp h1 {
+  font-size: 48px;
+}
+
+.popUp p {
+  font-size: 24px;
+}
+
+.popUp .exitPopup {
+  background-image: url("./assets/exit.png");
+  height: 30px;
+  width: 30px;
+  background-size: 30px 30px;
+  margin: 15px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+}
+
+.popUp iframe {
+  width: 100%;
+  height: 50%;
+  min-height: 200px;
+  flex-grow: 10;
 }
 
 .footer {

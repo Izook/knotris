@@ -19,6 +19,44 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
 __meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="ControlsPopup" type="WindowDialog" parent="."]
+margin_left = 84.1219
+margin_top = 171.696
+margin_right = 437.122
+margin_bottom = 487.696
+rect_pivot_offset = Vector2( 20, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 0
+popup_exclusive = true
+window_title = "Controls"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ControlsPopup"]
+margin_left = 3.0
+margin_top = 1.0
+margin_right = 355.0
+margin_bottom = 320.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Arrow Keys:  Move Tile
+Z: Rotate Left
+X: Rotate Right
+C: Hold Tile
+P: Pause Game
+D: Drop Tile
+
+If on mobile:
+Swipe to move tile.
+Swipe up to hold tile.
+Tap to rotate tile."
+scroll_active = false
+__meta__ = {
 "_edit_use_anchors_": false
 }
 
@@ -26,6 +64,9 @@ __meta__ = {
 position = Vector2( 253.769, 140.093 )
 scale = Vector2( 0.181672, 0.181672 )
 texture = ExtResource( 6 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="PlayButton" type="Button" parent="."]
 margin_left = 193.0
@@ -52,38 +93,6 @@ flat = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="ControlsPopup" type="WindowDialog" parent="."]
-margin_left = 163.0
-margin_top = 242.0
-margin_right = 363.0
-margin_bottom = 424.0
-rect_pivot_offset = Vector2( 20, 0 )
-size_flags_horizontal = 3
-size_flags_vertical = 0
-popup_exclusive = true
-window_title = "Controls"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RichTextLabel" type="RichTextLabel" parent="ControlsPopup"]
-margin_top = 0.470184
-margin_right = 212.0
-margin_bottom = 177.47
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Arrow Keys:  Move Tile
-Z: Rotate Left
-X: Rotate Right
-C: Hold Tile
-P: Pause Game
-D: Drop Tile
-
-If on mobile, swipe to move tiles.
-Swipe up to hold tile. 
-Tap to rotate tile."
-scroll_active = false
 
 [node name="StartSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
