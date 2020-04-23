@@ -74,7 +74,7 @@ body {
 a,
 a:hover,
 a:visited {
-  color: #5e068a;
+  color: #9000c9;
   text-decoration: none;
 }
 
@@ -135,9 +135,8 @@ a:visited {
 .popUp {
   display: none;
   flex-direction: column;
-  justify-content: start;
-  align-content: center;
-  text-align: center;
+  justify-content: center;
+  align-items: center;
   margin: 15px;
   width: calc(100% - 70px);
   height: calc(100% - 70px);
@@ -147,19 +146,18 @@ a:visited {
   left: 0;
   background-color: rgba(1, 1, 1, 0.7);
   border-radius: 10px;
-  text-align: center;
   padding: 20px;
-  overflow-y: none;
-  overflow-x: none;
 }
 
-#howToPlayPopUp {
-  justify-content: center;
-}
-
-#aboutPopUp {
-  overflow-x: hidden;
+.popUp .copy {
+  display: block;
+  position: relative;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 5px;
   overflow-y: scroll;
+  overflow-x: none;
 }
 
 .popUp h1 {
@@ -168,6 +166,10 @@ a:visited {
 
 .popUp p {
   font-size: 24px;
+}
+
+.popUp a {
+  color: #ce6dff;
 }
 
 .popUp .exitPopup {
