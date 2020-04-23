@@ -51,10 +51,11 @@ func init(type, rotation):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$Sprite.set_texture(tile_textures[tile_type])
+	$TileSprite.set_texture(tile_textures[tile_type])
 
 
 # Used to rotate the tile in -90 degree parts
+# `turns` must be within [0,3]
 func rotate(turns):
 	tile_rotation = (tile_rotation + turns) % 4
 	
@@ -64,7 +65,7 @@ func rotate(turns):
 		connection_points[i] = prev_connection_points[(i + turns) % 4] 
 	
 	# Rotate sprite appropriately 
-	$Sprite.set_rotation((tile_rotation % 4) * (-PI/2))
+	$TileSprite.set_rotation((tile_rotation % 4) * (-PI/2))
 
 
 # Used to update the tile type 
@@ -72,7 +73,7 @@ func update_type(type):
 	
 	# Update properties
 	tile_type = type
-	$Sprite.set_texture(tile_textures[tile_type])
+	$TileSprite.set_texture(tile_textures[tile_type])
 	
 	# Redefine connection points
 	connection_points = [
