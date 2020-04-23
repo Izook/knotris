@@ -25,6 +25,9 @@ var held_tile_position = Vector2(TILE_SIZE*1, TILE_SIZE*2);
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	# Randomize the seed of the Godot random number generator
+	randomize()
+	
 	# Initially populate tile_keys 
 	_populate_tile_bag()
 		
