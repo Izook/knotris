@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scripts/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://assets/play.png" type="Texture" id=2]
@@ -8,6 +8,64 @@
 [ext_resource path="res://assets/Title.png" type="Texture" id=6]
 [ext_resource path="res://assets/AudioOffIcon.png" type="Texture" id=7]
 [ext_resource path="res://assets/AudioOnIcon.png" type="Texture" id=8]
+[ext_resource path="res://assets/tile_textures/tile_D.png" type="Texture" id=9]
+[ext_resource path="res://assets/tile_textures/tile_E.png" type="Texture" id=10]
+
+[sub_resource type="Animation" id=1]
+resource_name = "SelectorRotator"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("LeftSelectorSprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("RightSelectorSprite:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "SelectorRotator"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("LeftSelectorSprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("RightSelectorSprite:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
 
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
@@ -61,41 +119,96 @@ __meta__ = {
 }
 
 [node name="Title" type="Sprite" parent="."]
-position = Vector2( 258.056, 126.375 )
+position = Vector2( 260, 141.228 )
 scale = Vector2( 0.181672, 0.181672 )
 texture = ExtResource( 6 )
 
 [node name="PlayButton" type="Button" parent="."]
-margin_left = 193.0
-margin_top = 266.015
-margin_right = 339.0
-margin_bottom = 338.015
+anchor_right = 0.23
+margin_left = 180.0
+margin_top = 261.228
+margin_right = 366.4
+margin_bottom = 472.228
+rect_scale = Vector2( 0.5, 0.5 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-icon = ExtResource( 2 )
 flat = true
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
+
+[node name="PlayButtonSprite" type="Sprite" parent="PlayButton"]
+position = Vector2( 150.897, 102.884 )
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="LeftSelectorSprite" type="Sprite" parent="PlayButton"]
+position = Vector2( -59.8416, 100.158 )
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="RightSelectorSprite" type="Sprite" parent="PlayButton"]
+position = Vector2( 380.158, 100.158 )
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="SelectorAnimator" type="AnimationPlayer" parent="PlayButton"]
+pause_mode = 2
+autoplay = "SelectorRotator"
+method_call_mode = 1
+anims/SelectorRotator = SubResource( 1 )
 
 [node name="ControlsButton" type="Button" parent="."]
-margin_left = 130.287
-margin_top = 375.44
-margin_right = 409.287
-margin_bottom = 447.44
+margin_left = 130.0
+margin_top = 381.228
+margin_right = 661.0
+margin_bottom = 553.228
+rect_scale = Vector2( 0.5, 0.5 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-icon = ExtResource( 3 )
 flat = true
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="StartSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 4 )
+[node name="ControlsButtonSprite" type="Sprite" parent="ControlsButton"]
+position = Vector2( 267.499, 78.8779 )
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="MenuSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 5 )
+[node name="LeftSelectorSprite" type="Sprite" parent="ControlsButton"]
+position = Vector2( -43.4294, 90.2883 )
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 10 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="RightSelectorSprite" type="Sprite" parent="ControlsButton"]
+position = Vector2( 568.123, 88.6526 )
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 10 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="SelectorAnimator" type="AnimationPlayer" parent="ControlsButton"]
+pause_mode = 2
+autoplay = "SelectorRotator"
+method_call_mode = 1
+anims/SelectorRotator = SubResource( 2 )
 
 [node name="AudioButton" type="TextureButton" parent="."]
 margin_left = -3.47408
@@ -108,6 +221,12 @@ texture_pressed = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="StartSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[node name="MenuSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
 [connection signal="pressed" from="PlayButton" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="ControlsButton" to="." method="_on_ControlsButton_pressed"]
 [connection signal="pressed" from="AudioButton" to="." method="_on_AudioButton_pressed"]

@@ -1,21 +1,8 @@
 extends Node2D
 
-# Preload tile textures
-var tileA_texture = preload("res://assets/tile_textures/tile_A.png")
-var tileB_texture = preload("res://assets/tile_textures/tile_B.png")
-var tileC_texture = preload("res://assets/tile_textures/tile_C.png")
-var tileD_texture = preload("res://assets/tile_textures/tile_D.png")
-var tileE_texture = preload("res://assets/tile_textures/tile_E.png")
-var tile_textures = {
-	"A" : tileA_texture,
-	"B" : tileB_texture,
-	"C" : tileC_texture,
-	"D" : tileD_texture,
-	"E" : tileE_texture,
-}
-
 # Global tile properties
 const TILE_TYPES = Global.TILE_TYPES
+const TILE_TEXTURES = Global.TILE_TEXTURES
 
 # Tile properties
 var tile_type
@@ -51,7 +38,7 @@ func init(type, rotation):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$TileSprite.set_texture(tile_textures[tile_type])
+	$TileSprite.set_texture(TILE_TEXTURES[tile_type])
 
 
 # Used to rotate the tile in -90 degree parts
@@ -73,7 +60,7 @@ func update_type(type):
 	
 	# Update properties
 	tile_type = type
-	$TileSprite.set_texture(tile_textures[tile_type])
+	$TileSprite.set_texture(TILE_TEXTURES[tile_type])
 	
 	# Redefine connection points
 	connection_points = [
