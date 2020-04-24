@@ -137,6 +137,7 @@ a:visited {
   display: none;
   flex-direction: column;
   justify-content: center;
+  text-align: center;
   align-items: center;
   margin: 15px;
   width: calc(100% - 70px);
