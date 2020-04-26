@@ -1,21 +1,22 @@
 extends Node2D
 
-var tile = preload("res://scenes/Tile.tscn")
-var player = preload("res://scenes/Player.tscn") 
+const tile = preload("res://scenes/Tile.tscn")
+const player = preload("res://scenes/Player.tscn") 
 
 # Constant board parameters
-const BOARD_WIDTH = Global.BOARD_WIDTH
-const BOARD_HEIGHT = Global.BOARD_HEIGHT
-const OFFSET_X = Global.BOARD_OFFSET_X
-const OFFSET_Y = Global.BOARD_OFFSET_Y
+var BOARD_WIDTH = Global.BOARD_WIDTH
+var BOARD_HEIGHT = Global.BOARD_HEIGHT
+var OFFSET_X = Global.BOARD_OFFSET_X
+var OFFSET_Y = Global.BOARD_OFFSET_Y
 
 # Constant tile parameters
-const TILE_KEYS = Global.TILE_TYPE_KEYS
-const LEFT_CONN_TILE_COMBOS = Global.left_connected_combinations
-const LEFT_DISCONN_TILE_COMBOS = Global.left_disconnected_combinations
-const TILE_SIZE = Global.TILE_SIZE
+var TILE_KEYS = Global.TILE_TYPE_KEYS
+var LEFT_CONN_TILE_COMBOS = Global.left_connected_combinations
+var LEFT_DISCONN_TILE_COMBOS = Global.left_disconnected_combinations
+var TILE_SIZE = Global.TILE_SIZE
 
-# 2D matrix representing tiles placed on board
+# 2D matrix, in the form [x][y], representing tiles placed on board.
+# [0][0] represents the bottom left of the board
 var tile_board = [] setget , get_tile_board
 
 # Node representing the player
@@ -183,6 +184,120 @@ func check_rows():
 			_clear_row(j)
 			return 1 + check_rows()
 	return 0
+
+
+# Performs a DFS starting from the tile_pos in order to detect any 
+# knots or links that may be on the board. If any links are found 
+# increment the multiplier of all tiles associated with that link.
+func detect_knots(tile_pos):
+	var starting_tile = tile_board[tile_pos.x][tile_pos.y]
+	
+	# Stack of tiles to be searched with the entry point used to traverse 
+	# to them. Form {tile_pos: [tile_pos], entry_point: [edge]}
+	var tile_stack = []
+	
+	# Map of tiles searched in the form:
+	# <tile, {tile_pos: prev_tile_pos, entry_point: [edge]}> with entry point 
+	# refering to the entry point used to enter the key tile.
+	var tiles_searched = {}
+	
+	# Add all the tiles connected to the starting tile to the stack
+	for i in range(4):
+		
+		# Check if connected
+		if starting_tile.connection_points[i]:
+			var connected_tile_vector = tile.get_edge_vector(i)
+			var connected_tile_pos = tile_pos + connected_tile_vector
+			
+			# Check if tile is placed there
+			if _is_tile_at(connected_tile_pos):
+				var entry_edge = tile.get_edge_vector(tile.get_opposite_edge())
+				tile_stack.push_front({ "tile_pos": connected_tile_pos, "entry_point": entry_edge})
+				#tiles_searched[connected_tile] = starting_tile
+	
+	# Add starting tile to list of visited tiles
+	tiles_searched[starting_tile] = null
+	
+	# Go through all tiles in the stack until stack is empty
+	while tile_stack.size() > 0:
+		
+		# Get tile connected to this tile
+		var curr_tile_data = tile_stack.pop_front()
+		var curr_tile_pos = curr_tile_data.tile_pos
+		var curr_tile_entry_point = curr_tile_data.entry_point
+		var connected_tile_data = _get_connected_tile(curr_tile_pos, curr_tile_entry_point)
+		var connected_tile_pos = connected_tile_data.tile_pos
+		var connected_tile_entry = connected_tile_data.entry_pos
+		
+		# Check if tile is starting tile
+		var connected_tile = tile_board[connected_tile_pos.x][connected_tile_pos.y]
+		if connected_tile == starting_tile:
+			
+			# Get list of tiles used to make cycle
+			# var tiles_in_cycle = get_tiles
+			
+			# Check if next tile is in cycle list
+			var next_tile_data = _get_connected_tile(connected_tile_pos, connected_tile_entry)
+			if _is_tile_at(next_tile_data.tile_pos):
+				var next_tile = _get_tile_at(next_tile_data.tile_pos)
+				# if tiles_in_cycle.has(next_tile):
+					
+					# Increment multiplier of tiles in cycle list
+					
+					# If starting tile is not swoops or crossing break loop
+					
+					# pass
+		
+		# Add data to stack
+		tile_stack.push_front(connected_tile_data)
+		
+		# Add tile to visited list
+		# var curr_tile = tile_board[curr_tile.x][curr_tile.y]
+		# tiles_searched[connected_tile] = curr_tile
+
+# Returns the tile position and entry point the tile at the declared position 
+# is connected to on the board given an entry direction. Returns null if no 
+# such tile exists.
+func _get_connected_tile(tile_pos, entry_point):
+	
+	# Get connected tile position
+	var curr_tile = tile_board[tile_pos.x][tile_pos.y]
+	var connected_tile_edge = curr_tile.get_connected_edge(entry_point)
+	var connected_tile_vector = tile.get_edge_vector(connected_tile_edge)
+	var connected_tile_pos = tile_pos + connected_tile_vector
+		
+	# Check if tile is placed there
+	if _is_tile_at(connected_tile_pos):
+		
+		# Return tile_pos and entry_point 
+		var connected_tile_entry = tile.get_opposite_edge(connected_tile_edge)
+		return {"tile_pos": connected_tile_pos, "entry_point": connected_tile_entry}
+
+
+# Determines if given tile position is valid and within board.
+func _is_valid_pos(tile_pos):
+	if tile_pos.x in range(0, BOARD_WIDTH - 1) and tile_pos.y in range(0, BOARD_HEIGHT - 1):
+		return true
+	else: 
+		false
+
+
+# Determines if given tile position is within board and if a tile exists at that
+# position
+func _is_tile_at(tile_pos):
+	if _is_valid_pos(tile_pos):
+		var tile_check = tile_board[tile_pos.x][tile_pos.y]
+		if tile_check != null:
+			return true
+	return false
+
+
+# Returns the tile at the given tile position. Returns null if no such tile 
+# exists
+func _get_tile_at(tile_pos):
+	if _is_tile_at(tile_pos):
+		return tile_board[tile_pos.x][tile_pos.y]
+	return null
 
 
 # On end of background music track play correct track 

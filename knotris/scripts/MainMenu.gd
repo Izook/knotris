@@ -1,7 +1,7 @@
 extends Control
 
-var TILE_TYPE_KEYS = Global.TILE_TYPE_KEYS
-var TILE_TEXTURES = Global.TILE_TEXTURES
+const TILE_TYPE_KEYS = Global.TILE_TYPE_KEYS
+const TILE_TEXTURES = Global.TILE_TEXTURES
 
 var knotris_colors = [
 	Color(0.6117, 0.7490, 0.8901, 1),
