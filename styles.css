@@ -58,7 +58,7 @@ body {
   background: white;
   position: relative;
   border-radius: 10px;
-  border: 7px solid white;
+  xborder: 7px solid white;
 }
 
 .knotrisInfo {
