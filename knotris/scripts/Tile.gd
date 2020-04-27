@@ -1,8 +1,8 @@
 extends Node2D
 
 # Global tile properties
-const TILE_TYPES = Global.TILE_TYPES
-const TILE_TEXTURES = Global.TILE_TEXTURES
+var TILE_TYPES = Global.TILE_TYPES
+var TILE_TEXTURES = Global.TILE_TEXTURES
 
 # Tile properties
 var tile_type

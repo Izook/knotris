@@ -1,7 +1,7 @@
 extends Node2D
 
-const tile = preload("res://scenes/Tile.tscn")
-const player = preload("res://scenes/Player.tscn") 
+const Tile = preload("res://scenes/Tile.tscn")
+const Player = preload("res://scenes/Player.tscn") 
 
 # Constant board parameters
 var BOARD_WIDTH = Global.BOARD_WIDTH
@@ -62,7 +62,7 @@ func _ready():
 				_draw_tile(i, j)
 	
 	# Add the Player to the board
-	curr_player = player.instance()
+	curr_player = Player.instance()
 	add_child(curr_player)
 	
 	# Start background music
@@ -84,7 +84,7 @@ func get_random_tile():
 	var random_type = TILE_KEYS[randi() % TILE_KEYS.size()]
 	var random_rotation = randi() % 4
 	
-	var random_tile = tile.instance()
+	var random_tile = Tile.instance()
 	random_tile.init(random_type, random_rotation)
 	
 	return random_tile
@@ -101,7 +101,7 @@ func get_random_connected_tile(left_connected):
 	else:
 		random_index = randi() % LEFT_DISCONN_TILE_COMBOS.size()
 		random_combo = LEFT_DISCONN_TILE_COMBOS[random_index]
-	var new_tile = tile.instance()
+	var new_tile = Tile.instance()
 	var random_type = random_combo[0]
 	var random_rotation = random_combo[1]
 	new_tile.init(random_type, random_rotation)
@@ -206,12 +206,12 @@ func detect_knots(tile_pos):
 		
 		# Check if connected
 		if starting_tile.connection_points[i]:
-			var connected_tile_vector = tile.get_edge_vector(i)
+			var connected_tile_vector = Tile.get_edge_vector(i)
 			var connected_tile_pos = tile_pos + connected_tile_vector
 			
 			# Check if tile is placed there
 			if _is_tile_at(connected_tile_pos):
-				var entry_edge = tile.get_edge_vector(tile.get_opposite_edge())
+				var entry_edge = Tile.get_edge_vector(Tile.get_opposite_edge())
 				tile_stack.push_front({ "tile_pos": connected_tile_pos, "entry_point": entry_edge})
 				#tiles_searched[connected_tile] = starting_tile
 	
@@ -263,14 +263,14 @@ func _get_connected_tile(tile_pos, entry_point):
 	# Get connected tile position
 	var curr_tile = tile_board[tile_pos.x][tile_pos.y]
 	var connected_tile_edge = curr_tile.get_connected_edge(entry_point)
-	var connected_tile_vector = tile.get_edge_vector(connected_tile_edge)
+	var connected_tile_vector = Tile.get_edge_vector(connected_tile_edge)
 	var connected_tile_pos = tile_pos + connected_tile_vector
 		
 	# Check if tile is placed there
 	if _is_tile_at(connected_tile_pos):
 		
 		# Return tile_pos and entry_point 
-		var connected_tile_entry = tile.get_opposite_edge(connected_tile_edge)
+		var connected_tile_entry = Tile.get_opposite_edge(connected_tile_edge)
 		return {"tile_pos": connected_tile_pos, "entry_point": connected_tile_entry}
 
 

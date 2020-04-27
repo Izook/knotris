@@ -1,13 +1,13 @@
 extends Node2D
 
 # Constant board parameters
-const OFFSET_X = Global.BOARD_OFFSET_X
-const OFFSET_Y = Global.BOARD_OFFSET_Y
-const BOARD_HEIGHT = Global.BOARD_HEIGHT
-const BOARD_WIDTH = Global.BOARD_WIDTH
+var OFFSET_X = Global.BOARD_OFFSET_X
+var OFFSET_Y = Global.BOARD_OFFSET_Y
+var BOARD_HEIGHT = Global.BOARD_HEIGHT
+var BOARD_WIDTH = Global.BOARD_WIDTH
 
 # Constant tile parameters
-const TILE_SIZE = Global.TILE_SIZE
+var TILE_SIZE = Global.TILE_SIZE
 
 # Define inputs from input map
 const MOVE_INPUTS = {

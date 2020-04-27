@@ -1,12 +1,12 @@
 extends Node2D
 
-var board = preload("res://scenes/Board.tscn")
-var tile_bag = preload("res://scenes/TileBag.tscn")
-var hud = preload("res://scenes/HUD.tscn")
+var Board = preload("res://scenes/Board.tscn")
+var TileBag = preload("res://scenes/TileBag.tscn")
+var HUD = preload("res://scenes/HUD.tscn")
 
 # Positioning constants
-const TILE_SIZE = Global.TILE_SIZE
-const BOARD_X_OFFSET = TILE_SIZE * 3
+var TILE_SIZE = Global.TILE_SIZE
+var BOARD_X_OFFSET = TILE_SIZE * 3
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -18,16 +18,16 @@ func _ready():
 	OS.set_window_size(Vector2(Global.GAME_WIDTH, Global.GAME_HEIGHT))
 	
 	# Instantiate and place HUD
-	var hud_instance = hud.instance()
+	var hud_instance = HUD.instance()
 	hud_instance.rect_position = Vector2(0,0)
 	add_child(hud_instance) 
 	
 	# Instantiate and place tilebag
-	var tile_bag_instance = tile_bag.instance()
+	var tile_bag_instance = TileBag.instance()
 	tile_bag_instance.position = Vector2(0,0)
 	add_child(tile_bag_instance)
 	
 	# Instantiate and place board
-	var board_instance = board.instance()
+	var board_instance = Board.instance()
 	board_instance.position = Vector2(BOARD_X_OFFSET,0)
 	add_child(board_instance)

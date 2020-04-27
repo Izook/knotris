@@ -1,8 +1,8 @@
 extends Control
 
 # Global parameters
-const TILE_SIZE = Global.TILE_SIZE
-const BOARD_WIDTH = Global.BOARD_WIDTH
+var TILE_SIZE = Global.TILE_SIZE
+var BOARD_WIDTH = Global.BOARD_WIDTH
 
 # Current game score
 var score
