@@ -16,7 +16,7 @@ var LEFT_DISCONN_TILE_COMBOS = Global.left_disconnected_combinations
 var TILE_SIZE = Global.TILE_SIZE
 
 # 2D matrix, in the form [x][y], representing tiles placed on board.
-# [0][0] represents the bottom left of the board
+# [0][0] represents the top left of the board
 var tile_board = [] setget , get_tile_board
 
 # Node representing the player
@@ -108,10 +108,12 @@ func get_random_connected_tile(left_connected):
 	return new_tile
 
 
-# Adds new tile to the board at a declared position
+# Adds new tile to the board at a declared position. Checks if any links or 
+# knots were formed in the addition.
 func add_tile(tile, tile_pos):
 	if (tile_board[tile_pos.x][tile_pos.y] == null):
 		tile_board[tile_pos.x][tile_pos.y] = tile
+		detect_knots(tile_pos)
 	else:
 		print("Illegal tile addition attempted.")
 		tile.queue_free()
@@ -133,7 +135,7 @@ func _clear_row(row_index):
 			
 			# Remove tile from board if from cleared row
 			if j == row_index:
-				row_value += tile_board[i][j].tile_score
+				row_value += tile_board[i][j].get_score()
 				tile_board[i][j].queue_free()
 				tile_board[i][j] = null
 			
@@ -189,94 +191,193 @@ func check_rows():
 # Performs a DFS starting from the tile_pos in order to detect any 
 # knots or links that may be on the board. If any links are found 
 # increment the multiplier of all tiles associated with that link.
+# This is **definitely not** optimized...
 func detect_knots(tile_pos):
-	var starting_tile = tile_board[tile_pos.x][tile_pos.y]
+	var starting_tile = _get_tile_at(tile_pos)
+	
+	print("STARTING AT: " + str(tile_pos))
 	
 	# Stack of tiles to be searched with the entry point used to traverse 
-	# to them. Form {tile_pos: [tile_pos], entry_point: [edge]}
+	# to them.
 	var tile_stack = []
 	
-	# Map of tiles searched in the form:
-	# <tile, {tile_pos: prev_tile_pos, entry_point: [edge]}> with entry point 
-	# refering to the entry point used to enter the key tile.
+	# Map of tiles searched in the DFS. The key of the map is defined in the
+	# `_get_tile_data_key` function and the value of the map is a dictionary 
+	# containing tile position and the strand information.
 	var tiles_searched = {}
+	
+	# List of starting tile edges already searched by searching one side of the 
+	# strand
+	var starting_edges_sorted = []
 	
 	# Add all the tiles connected to the starting tile to the stack
 	for i in range(4):
 		
+		var adjacent_tile_pos = tile_pos + Utility.get_edge_vector(i)
+		
+		if starting_edges_sorted.has(i):
+			continue
+		
 		# Check if connected
-		if starting_tile.connection_points[i]:
-			var connected_tile_vector = Tile.get_edge_vector(i)
-			var connected_tile_pos = tile_pos + connected_tile_vector
+		if _are_tiles_connected(tile_pos, adjacent_tile_pos, i):
 			
-			# Check if tile is placed there
-			if _is_tile_at(connected_tile_pos):
-				var entry_edge = Tile.get_edge_vector(Tile.get_opposite_edge())
-				tile_stack.push_front({ "tile_pos": connected_tile_pos, "entry_point": entry_edge})
-				#tiles_searched[connected_tile] = starting_tile
+			# Determine side of starting tile this edge connected to to prevent 
+			# double searching strands
+			var connected_edge = starting_tile.get_connected_edge(i)
+			starting_edges_sorted.push_front(connected_edge)
+			
+			# Push strand data to stack and add it to visited list
+			var adjacent_tile_entry_edge = Utility.get_opposite_edge(i)
+			var adjacent_tile_dict = _get_tile_data_dict(adjacent_tile_pos, adjacent_tile_entry_edge)
+			var adjacent_tile_key = _get_tile_data_key(adjacent_tile_dict)
+			tile_stack.push_front(adjacent_tile_dict)
+			tiles_searched[adjacent_tile_key] = _get_tile_data_dict(Vector2(-1,-1), -1)
 	
-	# Add starting tile to list of visited tiles
-	tiles_searched[starting_tile] = null
+	var search_count = 0
 	
 	# Go through all tiles in the stack until stack is empty
 	while tile_stack.size() > 0:
 		
-		# Get tile connected to this tile
+		search_count = search_count + 1
+		
+		# Get next strand data from stack
 		var curr_tile_data = tile_stack.pop_front()
 		var curr_tile_pos = curr_tile_data.tile_pos
-		var curr_tile_entry_point = curr_tile_data.entry_point
-		var connected_tile_data = _get_connected_tile(curr_tile_pos, curr_tile_entry_point)
-		var connected_tile_pos = connected_tile_data.tile_pos
-		var connected_tile_entry = connected_tile_data.entry_pos
+		var curr_tile_entry_edge = curr_tile_data.entry_edge
 		
-		# Check if tile is starting tile
-		var connected_tile = tile_board[connected_tile_pos.x][connected_tile_pos.y]
-		if connected_tile == starting_tile:
+		print("CURRENT: " + _get_tile_data_key(curr_tile_data))
+		
+		# Get tile connected to strand
+		var next_tile_data = _get_connected_tile(curr_tile_pos, curr_tile_entry_edge)
+		
+		# Confirm next tile exists
+		if next_tile_data == null: 
+			continue 
+			
+		var next_tile_pos = next_tile_data.tile_pos
+		var next_tile_entry = next_tile_data.entry_edge
+		
+		if _get_tile_at(next_tile_pos) == starting_tile:
+			print("NEXT TILE IS STARTING TILE")
+			
+		# Check if current tile is starting tile
+		var curr_tile = _get_tile_at(curr_tile_pos)
+		if curr_tile == starting_tile:
+			
+			print("Current tile is starting tile.")
 			
 			# Get list of tiles used to make cycle
-			# var tiles_in_cycle = get_tiles
+			var tiles_in_cycle = _get_tiles_in_cycle(curr_tile_data, tiles_searched)
 			
-			# Check if next tile is in cycle list
-			var next_tile_data = _get_connected_tile(connected_tile_pos, connected_tile_entry)
-			if _is_tile_at(next_tile_data.tile_pos):
-				var next_tile = _get_tile_at(next_tile_data.tile_pos)
-				# if tiles_in_cycle.has(next_tile):
-					
-					# Increment multiplier of tiles in cycle list
-					
-					# If starting tile is not swoops or crossing break loop
-					
-					# pass
+			# Check if upcoming tile is in cycle list (check if strand is closed)
+			if tiles_in_cycle.has(next_tile_pos):
+				
+				# Increment the multipliers of the tiles in the cycle
+				_increment_multipliers(tiles_in_cycle)
+				
+				# If not a "swoops" nor "crossing" tile break out of DFS
+				if (starting_tile.tile_type != "D" and starting_tile.tile_type != "E"):
+					break	
 		
-		# Add data to stack
-		tile_stack.push_front(connected_tile_data)
+		# Confirm tiles are suitable connected
+		if not _are_tiles_connected(curr_tile_pos, next_tile_pos, Utility.get_opposite_edge(next_tile_entry)):
+			continue
 		
-		# Add tile to visited list
-		# var curr_tile = tile_board[curr_tile.x][curr_tile.y]
-		# tiles_searched[connected_tile] = curr_tile
+		# If next tile has not already been searched push it to stack and add it
+		# to the searched list
+		var next_tile_data_key = _get_tile_data_key(next_tile_data)
+		print("NEXT: " + next_tile_data_key)
+		if not tiles_searched.has(next_tile_data_key):
+			
+			# Add data to stack
+			tile_stack.push_front(next_tile_data)
+			
+			# Add data to visited list
+			tiles_searched[next_tile_data_key] = curr_tile_data
+	
+	print("Tiles Searched: " + str(search_count))
 
-# Returns the tile position and entry point the tile at the declared position 
-# is connected to on the board given an entry direction. Returns null if no 
-# such tile exists.
-func _get_connected_tile(tile_pos, entry_point):
+
+# Given tile data and a dictionary of tiles visited return the positions of all
+# the tiles traversed from the starting tile ({-1, -1}).
+func _get_tiles_in_cycle(tile_data, tiles_searched):
+	var cycled_tiles = []
+	var next_data = tile_data
+	
+	while next_data.entry_edge != -1:
+		cycled_tiles.push_back(next_data.tile_pos)
+		var next_data_key = _get_tile_data_key(next_data)
+		next_data = tiles_searched[next_data_key].duplicate()
+	
+	return cycled_tiles
+
+
+# Given a list of the position of tiles increment the multipliers of each of the
+# tiles based on the amount of crossing tiles in the list.
+func _increment_multipliers(tile_list):
+	
+	print("Incrementing multipliers")
+	
+	var incrementer = 1
+	
+	for tile_pos in tile_list:
+		var tile = _get_tile_at(tile_pos)
+		if tile.tile_type == "E":
+			incrementer = incrementer + 1
+	
+	for tile_pos in tile_list:
+		var tile = _get_tile_at(tile_pos)
+		tile.increment_multiplier(incrementer)
+
+
+# Returns the tile position and entry point of to be entered from the tile at
+# the declared position and entry direction. Returns null if no such tile exists.
+func _get_connected_tile(tile_pos, entry_edge):
 	
 	# Get connected tile position
-	var curr_tile = tile_board[tile_pos.x][tile_pos.y]
-	var connected_tile_edge = curr_tile.get_connected_edge(entry_point)
-	var connected_tile_vector = Tile.get_edge_vector(connected_tile_edge)
+	var curr_tile = _get_tile_at(tile_pos)
+	var connected_tile_edge = curr_tile.get_connected_edge(entry_edge)
+	
+	if connected_tile_edge == null:
+		return null
+	
+	var connected_tile_vector = Utility.get_edge_vector(connected_tile_edge)
 	var connected_tile_pos = tile_pos + connected_tile_vector
 		
 	# Check if tile is placed there
 	if _is_tile_at(connected_tile_pos):
 		
 		# Return tile_pos and entry_point 
-		var connected_tile_entry = Tile.get_opposite_edge(connected_tile_edge)
-		return {"tile_pos": connected_tile_pos, "entry_point": connected_tile_entry}
+		var connected_tile_entry = Utility.get_opposite_edge(connected_tile_edge)
+		return _get_tile_data_dict(connected_tile_pos, connected_tile_entry)
+	
+	return null
+
+
+# Given the position of two tiles, and a side relative to tile_a return true 
+# if they are suitable connected, false if not.
+func _are_tiles_connected(tile_a_pos, tile_b_pos, edge):
+	
+	# Confirm the tiles are adjacent
+	var pos_diff = tile_a_pos - tile_b_pos
+	if pos_diff.length() > 1:
+		return false
+	
+	# Confirm tiles exist
+	var tile_a = _get_tile_at(tile_a_pos)
+	var tile_b = _get_tile_at(tile_b_pos)
+	
+	if tile_a == null or tile_b == null:
+		return false
+	
+	# Confirm connection at edge
+	var opposite_edge = Utility.get_opposite_edge(edge)
+	return tile_a.connection_points[edge] and tile_b.connection_points[opposite_edge]
 
 
 # Determines if given tile position is valid and within board.
 func _is_valid_pos(tile_pos):
-	if tile_pos.x in range(0, BOARD_WIDTH - 1) and tile_pos.y in range(0, BOARD_HEIGHT - 1):
+	if tile_pos.x in range(0, BOARD_WIDTH) and tile_pos.y in range(0, BOARD_HEIGHT):
 		return true
 	else: 
 		false
@@ -285,17 +386,39 @@ func _is_valid_pos(tile_pos):
 # Determines if given tile position is within board and if a tile exists at that
 # position
 func _is_tile_at(tile_pos):
-	if _is_valid_pos(tile_pos):
-		var tile_check = tile_board[tile_pos.x][tile_pos.y]
-		if tile_check != null:
-			return true
-	return false
+	return _get_tile_at(tile_pos) != null
+
+
+# Returns a key contstructed from the tile_data so that it can be used for the 
+# visited tiles list in the `detect_knots` DFS. It returns a unique identifier
+# for strands in a tile. 
+func _get_tile_data_key(tile_data):
+	var tile_pos = tile_data.tile_pos
+	var entry_edge = tile_data.entry_edge
+	var exit_edge = tile_data.exit_edge
+	
+	var smaller_edge = min(int(entry_edge),int(exit_edge))
+	
+	return "[" + str(tile_pos) + ";" + str(smaller_edge) + "]"
+
+
+# Given the tile position, tile entry edge, and tile exit edge this returns a
+# dictionary containing all that data so that it can be used in the visited
+# tiles list in the `detect_knots` DFS. 
+func _get_tile_data_dict(tile_pos, entry_edge):
+	var tile = _get_tile_at(tile_pos)
+	var exit_edge
+	if (tile != null):
+		exit_edge = tile.get_connected_edge(entry_edge)
+	else:
+		exit_edge = -1
+	return {"tile_pos": tile_pos, "entry_edge": entry_edge, "exit_edge": exit_edge}
 
 
 # Returns the tile at the given tile position. Returns null if no such tile 
 # exists
 func _get_tile_at(tile_pos):
-	if _is_tile_at(tile_pos):
+	if _is_valid_pos(tile_pos):
 		return tile_board[tile_pos.x][tile_pos.y]
 	return null
 

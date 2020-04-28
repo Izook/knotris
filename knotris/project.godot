@@ -27,6 +27,7 @@ config/windows_native_icon="res://icon.ico"
 [autoload]
 
 Global="*res://scenes/GlobalContext.tscn"
+Utility="*res://scenes/Utility.tscn"
 
 [display]
 

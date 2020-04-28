@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 # Game constants
 const GAME_WIDTH = 520

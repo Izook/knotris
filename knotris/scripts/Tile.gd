@@ -7,7 +7,7 @@ var TILE_TEXTURES = Global.TILE_TEXTURES
 # Tile properties
 var tile_type
 var tile_rotation
-var tile_score
+var tile_multiplier
 
 # Tile connection points
 var connection_points = [
@@ -22,7 +22,7 @@ func init(type, rotation):
 	# Define tile properties
 	tile_type = type
 	tile_rotation = 0
-	tile_score = 100
+	tile_multiplier = 1
 	
 	# Define connection points
 	connection_points = [
@@ -84,49 +84,29 @@ func get_connected_edge(entry_edge):
 	if tile_type == "B" or tile_type == "D":
 		if tile_rotation % 2 == 0:
 			if entry_edge % 2 == 0:
-				return get_righthanded_edge(entry_edge)
+				return Utility.get_righthanded_edge(entry_edge)
 			elif entry_edge % 2 == 1:
-				return get_lefthanded_edge(entry_edge)
+				return Utility.get_lefthanded_edge(entry_edge)
 		elif tile_rotation % 2 == 1:
 			if entry_edge % 2 == 0:
-				return get_lefthanded_edge(entry_edge)
+				return Utility.get_lefthanded_edge(entry_edge)
 			elif entry_edge % 2 == 1:
-				return get_righthanded_edge(entry_edge)
+				return Utility.get_righthanded_edge(entry_edge)
 	
 	if tile_type == "C" or tile_type == "E":
-		return get_opposite_edge(entry_edge)
+		return Utility.get_opposite_edge(entry_edge)
 
 
-# Given an edge return it as a Vector2 relative to the tile.
-static func get_edge_vector(edge):
-	if edge == 0:
-		return Vector2(0,1)
-	if edge == 1:
-		return Vector2(1,0)
-	if edge == 2: 
-		return Vector2(0,-1)
-	if edge == 3: 
-		return Vector2(-1,0)
+# Given an value increment the multiplier value of this tile by that amount and 
+# if the value is > 1 show the value.
+func increment_multiplier(incrementer):
+	tile_multiplier = tile_multiplier + incrementer
+	
+	if tile_multiplier > 1:
+		$MultiplierLabel.text = str(tile_multiplier)
+		$MultiplierLabel.visible = true
 
 
-# Given an entry_edge to the tile return the edge that is connected to the right 
-# corner of that edge. 
-static func get_righthanded_edge(entry_edge):
-	var righthanded_edge = entry_edge + 1 % 4
-	return righthanded_edge
-
-
-# Given an entry_edge to the tile return the edge that is connected to the left 
-# corner of that edge. 
-static func get_lefthanded_edge(entry_edge):
-	var lefthanded_edge = entry_edge - 1 % 4
-	if lefthanded_edge == -1:
-		lefthanded_edge = lefthanded_edge + 1
-	return lefthanded_edge
-
-
-# Given an entry_edge to the tile return the edge that is on the opposite side 
-# of that edge
-static func get_opposite_edge(entry_edge):
-	var opposite_edge = entry_edge + 2 % 4
-	return opposite_edge
+# Return the score of clearing the tile
+func get_score():
+	return 100 * tile_multiplier
