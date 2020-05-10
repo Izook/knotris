@@ -113,7 +113,7 @@ func get_random_connected_tile(left_connected):
 func add_tile(tile, tile_pos):
 	if (tile_board[tile_pos.x][tile_pos.y] == null):
 		tile_board[tile_pos.x][tile_pos.y] = tile
-		detect_knots(tile_pos)
+		detect_knots([tile_pos])
 	else:
 		print("Illegal tile addition attempted.")
 		tile.queue_free()
@@ -188,128 +188,143 @@ func check_rows():
 	return 0
 
 
-# Performs a DFS starting from the tile_pos in order to detect any 
-# knots or links that may be on the board. If any links are found 
-# increment the multiplier of all tiles associated with that link.
-# This is **definitely not** optimized...
-func detect_knots(tile_pos):
-	var starting_tile = _get_tile_at(tile_pos)
+# Performs a DFS on the graph of the strands on the board starting from the
+# tiles givin in the array `starting_tile_positions`in order to detect any knots
+# or links that may be on the board. If any links are found this function will 
+# increment the multiplier of all tiles associated with that link appropriately.
+func detect_knots(starting_tile_positions):
 	
-	print("STARTING AT: " + str(tile_pos))
+	# Stack of strands that will be iterated on to perfrom the DFS. Strands in 
+	# the stack will the form defined by the functon `_get_strand_stack_dict`. 
+	var strand_stack = []
 	
-	# Stack of tiles to be searched with the entry point used to traverse 
-	# to them.
-	var tile_stack = []
+	# Map of strands searched so that we may detect cycles that may appear in 
+	# the graph of strands. Map will be in the form:
+	# < strand_key, prev_strand_dict> which will be defined in the 
+	# `_get_strand_key` function and `_get_strand_dict` function respectively. 
+	var searched_strands = {}
 	
-	# Map of tiles searched in the DFS. The key of the map is defined in the
-	# `_get_tile_data_key` function and the value of the map is a dictionary 
-	# containing tile position and the strand information.
-	var tiles_searched = {}
-	
-	# List of starting tile edges already searched by searching one side of the 
-	# strand
-	var starting_edges_sorted = []
-	
-	# Add all the tiles connected to the starting tile to the stack
-	for i in range(4):
+	# Get all starting strands
+	for tile_pos in starting_tile_positions:
 		
-		var adjacent_tile_pos = tile_pos + Utility.get_edge_vector(i)
+		var curr_tile = _get_tile_at(tile_pos)
 		
-		if starting_edges_sorted.has(i):
-			continue
+		# Edges already accounted for by strands found within the tiles
+		var searched_edges = []
 		
-		# Check if connected
-		if _are_tiles_connected(tile_pos, adjacent_tile_pos, i):
+		# Add all strands contained within tile
+		for i in range(4):
 			
-			# Determine side of starting tile this edge connected to to prevent 
-			# double searching strands
-			var connected_edge = starting_tile.get_connected_edge(i)
-			starting_edges_sorted.push_front(connected_edge)
-			
-			# Push strand data to stack and add it to visited list
-			var adjacent_tile_entry_edge = Utility.get_opposite_edge(i)
-			var adjacent_tile_dict = _get_tile_data_dict(adjacent_tile_pos, adjacent_tile_entry_edge)
-			var adjacent_tile_key = _get_tile_data_key(adjacent_tile_dict)
-			tile_stack.push_front(adjacent_tile_dict)
-			tiles_searched[adjacent_tile_key] = _get_tile_data_dict(Vector2(-1,-1), -1)
+			if curr_tile.connection_points[i]:
+				if not searched_edges.has(i):
+					var origin_strand = _get_strand_dict(null, null)
+					strand_stack.push_front(_get_strand_stack_dict(tile_pos, i, origin_strand))
+					
+					var connected_edge = curr_tile.get_connected_edge(i)
+					searched_edges.push_front(connected_edge)
 	
-	var search_count = 0
+	# Count of how many strands have been searched
+	var strand_count = 0
 	
-	# Go through all tiles in the stack until stack is empty
-	while tile_stack.size() > 0:
+	while strand_stack.size() > 0:
 		
-		search_count = search_count + 1
-		
-		# Get next strand data from stack
-		var curr_tile_data = tile_stack.pop_front()
-		var curr_tile_pos = curr_tile_data.tile_pos
-		var curr_tile_entry_edge = curr_tile_data.entry_edge
-		
-		print("CURRENT: " + _get_tile_data_key(curr_tile_data))
-		
-		# Get tile connected to strand
-		var next_tile_data = _get_connected_tile(curr_tile_pos, curr_tile_entry_edge)
-		
-		# Confirm next tile exists
-		if next_tile_data == null: 
-			continue 
-			
-		var next_tile_pos = next_tile_data.tile_pos
-		var next_tile_entry = next_tile_data.entry_edge
-		
-		if _get_tile_at(next_tile_pos) == starting_tile:
-			print("NEXT TILE IS STARTING TILE")
-			
-		# Check if current tile is starting tile
+		var curr_strand = strand_stack.pop_front()
+		var curr_tile_pos = curr_strand.tile_pos
 		var curr_tile = _get_tile_at(curr_tile_pos)
-		if curr_tile == starting_tile:
-			
-			print("Current tile is starting tile.")
-			
-			# Get list of tiles used to make cycle
-			var tiles_in_cycle = _get_tiles_in_cycle(curr_tile_data, tiles_searched)
-			
-			# Check if upcoming tile is in cycle list (check if strand is closed)
-			if tiles_in_cycle.has(next_tile_pos):
-				
-				# Increment the multipliers of the tiles in the cycle
-				_increment_multipliers(tiles_in_cycle)
-				
-				# If not a "swoops" nor "crossing" tile break out of DFS
-				if (starting_tile.tile_type != "D" and starting_tile.tile_type != "E"):
-					break	
 		
-		# Confirm tiles are suitable connected
-		if not _are_tiles_connected(curr_tile_pos, next_tile_pos, Utility.get_opposite_edge(next_tile_entry)):
-			continue
+		# Get tiles attached to strand
+		var entry_edge = curr_strand.entry_edge
+		var exit_edge = curr_tile.get_connected_edge(entry_edge)
+		var attached_edges = [entry_edge, exit_edge]
 		
-		# If next tile has not already been searched push it to stack and add it
-		# to the searched list
-		var next_tile_data_key = _get_tile_data_key(next_tile_data)
-		print("NEXT: " + next_tile_data_key)
-		if not tiles_searched.has(next_tile_data_key):
+		# Get previous strand pos
+		var prev_strand = curr_strand.prev_strand
+		var prev_strand_pos = prev_strand.tile_pos
+		
+		for edge in attached_edges:
 			
-			# Add data to stack
-			tile_stack.push_front(next_tile_data)
+			# Ignore previous strand
+			var attached_tile_pos = curr_tile_pos + Utility.get_edge_vector(edge)
+			if attached_tile_pos == prev_strand_pos: 
+				continue
 			
-			# Add data to visited list
-			tiles_searched[next_tile_data_key] = curr_tile_data
+			# Confirm attached strand is suitably connected
+			if _are_tiles_connected(curr_tile_pos, attached_tile_pos, edge):
+				
+				var attached_entry_edge = Utility.get_opposite_edge(edge)
+				var attached_strand_key = _get_strand_key(attached_tile_pos, attached_entry_edge)
+				
+				# If not yet searched add to stack
+				if not searched_strands.has(attached_strand_key):
+					strand_stack.push_front(_get_strand_stack_dict(attached_tile_pos, attached_entry_edge, curr_strand))
+				else:					
+					var strands_in_cycle = _get_strands_in_cycle(prev_strand, searched_strands)	
+					strands_in_cycle.push_front(curr_tile_pos)
+					
+					# If complete cycle increment multipliers
+					if strands_in_cycle.has(attached_tile_pos):
+						_increment_multipliers(strands_in_cycle)
+		
+		# Add current strand to searched map
+		var curr_strand_key = _get_strand_key(curr_tile_pos, entry_edge)
+		searched_strands[curr_strand_key] = prev_strand
+		
+		# Increment count
+		strand_count = strand_count + 1
 	
-	print("Tiles Searched: " + str(search_count))
+	print("Strands Searched: " + str(strand_count))
+
+# Returns a dictionary that can represent a strand to be searched and what 
+# strand this was traversed from represented by `_get_strand_dict`.
+func _get_strand_stack_dict(tile_pos, entry_edge, prev_strand):
+	return {
+		"tile_pos": tile_pos,
+		"entry_edge": entry_edge,
+		"prev_strand": prev_strand
+	}
 
 
-# Given tile data and a dictionary of tiles visited return the positions of all
-# the tiles traversed from the starting tile ({-1, -1}).
-func _get_tiles_in_cycle(tile_data, tiles_searched):
-	var cycled_tiles = []
-	var next_data = tile_data
+# Returns a dictionary that can represent a strand on the tile_board.
+func _get_strand_dict(tile_pos, entry_edge):
+	var smaller_edge = null
 	
-	while next_data.entry_edge != -1:
-		cycled_tiles.push_back(next_data.tile_pos)
-		var next_data_key = _get_tile_data_key(next_data)
-		next_data = tiles_searched[next_data_key].duplicate()
+	if entry_edge != null:
+		var tile = _get_tile_at(tile_pos)
+		var exit_edge = tile.get_connected_edge(entry_edge)
+		
+		smaller_edge = min(int(entry_edge),int(exit_edge))
 	
-	return cycled_tiles
+	return {
+		"tile_pos": tile_pos,
+		"entry_edge": smaller_edge,
+	}
+
+
+# Returns a string that can be used as a key to identify strands. 
+func _get_strand_key(tile_pos, entry_edge):
+	var smaller_edge = null
+	
+	if entry_edge != null:
+		var tile = _get_tile_at(tile_pos)
+		var exit_edge = tile.get_connected_edge(entry_edge)
+		
+		smaller_edge = min(int(entry_edge),int(exit_edge))
+	
+	return "[" + str(tile_pos) + ";" + str(smaller_edge) + "]"
+
+
+# Given strand data and a dictionary of strands visited return the positions of 
+# all the strands traversed from the orign strand ({null, null}).
+func _get_strands_in_cycle(starting_strand, strands_searched):
+	var strand_positions = []
+	var next_strand = starting_strand
+	
+	while next_strand.tile_pos != null:
+		strand_positions.push_back(next_strand.tile_pos)
+		var next_strand_key = _get_strand_key(next_strand.tile_pos, next_strand.entry_edge)
+		next_strand = strands_searched[next_strand_key].duplicate()
+	
+	return strand_positions
 
 
 # Given a list of the position of tiles increment the multipliers of each of the
@@ -349,7 +364,7 @@ func _get_connected_tile(tile_pos, entry_edge):
 		
 		# Return tile_pos and entry_point 
 		var connected_tile_entry = Utility.get_opposite_edge(connected_tile_edge)
-		return _get_tile_data_dict(connected_tile_pos, connected_tile_entry)
+		return null # _get_tile_data_dict(connected_tile_pos, connected_tile_entry)
 	
 	return null
 
@@ -387,32 +402,6 @@ func _is_valid_pos(tile_pos):
 # position
 func _is_tile_at(tile_pos):
 	return _get_tile_at(tile_pos) != null
-
-
-# Returns a key contstructed from the tile_data so that it can be used for the 
-# visited tiles list in the `detect_knots` DFS. It returns a unique identifier
-# for strands in a tile. 
-func _get_tile_data_key(tile_data):
-	var tile_pos = tile_data.tile_pos
-	var entry_edge = tile_data.entry_edge
-	var exit_edge = tile_data.exit_edge
-	
-	var smaller_edge = min(int(entry_edge),int(exit_edge))
-	
-	return "[" + str(tile_pos) + ";" + str(smaller_edge) + "]"
-
-
-# Given the tile position, tile entry edge, and tile exit edge this returns a
-# dictionary containing all that data so that it can be used in the visited
-# tiles list in the `detect_knots` DFS. 
-func _get_tile_data_dict(tile_pos, entry_edge):
-	var tile = _get_tile_at(tile_pos)
-	var exit_edge
-	if (tile != null):
-		exit_edge = tile.get_connected_edge(entry_edge)
-	else:
-		exit_edge = -1
-	return {"tile_pos": tile_pos, "entry_edge": entry_edge, "exit_edge": exit_edge}
 
 
 # Returns the tile at the given tile position. Returns null if no such tile 
