@@ -13,12 +13,14 @@ texture = ExtResource( 2 )
 
 [node name="MultiplierLabel" type="Label" parent="."]
 visible = false
-margin_left = 33.0781
-margin_top = 29.6928
-margin_right = 47.0781
-margin_bottom = 54.6928
-rect_scale = Vector2( 0.5, 0.5 )
+margin_left = 9.90889
+margin_top = 4.91605
+margin_right = 22.9089
+margin_bottom = 29.9161
+rect_scale = Vector2( 1.5, 1.5 )
+custom_colors/font_color = Color( 1, 1, 1, 0.784314 )
 text = "1"
+uppercase = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
