@@ -109,12 +109,37 @@ func get_random_connected_tile(left_connected):
 
 
 # Adds new tile to the board at a declared position. Checks if any links, knots
-# or complete rows were formed in the addition.
+# or complete rows were formed in the addition. If so it will increment the 
+# multipliers, clear them, increase the score, and repeat as necc.
 func add_tile(tile, tile_pos):
 	if (tile_board[tile_pos.x][tile_pos.y] == null):
+		# Place tile
 		tile_board[tile_pos.x][tile_pos.y] = tile
+		
+		# Check for knots and cleared rows
 		detect_knots([tile_pos])
-		check_rows()
+		var new_points = check_rows()
+		if new_points is GDScriptFunctionState:
+			new_points = yield(new_points, "completed")
+		
+		# Retrieve the score
+		var top_row = tile_pos.y
+		var points_gained = 0
+		var rows_cleared = 0
+		while new_points > 0:
+			rows_cleared = rows_cleared + 1
+			points_gained = points_gained + new_points
+			
+			# Repeat as neccesary
+			top_row = top_row + 1
+			detect_knots(_get_row_at(top_row))
+			new_points = check_rows()
+			if new_points is GDScriptFunctionState:
+				new_points = yield(new_points, "completed")
+			
+		# Update the score
+		hud.increment_score(points_gained * rows_cleared)
+			
 	else:
 		print("Illegal tile addition attempted.")
 		tile.queue_free()
@@ -126,8 +151,7 @@ func get_tile_board():
 
 
 # Clear a row that is internally and externally suitably connected and moves 
-# all other rows down appropriately. Also sends values of row to be cleared
-# to HUD to increment score.
+# all other rows down appropriately. Returns values of row to be cleared.
 func _clear_row(row_index):
 	
 	# Score of row cleared
@@ -158,11 +182,11 @@ func _clear_row(row_index):
 			_draw_tile(i, j)
 			
 	# Send score to HUD	
-	hud.increment_score(row_value)
+	return row_value
 
 
-# Checks rows for internal and external suitable connectedness
-# Returns false if row was cleared, true if no rows can be cleared
+# Checks rows for internal and external suitable connectedness. It clears the 
+# row if such a row is found and returns the score gained from the row cleared.
 func check_rows():
 	for j in range(BOARD_HEIGHT - 1, -1, -1):
 		var empty_row = false
@@ -190,8 +214,8 @@ func check_rows():
 		if empty_row:
 			break
 		if should_clear:
-			_clear_row(j)
-			return 1 + check_rows()
+			var row_score = _clear_row(j)
+			return row_score
 	return 0
 
 
@@ -418,6 +442,15 @@ func _get_tile_at(tile_pos):
 	if _is_valid_pos(tile_pos):
 		return tile_board[tile_pos.x][tile_pos.y]
 	return null
+
+
+# Returns the positions of all the tiles in a row given a row index.
+func _get_row_at(row_index):
+	var tile_positions = []
+	if row_index in range(BOARD_HEIGHT):
+		for i in range(BOARD_WIDTH):
+			tile_positions.push_front(Vector2(i,row_index))
+	return tile_positions
 
 
 # On end of background music track play correct track 
