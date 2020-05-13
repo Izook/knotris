@@ -11,14 +11,17 @@ __meta__ = {
 }
 
 [node name="Score" type="Label" parent="."]
-margin_left = 440.0
+margin_left = 424.0
 margin_top = 20.0
 margin_right = 510.0
-margin_bottom = 90.0
+margin_bottom = 107.0
 text = "SCORE: XXXXXXX"
 align = 1
 valign = 1
 autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="PauseButton" type="TextureButton" parent="."]
 margin_left = 26.65
@@ -43,57 +46,29 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0.384314, 0.0196078, 0.0196078, 0.462745 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="GameOverPopup"]
-margin_right = 520.0
-margin_bottom = 560.0
-
-[node name="CenterContainer" type="CenterContainer" parent="GameOverPopup/VBoxContainer"]
-margin_right = 520.0
-margin_bottom = 185.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Label" type="Label" parent="GameOverPopup/VBoxContainer/CenterContainer"]
-margin_left = 189.0
-margin_top = 80.0
-margin_right = 331.0
-margin_bottom = 105.0
-text = "Game Over!!!"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="GameOverPopup/VBoxContainer"]
-margin_top = 189.0
-margin_right = 520.0
-margin_bottom = 560.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
-
-[node name="MainMenuContainer" type="CenterContainer" parent="GameOverPopup/VBoxContainer/HBoxContainer"]
-margin_right = 258.0
-margin_bottom = 371.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="ToMainMenu" type="Button" parent="GameOverPopup/VBoxContainer/HBoxContainer/MainMenuContainer"]
-margin_left = 10.0
-margin_top = 167.0
-margin_right = 247.0
-margin_bottom = 204.0
+[node name="ToMainMenu" type="Button" parent="GameOverPopup"]
+margin_left = 9.0
+margin_top = 357.0
+margin_right = 246.0
+margin_bottom = 394.0
 text = "Back to Main Menu "
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="ReTryContainer" type="CenterContainer" parent="GameOverPopup/VBoxContainer/HBoxContainer"]
-margin_left = 262.0
-margin_right = 520.0
-margin_bottom = 371.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="ReTry" type="Button" parent="GameOverPopup/VBoxContainer/HBoxContainer/ReTryContainer"]
-margin_left = 66.0
-margin_top = 167.0
-margin_right = 192.0
-margin_bottom = 204.0
+[node name="ReTry" type="Button" parent="GameOverPopup"]
+margin_left = 329.0
+margin_top = 357.0
+margin_right = 455.0
+margin_bottom = 394.0
 text = "Try Again"
+
+[node name="Label" type="Label" parent="GameOverPopup"]
+margin_left = 189.0
+margin_top = 79.0
+margin_right = 331.0
+margin_bottom = 104.0
+text = "Game Over!!!"
 
 [node name="PausedPopup" type="Popup" parent="."]
 pause_mode = 2
@@ -157,8 +132,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="pressed" from="PauseButton" to="." method="_on_PauseButton_pressed"]
-[connection signal="button_down" from="GameOverPopup/VBoxContainer/HBoxContainer/MainMenuContainer/ToMainMenu" to="." method="_on_ToMainMenu_button_down"]
-[connection signal="pressed" from="GameOverPopup/VBoxContainer/HBoxContainer/MainMenuContainer/ToMainMenu" to="." method="_on_ToMainMenu_pressed"]
-[connection signal="pressed" from="GameOverPopup/VBoxContainer/HBoxContainer/ReTryContainer/ReTry" to="." method="_on_ReTry_pressed"]
+[connection signal="button_down" from="GameOverPopup/ToMainMenu" to="." method="_on_ToMainMenu_button_down"]
+[connection signal="pressed" from="GameOverPopup/ToMainMenu" to="." method="_on_ToMainMenu_pressed"]
+[connection signal="pressed" from="GameOverPopup/ReTry" to="." method="_on_ReTry_pressed"]
 [connection signal="pressed" from="PausedPopup/VBoxContainer/HBoxContainer/UnPauseContainer/UnPause" to="." method="_on_UnPause_pressed"]
 [connection signal="pressed" from="PausedPopup/AudioButton" to="." method="_on_AudioButton_pressed"]
