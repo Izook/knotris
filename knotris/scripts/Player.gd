@@ -70,6 +70,10 @@ func _ready():
 	# Set current tile
 	reset_tile()
 	
+	# Set cursor
+	$Cursor.rect_size = Vector2(TILE_SIZE, BOARD_HEIGHT*TILE_SIZE)
+	$Cursor.rect_position = Vector2(OFFSET_X, OFFSET_Y)
+	
 	# Start DropTimer and connect timeout signal
 	$DropTimer.wait_time = drop_time
 	$DropTimer.start()
@@ -80,21 +84,33 @@ func _ready():
 func move_tile(direction):
 	var board = tile_board.get_tile_board()
 	var next_position = tile_position + MOVE_INPUTS[direction]
+	
 	if tile_position.y + MOVE_INPUTS[direction].y >= BOARD_HEIGHT:
 		get_parent().add_tile(curr_tile, tile_position)
 		reset_tile() 
+	
 	elif direction == 'move_down' && board[next_position.x][next_position.y] != null:
 		if tile_position.y == 0:
 			hud.game_over()
 		else:
 			place_tile(tile_position)
+	
 	elif next_position.x > BOARD_WIDTH - 1 || next_position.x < 0:
 		print("Illegal move attempted")
+	
 	elif board[next_position.x][next_position.y] != null:
 		print("Illegal move attempted")
+	
 	else:
 		tile_position = next_position
 		curr_tile.position += MOVE_INPUTS[direction] * TILE_SIZE
+		_move_cursor(direction)
+
+
+# Moves the cursor right or left based on the given direction
+func _move_cursor(direction):
+	if direction != "move_down":
+		$Cursor.rect_position += MOVE_INPUTS[direction] * TILE_SIZE
 
 
 # Rotates the tile

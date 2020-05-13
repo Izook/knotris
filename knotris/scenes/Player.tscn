@@ -18,3 +18,11 @@ stream = ExtResource( 2 )
 
 [node name="RotateSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
+
+[node name="Cursor" type="ColorRect" parent="."]
+margin_right = 76.0
+margin_bottom = 505.0
+color = Color( 1, 1, 1, 0.392157 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

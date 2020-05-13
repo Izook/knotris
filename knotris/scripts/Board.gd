@@ -39,6 +39,10 @@ func _ready():
 	tile_bag = get_parent().get_node("TileBag")
 	hud = get_parent().get_node("HUD")
 		
+	# Add the Player to the board
+	curr_player = Player.instance()
+	add_child(curr_player)
+	
 	# Populate tile_board with empty values
 	for i in range(BOARD_WIDTH):
 		tile_board.append([])
@@ -52,18 +56,13 @@ func _ready():
 			tile_board[i][BOARD_HEIGHT - 1] = get_random_connected_tile(prev_tile.connection_points[1])
 		else:
 			tile_board[i][BOARD_HEIGHT - 1] = get_random_tile()
-
-		
+	
 	# Draw all tiles on board
 	for i in range(BOARD_WIDTH):
 		for j in range(BOARD_HEIGHT):
 			if tile_board[i][j] != null:
 				add_child(tile_board[i][j])
 				_draw_tile(i, j)
-	
-	# Add the Player to the board
-	curr_player = Player.instance()
-	add_child(curr_player)
 	
 	# Start background music
 	$BackgroundMusic.play()
