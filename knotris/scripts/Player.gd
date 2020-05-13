@@ -127,10 +127,6 @@ func drop_tile():
 
 # Check board for SC rows & set current tile to a random tile and place it on the board
 func reset_tile():
-	# Check board for complete rows
-	var cleared_row_count = tile_board.check_rows()
-	if cleared_row_count > 1:
-		print("CLEARED: " + cleared_row_count as String + " rows!!!")
 	
 	# Reset tile holding functionality
 	has_held_tile = false

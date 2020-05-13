@@ -4,6 +4,9 @@ extends Node2D
 var TILE_TYPES = Global.TILE_TYPES
 var TILE_TEXTURES = Global.TILE_TEXTURES
 
+# Flag representing when the tile has been cleared
+signal cleared
+
 # Tile properties
 var tile_type
 var tile_rotation
@@ -110,3 +113,11 @@ func increment_multiplier(incrementer):
 # Return the score of clearing the tile
 func get_score():
 	return 100 * tile_multiplier
+
+
+# Plays the tile clearing animation and deletes the tile node.
+func clear_tile():
+	$AnimationPlayer.play("Clear")
+	yield($AnimationPlayer, "animation_finished")
+	emit_signal("cleared")
+	return

@@ -1,7 +1,71 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/Tile.gd" type="Script" id=1]
 [ext_resource path="res://assets/tile_textures/tile_A.png" type="Texture" id=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "Clear"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/path = NodePath("TileSprite:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.2, 0.2 ), Vector2( 1e-05, 1e-05 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("TileSprite:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 720.0 ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("TileSprite/ColorRect:color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("MultiplierLabel:rect_scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1.5, 1.5 ), Vector2( 1e-05, 1e-05 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("MultiplierLabel:rect_rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 720.0 ]
+}
 
 [node name="Tile" type="Node2D"]
 script = ExtResource( 1 )
@@ -11,16 +75,30 @@ position = Vector2( 20.0125, 20.0029 )
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 2 )
 
+[node name="ColorRect" type="ColorRect" parent="TileSprite"]
+margin_left = -101.0
+margin_top = -100.0
+margin_right = 101.0
+margin_bottom = 100.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="MultiplierLabel" type="Label" parent="."]
 visible = false
-margin_left = 9.90889
-margin_top = 4.91605
-margin_right = 22.9089
-margin_bottom = 29.9161
+margin_left = 13.7376
+margin_top = 9.6882
+margin_right = 26.7376
+margin_bottom = 34.6882
 rect_scale = Vector2( 1.5, 1.5 )
+rect_pivot_offset = Vector2( 7.27368, 11.6032 )
 custom_colors/font_color = Color( 1, 1, 1, 0.784314 )
 text = "1"
 uppercase = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Clear = SubResource( 1 )

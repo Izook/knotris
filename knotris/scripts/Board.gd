@@ -108,12 +108,13 @@ func get_random_connected_tile(left_connected):
 	return new_tile
 
 
-# Adds new tile to the board at a declared position. Checks if any links or 
-# knots were formed in the addition.
+# Adds new tile to the board at a declared position. Checks if any links, knots
+# or complete rows were formed in the addition.
 func add_tile(tile, tile_pos):
 	if (tile_board[tile_pos.x][tile_pos.y] == null):
 		tile_board[tile_pos.x][tile_pos.y] = tile
 		detect_knots([tile_pos])
+		check_rows()
 	else:
 		print("Illegal tile addition attempted.")
 		tile.queue_free()
@@ -128,17 +129,27 @@ func get_tile_board():
 # all other rows down appropriately. Also sends values of row to be cleared
 # to HUD to increment score.
 func _clear_row(row_index):
+	
+	# Score of row cleared
 	var row_value = 0
+	
+	# Clear all of the tiles
+	var tiles_cleared = []
+	for i in range(BOARD_WIDTH):
+		row_value += tile_board[i][row_index].get_score()
+		tile_board[i][row_index].clear_tile()
+		tiles_cleared.push_front(tile_board[i][row_index])
+		tile_board[i][row_index] = null
+	
+	# Await for single tile to be cleared (they all take the same time to clear)
+	yield(tiles_cleared[0], "cleared")
+	for tile in tiles_cleared:
+		tile.queue_free()
+	
+	# Adjust all tiles above cleared row appropriately
 	for j in range(row_index, 0, -1):
-		var empty_row = true
+		
 		for i in range(BOARD_WIDTH):
-			
-			# Remove tile from board if from cleared row
-			if j == row_index:
-				row_value += tile_board[i][j].get_score()
-				tile_board[i][j].queue_free()
-				tile_board[i][j] = null
-			
 			# Move tiles down
 			var above_tile = null
 			if j > 0:
@@ -146,11 +157,7 @@ func _clear_row(row_index):
 			tile_board[i][j] = above_tile
 			_draw_tile(i, j)
 			
-			# Only continue if row isn't empty 
-			if above_tile != null:
-				empty_row = false
-		if empty_row:
-			break
+	# Send score to HUD	
 	hud.increment_score(row_value)
 
 
@@ -200,7 +207,7 @@ func detect_knots(starting_tile_positions):
 	
 	# Map of strands searched so that we may detect cycles that may appear in 
 	# the graph of strands. Map will be in the form:
-	# < strand_key, prev_strand_dict> which will be defined in the 
+	# < strand_key, prev_strand_dict > which will be defined in the 
 	# `_get_strand_key` function and `_get_strand_dict` function respectively. 
 	var searched_strands = {}
 	
@@ -273,6 +280,7 @@ func detect_knots(starting_tile_positions):
 		strand_count = strand_count + 1
 	
 	print("Strands Searched: " + str(strand_count))
+
 
 # Returns a dictionary that can represent a strand to be searched and what 
 # strand this was traversed from represented by `_get_strand_dict`.
