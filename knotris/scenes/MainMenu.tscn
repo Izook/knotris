@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scripts/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://assets/play.png" type="Texture" id=2]
@@ -10,6 +10,8 @@
 [ext_resource path="res://assets/audio_off_pressed.png" type="Texture" id=8]
 [ext_resource path="res://assets/tile_textures/tile_D.png" type="Texture" id=9]
 [ext_resource path="res://assets/tile_textures/tile_E.png" type="Texture" id=10]
+[ext_resource path="res://assets/controls_chart.png" type="Texture" id=11]
+[ext_resource path="res://assets/crossing.png" type="Texture" id=12]
 
 [sub_resource type="Animation" id=1]
 resource_name = "SelectorRotator"
@@ -78,43 +80,6 @@ size_flags_vertical = 3
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_lock_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="ControlsPopup" type="WindowDialog" parent="."]
-margin_left = 84.1219
-margin_top = 171.696
-margin_right = 437.122
-margin_bottom = 487.696
-rect_pivot_offset = Vector2( 20, 0 )
-size_flags_horizontal = 3
-size_flags_vertical = 0
-popup_exclusive = true
-window_title = "Controls"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RichTextLabel" type="RichTextLabel" parent="ControlsPopup"]
-margin_left = 3.0
-margin_top = 1.0
-margin_right = 355.0
-margin_bottom = 320.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-text = "Arrow Keys:  Move Tile
-Z: Rotate Left
-X: Rotate Right
-C: Hold Tile
-P: Pause Game
-D: Drop Tile
-
-If on mobile:
-Swipe to move tile.
-Swipe up to hold tile.
-Tap to rotate tile."
-scroll_active = false
-__meta__ = {
 "_edit_use_anchors_": false
 }
 
@@ -222,6 +187,52 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ControlsPopup" type="Popup" parent="."]
+visible = true
+margin_left = -3.0
+margin_top = 2.0
+margin_right = 519.0
+margin_bottom = 560.0
+rect_pivot_offset = Vector2( 20, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 0
+popup_exclusive = true
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="ControlsPopup"]
+margin_right = 524.0
+margin_bottom = 562.0
+color = Color( 0, 0, 0, 0.666667 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ControlsChart" type="TextureRect" parent="ControlsPopup"]
+margin_left = 56.0568
+margin_top = 136.521
+margin_right = 656.057
+margin_bottom = 618.521
+rect_scale = Vector2( 0.7, 0.7 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ExitControls" type="TextureButton" parent="ControlsPopup"]
+margin_left = 453.145
+margin_top = 21.8497
+margin_right = 653.145
+margin_bottom = 221.85
+rect_scale = Vector2( 0.2, 0.2 )
+texture_normal = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="StartSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
 
@@ -230,3 +241,4 @@ stream = ExtResource( 5 )
 [connection signal="pressed" from="PlayButton" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="ControlsButton" to="." method="_on_ControlsButton_pressed"]
 [connection signal="pressed" from="AudioButton" to="." method="_on_AudioButton_pressed"]
+[connection signal="pressed" from="ControlsPopup/ExitControls" to="." method="_on_ExitControls_pressed"]

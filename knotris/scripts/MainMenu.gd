@@ -60,3 +60,7 @@ func _on_AudioButton_pressed():
 		$AudioButton.set_normal_texture(load("res://assets/audio_on.png"))
 		$AudioButton.set_pressed_texture(load("res://assets/audio_on_pressed.png"))
 		Global.muted = true
+
+
+func _on_ExitControls_pressed():
+	$ControlsPopup.visible = false
