@@ -186,33 +186,31 @@ func _clear_row(row_index):
 
 # Checks rows for internal and external suitable connectedness. It clears the 
 # row if such a row is found and returns the score gained from the row cleared.
-# CURRENTLY BROKEN. NOT CATCHING ALL CASES
 func check_rows():
 	for j in range(BOARD_HEIGHT - 1, -1, -1):
-		var empty_row = false
 		var should_clear = true
+		
 		for i in range(BOARD_WIDTH):
-			var curr_tile = tile_board[i][j]
 			
-			# Is row non empty?
-			if curr_tile == null: 
-				empty_row = true
+			# Is row complete
+			var curr_tile = _get_tile_at(Vector2(i, j))
+			if curr_tile == null:
+				should_clear = false
 				break
 				
-			# Is row externally suitably connected?
-			var above_tile = tile_board[i][j - 1]
+			# Is row externally suitably connected
+			var above_tile = _get_tile_at(Vector2(i, j - 1))
 			if above_tile == null || curr_tile.connection_points[0] != above_tile.connection_points[2]:
 				should_clear = false
 				break
 				
-			# Is row internally suitably connected?
-			if i < BOARD_WIDTH - 1:
-				var right_tile = tile_board[i + 1][j]
+			# Is row internally suitably connected
+			if i < BOARD_WIDTH - 2:
+				var right_tile = _get_tile_at(Vector2(i + 1, j))
 				if right_tile == null || curr_tile.connection_points[1] != right_tile.connection_points[3]:
 					should_clear = false;
 					break
-		if empty_row:
-			break
+		
 		if should_clear:
 			var row_score = _clear_row(j)
 			return row_score
