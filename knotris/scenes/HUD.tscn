@@ -1,8 +1,8 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=1]
 [ext_resource path="res://assets/pause.png" type="Texture" id=2]
-[ext_resource path="res://assets/AudioOffIcon.png" type="Texture" id=3]
+[ext_resource path="res://assets/audio_off.png" type="Texture" id=3]
 [ext_resource path="res://assets/final_score.png" type="Texture" id=4]
 [ext_resource path="res://assets/back_to_main_menu.png" type="Texture" id=5]
 [ext_resource path="res://assets/game_over_title.png" type="Texture" id=6]
@@ -12,6 +12,7 @@
 [ext_resource path="res://assets/paused_title.png" type="Texture" id=10]
 [ext_resource path="res://assets/have_fun.png" type="Texture" id=11]
 [ext_resource path="res://assets/swoops.png" type="Texture" id=12]
+[ext_resource path="res://assets/audio_off_pressed.png" type="Texture" id=13]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Rotator"
@@ -330,6 +331,7 @@ anims/Rotator = SubResource( 1 )
 
 [node name="PausedPopup" type="Popup" parent="."]
 pause_mode = 2
+visible = true
 margin_right = 520.0
 margin_bottom = 560.0
 __meta__ = {
@@ -410,6 +412,7 @@ margin_right = 398.1
 margin_bottom = 877.851
 rect_scale = Vector2( 0.2, 0.2 )
 texture_normal = ExtResource( 3 )
+texture_pressed = ExtResource( 13 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

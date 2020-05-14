@@ -52,9 +52,11 @@ func _on_ControlsButton_pressed():
 func _on_AudioButton_pressed():
 	if Global.muted:
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), false)
-		$AudioButton.set_normal_texture(load("res://assets/AudioOffIcon.png"))
+		$AudioButton.set_normal_texture(load("res://assets/audio_off.png"))
+		$AudioButton.set_pressed_texture(load("res://assets/audio_off_pressed.png"))
 		Global.muted = false
 	else:
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), true)
-		$AudioButton.set_normal_texture(load("res://assets/AudioOnIcon.png"))
+		$AudioButton.set_normal_texture(load("res://assets/audio_on.png"))
+		$AudioButton.set_pressed_texture(load("res://assets/audio_on_pressed.png"))
 		Global.muted = true

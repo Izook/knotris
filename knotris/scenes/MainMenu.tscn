@@ -6,8 +6,8 @@
 [ext_resource path="res://assets/audio/start_click.wav" type="AudioStream" id=4]
 [ext_resource path="res://assets/audio/menu_click.wav" type="AudioStream" id=5]
 [ext_resource path="res://assets/title_0.png" type="Texture" id=6]
-[ext_resource path="res://assets/AudioOffIcon.png" type="Texture" id=7]
-[ext_resource path="res://assets/AudioOnIcon.png" type="Texture" id=8]
+[ext_resource path="res://assets/audio_off.png" type="Texture" id=7]
+[ext_resource path="res://assets/audio_off_pressed.png" type="Texture" id=8]
 [ext_resource path="res://assets/tile_textures/tile_D.png" type="Texture" id=9]
 [ext_resource path="res://assets/tile_textures/tile_E.png" type="Texture" id=10]
 
