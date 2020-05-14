@@ -186,6 +186,7 @@ func _clear_row(row_index):
 
 # Checks rows for internal and external suitable connectedness. It clears the 
 # row if such a row is found and returns the score gained from the row cleared.
+# CURRENTLY BROKEN. NOT CATCHING ALL CASES
 func check_rows():
 	for j in range(BOARD_HEIGHT - 1, -1, -1):
 		var empty_row = false
