@@ -20,22 +20,25 @@ func _ready():
 	multiplier = 1
 	
 	# Position / Size Score label appropriately
-	$Score.rect_position = Vector2(TILE_SIZE * (BOARD_WIDTH + 4.5), -(TILE_SIZE * 0.5))
+	$Score.rect_position = Vector2(TILE_SIZE * (BOARD_WIDTH + 4.5), 0)
 	$Score.rect_size = Vector2(TILE_SIZE * 2, TILE_SIZE)
 	
 	# Set score text appropriately
-	$Score.text = "SCORE: " + score as String 
+	$Score.text = "SCORE: " + str(score)
 
 
 # Increments score and updates label
 func increment_score(points):
 	score += (points * multiplier)
-	$Score.text = "SCORE: " + score as String 
+	$Score.text = "SCORE: " + str(score) 
 
 
 # Stops game and opens Game Over menu
 func game_over():
 	get_tree().paused = true
+	$Score.visible = false
+	$PauseButton.visible = false
+	$GameOverPopup/FinalScore.text = str(score)
 	$GameOverPopup.visible = true
 
 
