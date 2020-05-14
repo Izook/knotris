@@ -188,7 +188,6 @@ __meta__ = {
 }
 
 [node name="ControlsPopup" type="Popup" parent="."]
-visible = true
 margin_left = -3.0
 margin_top = 2.0
 margin_right = 519.0
