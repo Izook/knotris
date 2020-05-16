@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=1]
 [ext_resource path="res://assets/pause.png" type="Texture" id=2]
@@ -11,7 +11,6 @@
 [ext_resource path="res://assets/Back To Game.png" type="Texture" id=9]
 [ext_resource path="res://assets/paused_title.png" type="Texture" id=10]
 [ext_resource path="res://assets/have_fun.png" type="Texture" id=11]
-[ext_resource path="res://assets/swoops.png" type="Texture" id=12]
 [ext_resource path="res://assets/audio_off_pressed.png" type="Texture" id=13]
 
 [sub_resource type="Animation" id=1]
@@ -96,7 +95,7 @@ resource_name = "Rotator"
 length = 2.0
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("Selector:rotation_degrees")
+tracks/0/path = NodePath("BackToGame/Selector:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -108,7 +107,7 @@ tracks/0/keys = {
 "values": [ 0.0, 360.0 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Selector2:rotation_degrees")
+tracks/1/path = NodePath("BackToGame/Selector2:rotation_degrees")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -120,7 +119,7 @@ tracks/1/keys = {
 "values": [ 0.0, 360.0 ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Selector:position")
+tracks/2/path = NodePath("BackToGame/Selector:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -132,7 +131,7 @@ tracks/2/keys = {
 "values": [ Vector2( 173.85, 425 ), Vector2( 173.85, 415 ), Vector2( 173.85, 425 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("Selector2:position")
+tracks/3/path = NodePath("BackToGame/Selector2:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -144,7 +143,7 @@ tracks/3/keys = {
 "values": [ Vector2( 341.45, 425 ), Vector2( 341.45, 410 ), Vector2( 341.45, 425 ) ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("Selector3:rotation_degrees")
+tracks/4/path = NodePath("ToMainMenu/Selector3:rotation_degrees")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -156,7 +155,7 @@ tracks/4/keys = {
 "values": [ 0.0, 360.0 ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("Selector4:rotation_degrees")
+tracks/5/path = NodePath("ToMainMenu/Selector4:rotation_degrees")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
@@ -168,7 +167,7 @@ tracks/5/keys = {
 "values": [ 0.0, 360.0 ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("Selector5:rotation_degrees")
+tracks/6/path = NodePath("ReTry/Selector5:rotation_degrees")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
@@ -180,7 +179,7 @@ tracks/6/keys = {
 "values": [ 1.00179e-05, 360.0 ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("Selector6:rotation_degrees")
+tracks/7/path = NodePath("ReTry/Selector6:rotation_degrees")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
@@ -343,15 +342,16 @@ margin_right = 520.0
 margin_bottom = 560.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-color = Color( 0, 0.180392, 1, 1 )
+color = Color( 0.611765, 0.74902, 0.984314, 1 )
 __meta__ = {
 "_edit_lock_": true
 }
 
 [node name="PausedTitle" type="TextureRect" parent="PausedPopup"]
-margin_top = 19.0
-margin_right = 523.0
-margin_bottom = 185.0
+margin_left = -10.0
+margin_top = 39.0
+margin_right = 513.0
+margin_bottom = 205.0
 texture = ExtResource( 10 )
 __meta__ = {
 "_edit_lock_": true,
@@ -359,21 +359,22 @@ __meta__ = {
 }
 
 [node name="HavingFun" type="TextureRect" parent="PausedPopup"]
-margin_left = 160.0
-margin_top = 189.0
-margin_right = 600.0
-margin_bottom = 411.0
+margin_left = 150.0
+margin_top = 179.0
+margin_right = 614.0
+margin_bottom = 401.0
 rect_scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 11 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="BackToGame" type="TextureButton" parent="PausedPopup"]
-margin_left = 212.0
-margin_top = 347.0
-margin_right = 631.0
-margin_bottom = 515.0
+margin_left = 206.0
+margin_top = 317.0
+margin_right = 625.0
+margin_bottom = 485.0
 rect_scale = Vector2( 0.25, 0.25 )
 texture_normal = ExtResource( 9 )
 __meta__ = {
@@ -381,11 +382,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Selector" type="Sprite" parent="PausedPopup/BackToGame"]
+position = Vector2( -78.3081, 78.1565 )
+rotation = 4.73421
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Selector2" type="Sprite" parent="PausedPopup/BackToGame"]
+position = Vector2( 472.092, 74.6802 )
+rotation = 4.73421
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
 [node name="ToMainMenu" type="TextureButton" parent="PausedPopup"]
-margin_left = 212.0
-margin_top = 407.0
-margin_right = 631.0
-margin_bottom = 575.0
+margin_left = 206.0
+margin_top = 387.0
+margin_right = 625.0
+margin_bottom = 555.0
 rect_scale = Vector2( 0.25, 0.25 )
 texture_normal = ExtResource( 5 )
 __meta__ = {
@@ -393,10 +412,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Selector3" type="Sprite" parent="PausedPopup/ToMainMenu"]
+position = Vector2( -127.2, 85.6316 )
+rotation = 4.73421
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Selector4" type="Sprite" parent="PausedPopup/ToMainMenu"]
+position = Vector2( 534.6, 89.4314 )
+rotation = 4.73421
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_lock_": true
+}
+
 [node name="ReTry" type="TextureButton" parent="PausedPopup"]
-margin_left = 212.0
+margin_left = 206.0
 margin_top = 467.0
-margin_right = 631.0
+margin_right = 625.0
 margin_bottom = 635.0
 rect_scale = Vector2( 0.25, 0.25 )
 texture_normal = ExtResource( 7 )
@@ -404,6 +441,18 @@ __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
+
+[node name="Selector5" type="Sprite" parent="PausedPopup/ReTry"]
+position = Vector2( 494.6, 76.156 )
+rotation = 4.73421
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 8 )
+
+[node name="Selector6" type="Sprite" parent="PausedPopup/ReTry"]
+position = Vector2( -67.2, 72.356 )
+rotation = 4.73421
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 8 )
 
 [node name="AudioButton" type="TextureButton" parent="PausedPopup"]
 margin_left = -1.89996
@@ -416,37 +465,6 @@ texture_pressed = ExtResource( 13 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Selector" type="Sprite" parent="PausedPopup"]
-position = Vector2( 201.95, 364.958 )
-scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 12 )
-
-[node name="Selector2" type="Sprite" parent="PausedPopup"]
-position = Vector2( 319.55, 364.089 )
-scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 12 )
-
-[node name="Selector3" type="Sprite" parent="PausedPopup"]
-position = Vector2( 195.2, 424.089 )
-scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 12 )
-
-[node name="Selector4" type="Sprite" parent="PausedPopup"]
-position = Vector2( 335.65, 425.039 )
-scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 12 )
-
-[node name="Selector5" type="Sprite" parent="PausedPopup"]
-position = Vector2( 325.65, 485.039 )
-rotation = 1.74846e-07
-scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 12 )
-
-[node name="Selector6" type="Sprite" parent="PausedPopup"]
-position = Vector2( 205.2, 484.089 )
-scale = Vector2( 0.15, 0.15 )
-texture = ExtResource( 12 )
 
 [node name="SelectorAnimator" type="AnimationPlayer" parent="PausedPopup"]
 pause_mode = 2
