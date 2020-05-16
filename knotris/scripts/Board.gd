@@ -357,22 +357,29 @@ func _get_strands_in_cycle(starting_strand, strands_searched):
 	return strand_positions
 
 
-# Given a list of the position of tiles increment the multipliers of each of the
-# tiles based on the amount of crossing tiles in the list.
+# Given a list of the position of strands increment the multipliers of each of 
+# the tiles those strands are on based on the amount of crossings in the list.
 func _increment_multipliers(tile_list):
 	
-	print("Incrementing multipliers")
+	# Use a map to make sure a tiles are only counted once
+	var tile_pos_map = {}
 	
+	# Count how high to increment the tiles
 	var incrementer = 1
-	
 	for tile_pos in tile_list:
-		var tile = _get_tile_at(tile_pos)
-		if tile.tile_type == "E":
-			incrementer = incrementer + 1
+		if not tile_pos_map.has(tile_pos):
+			tile_pos_map[tile_pos] = true
+			var tile = _get_tile_at(tile_pos)
+			if tile.tile_type == "E":
+				incrementer = incrementer + 1
 	
+	# Increment all the tiles
+	tile_pos_map = {}
 	for tile_pos in tile_list:
-		var tile = _get_tile_at(tile_pos)
-		tile.increment_multiplier(incrementer)
+		if not tile_pos_map.has(tile_pos):
+			tile_pos_map[tile_pos] = true
+			var tile = _get_tile_at(tile_pos)
+			tile.increment_multiplier(incrementer)
 
 
 # Returns the tile position and entry point of to be entered from the tile at
