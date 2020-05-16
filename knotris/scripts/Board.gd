@@ -381,27 +381,28 @@ func _get_strands_in_cycle(starting_strand, strands_searched):
 
 # Given a list of the position of strands increment the multipliers of each of 
 # the tiles those strands are on based on the amount of crossings in the list.
-func _increment_multipliers(tile_list):
+func _increment_multipliers(strand_list):
 	
-	# Use a map to make sure a tiles are only counted once
-	var tile_pos_map = {}
+	# DEBUG ONLY
+	print("INCREMENTING MULTIPLIERS")
+	print(strand_list)
+	
+	# Use a list to make sure a tiles are only counted once
+	var tile_pos_list = []
 	
 	# Count how high to increment the tiles
 	var incrementer = 1
-	for tile_pos in tile_list:
-		if not tile_pos_map.has(tile_pos):
-			tile_pos_map[tile_pos] = true
+	for tile_pos in strand_list:
+		if not tile_pos_list.has(tile_pos):
+			tile_pos_list.push_front(tile_pos)
 			var tile = _get_tile_at(tile_pos)
 			if tile.tile_type == "E":
 				incrementer = incrementer + 1
 	
 	# Increment all the tiles
-	tile_pos_map = {}
-	for tile_pos in tile_list:
-		if not tile_pos_map.has(tile_pos):
-			tile_pos_map[tile_pos] = true
-			var tile = _get_tile_at(tile_pos)
-			tile.increment_multiplier(incrementer)
+	for tile_pos in tile_pos_list:
+		var tile = _get_tile_at(tile_pos)
+		tile.increment_multiplier(incrementer)
 
 
 # Returns the tile position and entry point of to be entered from the tile at
@@ -532,15 +533,19 @@ func _set_tile_disconnections(tile_pos):
 # as appropriate.
 func _lock_tiles(row_index):
 	
+	# Add to list of locked rows
 	locked_rows.push_front(row_index)
 	
 	# Lock row below if disconnected to tile below and there is a 
 	# disconnection between the rows.
 	var curr_row = row_index
 	var rows_to_lock = [row_index]
+	
+	# Repeat process for all rows that meet this criteria
 	while locked_rows.has(curr_row) and _are_rows_disconnected(curr_row, curr_row + 1):
 		locked_rows.push_front(curr_row + 1)
 		rows_to_lock.push_front(curr_row + 1)
+		curr_row = curr_row + 1
 	
 	# Iterate through rows and colums to lock all tiles that exists
 	for i in range(BOARD_WIDTH):
@@ -599,7 +604,6 @@ func _are_rows_disconnected(row_a, row_b):
 			break
 	
 	return disconnection
-		
 
 
 # On end of background music track play correct track 

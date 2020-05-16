@@ -76,7 +76,6 @@ script = ExtResource( 1 )
 position = Vector2( 20.0125, 20.0029 )
 scale = Vector2( 0.2, 0.2 )
 z_index = -5
-z_as_relative = false
 texture = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="TileSprite"]
@@ -89,21 +88,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MultiplierLabel" type="Label" parent="."]
-visible = false
-margin_left = 13.7376
-margin_top = 9.6882
-margin_right = 26.7376
-margin_bottom = 34.6882
-rect_scale = Vector2( 1.5, 1.5 )
-rect_pivot_offset = Vector2( 7.27368, 11.6032 )
-custom_colors/font_color = Color( 1, 1, 1, 0.784314 )
-text = "1"
-uppercase = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Clear = SubResource( 1 )
 
@@ -111,12 +95,27 @@ anims/Clear = SubResource( 1 )
 visible = false
 position = Vector2( 20, 40 )
 scale = Vector2( 0.1, 0.1 )
-z_as_relative = false
+z_index = -1
 texture = ExtResource( 4 )
 
 [node name="DisconnectLeft" type="Sprite" parent="."]
 visible = false
 position = Vector2( 0, 20 )
 scale = Vector2( 0.1, 0.1 )
-z_as_relative = false
+z_index = -1
 texture = ExtResource( 3 )
+
+[node name="MultiplierLabel" type="Label" parent="."]
+visible = false
+margin_left = 12.7
+margin_top = 8.754
+margin_right = 25.7
+margin_bottom = 33.754
+rect_scale = Vector2( 1.5, 1.5 )
+rect_pivot_offset = Vector2( 7.27368, 11.6032 )
+custom_colors/font_color = Color( 1, 1, 1, 0.878431 )
+text = "1"
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

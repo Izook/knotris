@@ -108,6 +108,7 @@ func get_connected_edge(entry_edge):
 # Given an value increment the multiplier value of this tile by that amount and 
 # if the value is > 1 show the value.
 func increment_multiplier(incrementer):
+	print("YEET")
 	tile_multiplier = tile_multiplier + incrementer
 	
 	if tile_multiplier > 1:
