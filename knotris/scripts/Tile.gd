@@ -49,18 +49,18 @@ func _ready():
 	$TileSprite.set_texture(TILE_TEXTURES[tile_type])
 
 
-# Used to rotate the tile in -90 degree parts
-# `turns` must be within [0,3]
+# Used to rotate the tile in -90 degree parts. E.g. turns = 3 would turn the 
+# the tile 270 degress.
 func rotate(turns):
-	tile_rotation = (tile_rotation + turns) % 4
+	tile_rotation = int(fposmod(tile_rotation + turns, 4))
 	
 	# Rotate connection points (counter clockwise rotations)
 	var prev_connection_points = connection_points.duplicate()
 	for i in range(4):
-		connection_points[i] = prev_connection_points[(i + turns) % 4] 
+		connection_points[i] = prev_connection_points[fposmod(i + turns, 4)] 
 	
 	# Rotate sprite appropriately 
-	$TileSprite.set_rotation((tile_rotation % 4) * (-PI/2))
+	$TileSprite.set_rotation(fposmod(tile_rotation, 4) * (-PI/2))
 
 
 # Used to update the tile type 

@@ -70,12 +70,14 @@ tracks/4/keys = {
 }
 
 [node name="Tile" type="Node2D"]
+z_as_relative = false
 script = ExtResource( 1 )
 
 [node name="TileSprite" type="Sprite" parent="."]
 position = Vector2( 20.0125, 20.0029 )
 scale = Vector2( 0.2, 0.2 )
-z_index = -5
+z_index = -50
+z_as_relative = false
 texture = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="TileSprite"]
@@ -96,6 +98,7 @@ visible = false
 position = Vector2( 20, 40 )
 scale = Vector2( 0.1, 0.1 )
 z_index = -1
+z_as_relative = false
 texture = ExtResource( 4 )
 
 [node name="DisconnectLeft" type="Sprite" parent="."]
@@ -103,6 +106,7 @@ visible = false
 position = Vector2( 0, 20 )
 scale = Vector2( 0.1, 0.1 )
 z_index = -1
+z_as_relative = false
 texture = ExtResource( 3 )
 
 [node name="MultiplierLabel" type="Label" parent="."]

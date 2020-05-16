@@ -16,7 +16,7 @@ const MOVE_INPUTS = {
 	"move_left": Vector2.LEFT,
 }
 const ROT_INPUTS = {
-	"rotate_right": 3,
+	"rotate_right": -1,
 	"rotate_left": 1,
 }
 

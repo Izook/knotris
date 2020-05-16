@@ -580,8 +580,8 @@ func _lower_locked_rows(row_index):
 	var new_locked_rows = []
 	
 	for row in locked_rows:
-		if row > row_index:
-			new_locked_rows.push_back(row - 1)
+		if row < row_index:
+			new_locked_rows.push_back(row + 1)
 		else:
 			new_locked_rows.push_back(row)
 	
