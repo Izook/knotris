@@ -13,7 +13,7 @@
 [ext_resource path="res://assets/have_fun.png" type="Texture" id=11]
 [ext_resource path="res://assets/audio_off_pressed.png" type="Texture" id=13]
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=1]
 resource_name = "Rotator"
 length = 2.0
 loop = true
@@ -114,8 +114,7 @@ tracks/7/keys = {
 "values": [ 0.0, 360.0 ]
 }
 
-[sub_resource type="Animation" id=1]
-resource_name = "Rotator"
+[sub_resource type="Animation" id=2]
 length = 2.0
 loop = true
 tracks/0/type = "value"
@@ -363,7 +362,7 @@ __meta__ = {
 pause_mode = 2
 autoplay = "Rotator"
 method_call_mode = 1
-anims/Rotator = SubResource( 2 )
+anims/Rotator = SubResource( 1 )
 
 [node name="GameOverPopup" type="Popup" parent="."]
 pause_mode = 2
@@ -470,7 +469,7 @@ texture = ExtResource( 8 )
 pause_mode = 2
 autoplay = "Rotator"
 method_call_mode = 1
-anims/Rotator = SubResource( 1 )
+anims/Rotator = SubResource( 2 )
 [connection signal="pressed" from="PauseButton" to="." method="_on_PauseButton_pressed"]
 [connection signal="pressed" from="PausedPopup/BackToGame" to="." method="_on_UnPause_pressed"]
 [connection signal="pressed" from="PausedPopup/ToMainMenu" to="." method="_on_ToMainMenu_pressed"]

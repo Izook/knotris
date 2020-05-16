@@ -19,6 +19,9 @@ var TILE_SIZE = Global.TILE_SIZE
 # [0][0] represents the top left of the board
 var tile_board = [] setget , get_tile_board
 
+# An array of rows that have been locked (are unclearable)
+var locked_rows = []
+
 # Node representing the player
 var curr_player
 
@@ -115,6 +118,9 @@ func add_tile(tile, tile_pos):
 		# Place tile
 		tile_board[tile_pos.x][tile_pos.y] = tile
 		
+		# Set locked status
+		_set_tile_lock(tile_pos)
+		
 		# Set disconnections
 		_set_tile_disconnections(tile_pos)
 		var right_tile_pos = tile_pos + Vector2(1,0)
@@ -174,18 +180,27 @@ func _clear_row(row_index):
 	yield(tiles_cleared[0], "cleared")
 	for tile in tiles_cleared:
 		tile.queue_free()
+		
+	# Update locked tiles
+	_lower_locked_rows(row_index)
 	
 	# Adjust all tiles above cleared row appropriately
 	for j in range(row_index, 0, -1):
 		
 		for i in range(BOARD_WIDTH):
+			
 			# Move tiles down
 			var above_tile = null
 			if j > 0:
 				above_tile = tile_board[i][j - 1]
 			tile_board[i][j] = above_tile
+			
+			# Redraw tile and disconnections
 			_draw_tile(i, j)
 			_set_tile_disconnections(Vector2(i,j))
+			
+			# Set locked status
+			_set_tile_lock(Vector2(i,j))
 			
 	# Send score to HUD	
 	return row_value
@@ -488,8 +503,9 @@ func _get_row_at(row_index):
 	return tile_positions
 
 
-# Given a tile_position, determine the connection status of its left and bottom
-# edges and set them appropriately.
+# Given a tile_position, determine the disconnection status of its left and 
+# bottom edges and set them appropriately.
+# Also locks tile rows based on resultant disconnecations.
 func _set_tile_disconnections(tile_pos):
 	
 	# Confirm tile exists
@@ -498,14 +514,92 @@ func _set_tile_disconnections(tile_pos):
 		
 		# Get bottom edge status
 		var bottom_tile_pos = tile_pos + Vector2(0,1)
-		var bottom_edge_status = _are_tiles_disconnected(tile_pos, bottom_tile_pos, 2)
+		var is_bottom_disconnected = _are_tiles_disconnected(tile_pos, bottom_tile_pos, 2)
 		
 		# Get left edge status
 		var left_tile_pos = tile_pos + Vector2(-1,0)
-		var left_edge_status = _are_tiles_disconnected(tile_pos, left_tile_pos, 3)
+		var is_left_disconnected = _are_tiles_disconnected(tile_pos, left_tile_pos, 3)
+		
+		# Lock row if disconnected to left tile
+		if is_left_disconnected:
+			_lock_tiles(tile_pos.y)
 		
 		# Set disconnections
-		tile.set_disconnections(bottom_edge_status, left_edge_status)
+		tile.set_disconnections(is_bottom_disconnected, is_left_disconnected)
+
+
+# Given a row index it will lock all the tiles at that row and all rows below it
+# as appropriate.
+func _lock_tiles(row_index):
+	
+	locked_rows.push_front(row_index)
+	
+	# Lock row below if disconnected to tile below and there is a 
+	# disconnection between the rows.
+	var curr_row = row_index
+	var rows_to_lock = [row_index]
+	while locked_rows.has(curr_row) and _are_rows_disconnected(curr_row, curr_row + 1):
+		locked_rows.push_front(curr_row + 1)
+		rows_to_lock.push_front(curr_row + 1)
+	
+	# Iterate through rows and colums to lock all tiles that exists
+	for i in range(BOARD_WIDTH):
+		
+		for row in rows_to_lock:
+		
+			var tile = _get_tile_at(Vector2(i,row))
+			
+			if tile == null:
+				continue
+			
+			tile.set_locked(true)
+
+
+# Given a tile position determine if the tile needs to be set to locked
+func _set_tile_lock(tile_pos):
+	
+	var tile = _get_tile_at(tile_pos)
+	if tile == null:
+		return
+	
+	if locked_rows.has(tile_pos.y):
+		tile.set_locked(true)
+	else:
+		tile.set_locked(false)
+
+
+# Given a row index, lower the indices of all the locked rows to simulate, 
+# locked rows falling on a tile clear.
+func _lower_locked_rows(row_index):
+	
+	var new_locked_rows = []
+	
+	for row in locked_rows:
+		if row > row_index:
+			new_locked_rows.push_back(row - 1)
+		else:
+			new_locked_rows.push_back(row)
+	
+	locked_rows = new_locked_rows
+
+
+# Given two row indexes, return true if they are disconnected in any way, false
+# if not.
+func _are_rows_disconnected(row_a, row_b):
+	
+	var disconnection = false
+	
+	for i in range(BOARD_WIDTH):
+		
+		var tile_pos_a = Vector2(i, row_a)
+		var tile_pos_b = Vector2(i, row_b)
+		
+		if _are_tiles_disconnected(tile_pos_a, tile_pos_b, 2):
+			disconnection = true
+			break
+	
+	return disconnection
+		
 
 
 # On end of background music track play correct track 

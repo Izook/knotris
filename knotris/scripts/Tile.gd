@@ -3,6 +3,7 @@ extends Node2D
 # Global tile properties
 var TILE_TYPES = Global.TILE_TYPES
 var TILE_TEXTURES = Global.TILE_TEXTURES
+var LOCKED_TILE_TEXTURES = Global.LOCKED_TILE_TEXTURES
 
 # Flag representing when the tile has been cleared
 signal cleared
@@ -14,6 +15,7 @@ const diconnections_group = "Disconnections"
 var tile_type
 var tile_rotation
 var tile_multiplier
+var locked
 
 # Tile connection points
 var connection_points = [
@@ -124,6 +126,15 @@ func set_disconnections(bottom_disconnected, left_disconnected):
 		$DisconnectBottom.visible = true
 	if left_disconnected: 
 		$DisconnectLeft.visible = true
+
+
+# Set the locked status of the tile changing the tile to its locked texture.
+func set_locked(is_tile_locked):
+	locked = is_tile_locked
+	if locked:
+		$TileSprite.set_texture(LOCKED_TILE_TEXTURES[tile_type])
+	else:
+		$TileSprite.set_texture(TILE_TEXTURES[tile_type])
 
 
 # Return the score of clearing the tile

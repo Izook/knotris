@@ -67,6 +67,19 @@ const TILE_TEXTURES = {
 	"E" : TILE_E_TEXTURE,
 }
 
+const LOCKED_TILE_A_TEXTURE = preload("res://assets/tile_textures/tile_A_locked.png")
+const LOCKED_TILE_B_TEXTURE = preload("res://assets/tile_textures/tile_B_locked.png")
+const LOCKED_TILE_C_TEXTURE = preload("res://assets/tile_textures/tile_C_locked.png")
+const LOCKED_TILE_D_TEXTURE = preload("res://assets/tile_textures/tile_D_locked.png")
+const LOCKED_TILE_E_TEXTURE = preload("res://assets/tile_textures/tile_E_locked.png")
+const LOCKED_TILE_TEXTURES = {
+	"A" : LOCKED_TILE_A_TEXTURE,
+	"B" : LOCKED_TILE_B_TEXTURE,
+	"C" : LOCKED_TILE_C_TEXTURE,
+	"D" : LOCKED_TILE_D_TEXTURE,
+	"E" : LOCKED_TILE_E_TEXTURE,
+}
+
 # List of tile type + rotation combinations seperated by whether or not the left point is connected
 const left_connected_combinations = []
 const left_disconnected_combinations = []
