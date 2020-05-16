@@ -70,9 +70,9 @@
       </div>
       <div class="knotrisInfo">
         <p>
-          Disclaimer: We have noticed problems occuring in our web version of
-          the game on the Safari browser. We recommend using Firefox for the
-          best gameplay experience.
+          <b>Disclaimer:</b> We have noticed problems occuring in our web
+          version of the game on the Safari browser. We recommend using Firefox
+          for the best gameplay experience.
         </p>
         <p>
           Please download Knotris
@@ -92,7 +92,7 @@
       <h1>How To Play Knotris</h1>
       <div class="exitPopup"></div>
       <iframe
-        src="https://docs.google.com/presentation/d/e/2PACX-1vTtEEl96c22iRhwA_jk_a4c4QCWyMSrSAoUz8QK5gMOCIRitsw_Aa9h1JBh-msV7t3j4niLlHIxk8Vc/embed?start=true&loop=true&delayms=10000"
+        src="https://docs.google.com/presentation/d/e/2PACX-1vTtEEl96c22iRhwA_jk_a4c4QCWyMSrSAoUz8QK5gMOCIRitsw_Aa9h1JBh-msV7t3j4niLlHIxk8Vc/embed?start=false&loop=true&delayms=10000"
         frameborder="0"
         width="960"
         height="569"
@@ -107,34 +107,41 @@
       <div class="exitPopup"></div>
       <div class="copy">
         <p>
-          The following is the result of an undergraduate research project
-          conducted by Dr. Allison Henrich, Alexandra Ionescu, Brooke Mathews,
-          Isaac Ortega, and Kele Tesfaye.
+          The following is the result of an
+          <a href="http://urmath.org/curm/">CURM</a> sponsored undergraduate
+          research project conducted by Dr. Allison Henrich, Alexandra Ionescu,
+          Brooke Mathews, Isaac Ortega, and Kelemua Tesfaye in the 2019-20
+          academic year.
         </p>
         <p>
-          Knotris is a game based off of the popular game Tetris, which was
-          created in 1984 by Alexey Pajitnov. Tetris is a fun puzzle game which
-          requires players to rotate, slide, and drop tetris pieces onto the
-          game grid in a way that fills as many horizontal rows as possible,
-          without leaving any open spaces.
+          When we began our research we thought we were going to work on pure
+          math research (you know, making conjectures, proving theorems, and
+          such). Our work was meant to involve the study of knot mosaics. Knot
+          mosaics were first introduced by Lomonaco and Kauffman in 2008
+          [LomKau] in order to build a quantum knot system. But these
+          interesting objects attracted a lot of interest in the math community,
+          not necessarily because of their applications in quantum knot theory,
+          but because they’re interesting combinatorial objects to play with and
+          ask questions about.
         </p>
         <p>
-          We began our research looking at knot mosaics and soon began to
-          realize how easily they can be used to form puzzles and difficult
-          questions. Naturally, we then progressed to the idea of creating a
-          Tetris-like game using the 11 knot mosaic tiles. We developed a web
-          and mobile app version of the game so we, and others we share our
-          research with, are able to play it in real time. After constructing
-          the game, we then went into investigating the difficulty of the game
-          by looking at probabilities of scoring, given different game board
-          orientations.
-        </p>
-        <p>
-          In this paper, we describe the process of designing the game, discuss
-          strategies found using probability calculations to maximize score
-          during game play, explain the difficulty and play ability of the game,
-          and lastly, share the process of developing the mobile version of the
-          game.
+          In trying to formulate some new questions about knot mosaics and
+          consider strategies for finding their answers, our team took some time
+          to play. We were able to get our hands on a big bag of woodcut mosaic
+          tiles made by Lew Ludwig for the UnKnot Conference, and we made some
+          of our own. So, for several weeks in the fall, we would spend a part
+          of our research time physically playing with these tiles to build
+          intuition and formulate questions. One day, as we were talking about
+          some potential research questions and playing idly with our
+          tiles—trying to make collections of tiles be suitably connected—we
+          realized that this simple act was actually pretty fun. “If we think
+          putting together tiles in a suitably connected way is fun, maybe
+          others would too!” “What if we created a game—kind of like Tetris—that
+          used knot mosaic tiles instead of tetrominoes?” [TETRIS] And that was
+          how our project was born. We dabbled in our pure math research and
+          associated programming projects for several weeks after this idea came
+          about, but quickly, it became clear to us that working to develop
+          Knotris should be our new goal.
         </p>
         <p>
           The game was developed using the
@@ -144,16 +151,32 @@
           All audio and music provided by the very talented
           <a href="https://soundcloud.com/nyall-padre">Nyall "DnYaLL" Padre</a>.
         </p>
+        <p>
+          DMS-1722563
+        </p>
+        <p><b>References:</b></p>
+        <p>
+          [LomKau] Lomonaco, Samuel J., and Louis H. Kauffman. “Quantum knots
+          and mosaics.” Quantum Information Processing 7, no. 2-3 (2008):
+          85-115.
+        </p>
+        <p>
+          [TETRIS] Tetris, Inc.
+          <a href="http://www.tetris.com">http://www.tetris.com</a>.
+        </p>
       </div>
     </div>
 
     <div class="footer">
       <div class="projectByContainer">
         <div class="logoContainer">
+          <img class="logo" src="assets/SeattleULogo.png" />
+        </div>
+        <div class="logoContainer">
           <img class="logo" src="assets/CURMLogo.png" />
         </div>
         <div class="logoContainer">
-          <img class="logo" src="assets/SeattleULogo.png" />
+          <img class="logo" src="assets/NSFLogo.png" />
         </div>
       </div>
     </div>
