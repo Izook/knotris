@@ -115,6 +115,12 @@ func add_tile(tile, tile_pos):
 		# Place tile
 		tile_board[tile_pos.x][tile_pos.y] = tile
 		
+		# Set disconnections
+		_set_tile_disconnections(tile_pos)
+		var right_tile_pos = tile_pos + Vector2(1,0)
+		if _is_tile_at(right_tile_pos):
+			_set_tile_disconnections(right_tile_pos)
+		
 		# Check for knots and cleared rows
 		detect_knots([tile_pos])
 		var new_points = check_rows()
@@ -179,6 +185,7 @@ func _clear_row(row_index):
 				above_tile = tile_board[i][j - 1]
 			tile_board[i][j] = above_tile
 			_draw_tile(i, j)
+			_set_tile_disconnections(Vector2(i,j))
 			
 	# Send score to HUD	
 	return row_value
@@ -427,6 +434,29 @@ func _are_tiles_connected(tile_a_pos, tile_b_pos, edge):
 	return tile_a.connection_points[edge] and tile_b.connection_points[opposite_edge]
 
 
+# Given the position of two tiles, and a side relative to tile_a return true 
+# if there is a disconnection between the two, false if not.
+func _are_tiles_disconnected(tile_a_pos, tile_b_pos, edge):
+	
+	# Confirm the tiles are adjacent
+	var pos_diff = tile_a_pos - tile_b_pos
+	if pos_diff.length() > 1:
+		print("Invalid disconnection check occured")
+		return false
+	
+	# Get tiles
+	var tile_a = _get_tile_at(tile_a_pos)
+	var tile_b = _get_tile_at(tile_b_pos)
+	
+	# If either tile doesn't exist there cannot be a disconnection
+	if tile_a == null or tile_b == null:
+		return false
+	
+	# Confirm disconnection at edge
+	var opposite_edge = Utility.get_opposite_edge(edge)
+	return tile_a.connection_points[edge] != tile_b.connection_points[opposite_edge]
+
+
 # Determines if given tile position is valid and within board.
 func _is_valid_pos(tile_pos):
 	if tile_pos.x in range(0, BOARD_WIDTH) and tile_pos.y in range(0, BOARD_HEIGHT):
@@ -456,6 +486,26 @@ func _get_row_at(row_index):
 		for i in range(BOARD_WIDTH):
 			tile_positions.push_front(Vector2(i,row_index))
 	return tile_positions
+
+
+# Given a tile_position, determine the connection status of its left and bottom
+# edges and set them appropriately.
+func _set_tile_disconnections(tile_pos):
+	
+	# Confirm tile exists
+	var tile = _get_tile_at(tile_pos)
+	if tile != null:
+		
+		# Get bottom edge status
+		var bottom_tile_pos = tile_pos + Vector2(0,1)
+		var bottom_edge_status = _are_tiles_disconnected(tile_pos, bottom_tile_pos, 2)
+		
+		# Get left edge status
+		var left_tile_pos = tile_pos + Vector2(-1,0)
+		var left_edge_status = _are_tiles_disconnected(tile_pos, left_tile_pos, 3)
+		
+		# Set disconnections
+		tile.set_disconnections(bottom_edge_status, left_edge_status)
 
 
 # On end of background music track play correct track 

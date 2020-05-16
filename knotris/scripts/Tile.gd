@@ -7,6 +7,9 @@ var TILE_TEXTURES = Global.TILE_TEXTURES
 # Flag representing when the tile has been cleared
 signal cleared
 
+# Name of group holding disconnections
+const diconnections_group = "Disconnections"
+
 # Tile properties
 var tile_type
 var tile_rotation
@@ -108,6 +111,19 @@ func increment_multiplier(incrementer):
 	if tile_multiplier > 1:
 		$MultiplierLabel.text = str(tile_multiplier)
 		$MultiplierLabel.visible = true
+
+
+# Given the status of the bottom and left connections, hide or display the 
+# disconnection icons as neccesary.
+func set_disconnections(bottom_disconnected, left_disconnected):
+	
+	$DisconnectBottom.visible = false
+	$DisconnectLeft.visible = false
+	
+	if bottom_disconnected:
+		$DisconnectBottom.visible = true
+	if left_disconnected: 
+		$DisconnectLeft.visible = true
 
 
 # Return the score of clearing the tile

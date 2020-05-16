@@ -31,3 +31,4 @@ func _ready():
 	var board_instance = Board.instance()
 	board_instance.position = Vector2(BOARD_X_OFFSET,0)
 	add_child(board_instance)
+	

@@ -25,6 +25,10 @@ func _ready():
 	
 	# Set score text appropriately
 	$Score.text = "SCORE: " + str(score)
+	
+	# Set PopUps to Show Above All Game Elements
+	$PausedPopup.show_on_top = true
+	$GameOverPopup.show_on_top = true
 
 
 # Increments score and updates label
@@ -37,7 +41,7 @@ func increment_score(points):
 func game_over():
 	get_tree().paused = true
 	$Score.visible = false
-	$PauseButton.visible = false
+	$PausedPopup.visible = false
 	$GameOverPopup/FinalScore.text = str(score)
 	$GameOverPopup.visible = true
 
@@ -72,11 +76,11 @@ func _on_PauseButton_pressed():
 func _on_AudioButton_pressed():
 	if Global.muted:
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), false)
-		$PausedPopup.get_node("AudioButton").set_normal_texture(load("res://assets/audio_off.png"))
+		$PausedPopup/AudioButton.set_normal_texture(load("res://assets/audio_off.png"))
 		$PausedPopup.get_node("AudioButton").set_pressed_texture(load("res://assets/audio_off_pressed.png"))
 		Global.muted = false
 	else:
 		AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), true)
-		$PausedPopup.get_node("AudioButton").set_normal_texture(load("res://assets/audio_on.png"))
-		$PausedPopup.get_node("AudioButton").set_pressed_texture(load("res://assets/audio_on_pressed.png"))
+		$PausedPopup/AudioButton.set_normal_texture(load("res://assets/audio_on.png"))
+		$PausedPopup/AudioButton.set_pressed_texture(load("res://assets/audio_on_pressed.png"))
 		Global.muted = true
