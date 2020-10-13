@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="auto" height="auto" src="./docs/assets/SocialCard.png">
+</p>
+
 # Knotris
 
 Knotris is a Mosaic Knot Tile game being developed to make it easier and more entertaining to study knot mosaics.
