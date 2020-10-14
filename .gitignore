@@ -17,7 +17,7 @@ docs/exports/linux/*
 docs/exports/*.zip
 
 # Android Export Ignore
-android
+xandroid
 
 # Mono-specific ignores
 .mono/
