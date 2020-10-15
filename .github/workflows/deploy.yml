@@ -11,11 +11,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Print Base Ref
-        run: echo ${{github.base_ref}}
-      - name: Print Head Ref
-        run: echo ${{github.head_ref}}
-      - name: Print Base Ref
-        run: echo ${{github.ref}}
+        run: echo $IS_MASTER
+        env:
+          IS_MASTER: contains(${{github.ref}}, 'master')
       - name: export game
         uses: firebelley/godot-export@v2.4.0
         with:
