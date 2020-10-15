@@ -42,6 +42,20 @@ jobs:
         run: |
           mv ./exports/web/KnotrisHTML5/* ./docs/web/
           mv ./exports/web-ios/KnotrisHTML5iOS/* ./docs/web/iOS/
+      - name: Set Git User
+        run: |
+          git config --global user.email "knotris@github.com"
+          git config --global user.name "KnotrisAction"
+      - name: Remove .gitignore
+        run: rm .gitignore
+      - name: Commit Web Export
+        run: |
+          git add ./docs/web/*
+          git commit -m "Deploy most recent release!"
+      - name: Push Most Recent Release
+        if: ${{ contains(github.ref, 'master') && success() }}
+        run: |
+          git push
       # ================================================
       # =============== Itch.io Release ================
       # ================================================
@@ -66,7 +80,7 @@ jobs:
         run: ./butler push ./exports/linux/KnotrisLinux/Knotris.x86_64 izook/knotris:linux
       - name: Compress Web Export
         if: ${{ contains(github.ref, 'master') && success() }}
-        run: zip web.zip ./docs/web/
+        run: zip web.zip ./docs/web/* -j
       - name: Push Web Export To Itch
         if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler push ./web.zip izook/knotris:web

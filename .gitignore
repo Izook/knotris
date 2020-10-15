@@ -18,6 +18,9 @@ exports/windows/*
 exports/linux/*
 exports/*.zip
 
+# Web Ignores
+docs/web/*
+
 # Android Export Ignore
 xandroid
 
