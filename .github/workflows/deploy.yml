@@ -1,32 +1,48 @@
 name: Deploy Knotris
 
-on: push
+on: [push, pull_request]
 
 jobs:
   build_game:
     runs-on: ubuntu-latest
     steps:
+      - name: Send Discord Test Message
+        runs: |
+          curl --location --request POST '$DISCORD_WEBHOOK' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{"content": "Knotris has sent a test message!"}'
+        env:
+          DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
       - name: Checkout Knotris Source Code
         uses: actions/checkout@v2.3.1
         with:
           fetch-depth: 0
-      - name: Is Master Branch
-        run: echo $IS_MASTER
-        env:
-          IS_MASTER: ${{contains(github.ref, 'master')}}
-      - name: Is Develop Branch
-        run: echo $IS_DEV
-        env:
-          IS_DEV: ${{contains(github.ref, 'develop')}}
-      - name: export game
+      - name: Export Game
         uses: firebelley/godot-export@v2.4.0
         with:
           godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/3.2.2/mono/Godot_v3.2.2-stable_mono_linux_headless_64.zip
           godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/3.2.2/mono/Godot_v3.2.2-stable_mono_export_templates.tpz
           relative_project_path: ./
-          create_release: false
-          generate_release_notes: false
+          create_release: $IS_MASTER
+          generate_release_notes: $IS_MASTER
           use_preset_export_path: true
           update_windows_icons: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IS_MASTER: ${{contains(github.ref, 'master')}}
+      - name: Send Discord Success Message
+        if: ${{ contains(github.ref, 'master') && success() }}
+        runs: |
+          curl --location --request POST '$DISCORD_WEBHOOK' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{"content": "Knotris has successfully released!"}'
+        env:
+          DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
+      - name: Send Discord Failure Message
+        if: ${{ contains(github.ref, 'master') && failure() }}
+        runs: |
+          curl --location --request POST '$DISCORD_WEBHOOK' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{"content": "Knotris release has failed!"}'
+        env:
+          DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
