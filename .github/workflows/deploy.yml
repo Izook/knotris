@@ -6,6 +6,10 @@ jobs:
   build_game:
     runs-on: ubuntu-latest
     steps:
+      - name: Print Discord Webhook
+        run: echo $DISCORD_WEBHOOK
+        env:
+          DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
       - name: Send Discord Test Message
         run: |
           curl --location --request POST '$DISCORD_WEBHOOK' \
