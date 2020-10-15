@@ -42,6 +42,9 @@ jobs:
       - name: Login To Butler
         # if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler login
+      - name: Print Export Folder
+        run: find ./docs/exports
+        run: ./butler push ./docs/exports/windows/Knotris.exe izook/knotris:win
       - name: Push Windows Export To Itch
         # if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler push ./docs/exports/windows/Knotris.exe izook/knotris:win
