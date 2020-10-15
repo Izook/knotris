@@ -48,6 +48,9 @@ jobs:
           git config --global user.name "KnotrisAction"
       - name: Remove .gitignore
         run: rm .gitignore
+      - name: Checkout gh-pages Branch
+        run: |
+          git checkout gh-pages
       - name: Commit Web Export
         run: |
           git add ./docs/web/*
