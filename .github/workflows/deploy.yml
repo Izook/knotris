@@ -2,6 +2,12 @@ name: Deploy Knotris
 
 on: [push]
 
+env:
+  BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  IS_MASTER: ${{contains(github.ref, 'master')}}
+  DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
+
 jobs:
   BuildAndRelease:
     runs-on: ubuntu-latest
@@ -23,9 +29,6 @@ jobs:
           generate_release_notes: $IS_MASTER
           use_preset_export_path: true
           update_windows_icons: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          IS_MASTER: ${{contains(github.ref, 'master')}}
       # ================================================
       # =============== Itch.io Release ================
       # ================================================
@@ -39,21 +42,19 @@ jobs:
       - name: Login To Butler
         # if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler login
-        env:
-          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
-      - name: Push Windows Export
+      - name: Push Windows Export To Itch
         # if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler push docs/exports/windows/Knotris.exe izook/knotris:win
-      - name: Push Mac Export
+      - name: Push Mac Export To Itch
         if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler push docs/exports/mac/Knotris.zip izook/knotris:mac
-      - name: Push Linux Export
+      - name: Push Linux Export To Itch
         if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler push docs/exports/linux/Knotris.pck izook/knotris:linux
       - name: Compress Web Export
         if: ${{ contains(github.ref, 'master') && success() }}
         run: zip web.zip docs/exports/web
-      - name: Push Linux Export
+      - name: Push Web Export To Itch
         if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler push web.zip izook/knotris:web
       # ================================================
@@ -65,13 +66,9 @@ jobs:
           curl --location --request POST $DISCORD_WEBHOOK \
           --header 'Content-Type: application/json' \
           --data-raw '{"content": "Knotris has successfully released and deployed!"}'
-        env:
-          DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
       - name: Send Discord Failure Message
         if: ${{ contains(github.ref, 'master') && failure() }}
         run: |
           curl --location --request POST $DISCORD_WEBHOOK \
           --header 'Content-Type: application/json' \
           --data-raw '{"content": "Knotris release and/or deployment has failed!"}'
-        env:
-          DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
