@@ -11,11 +11,11 @@ jobs:
         with:
           fetch-depth: 0
       - name: Print Base Ref  
-          run: echo $GITHUB_BASE_REF
+          run: echo "$GITHUB_BASE_REF"
       - name: Print Head Ref  
-          run: echo $GITHUB_HEAD_REF
+          run: echo "$GITHUB_HEAD_REF"
       - name: Print Ref  
-          run: echo $GITHUB_REF
+          run: echo "$GITHUB_REF"
       - name: export game
         uses: firebelley/godot-export@v2.4.0
         with:
