@@ -32,6 +32,8 @@ jobs:
       # ================================================
       # ================= Prepare Web ==================
       # ================================================
+      - name: Print Export Folder
+        run: find ./exports
       - name: Make Folders
         run: |
           mkdir ./docs/web
@@ -53,8 +55,6 @@ jobs:
       - name: Login To Butler
         # if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler login
-      - name: Print Export Folder
-        run: find ./exports
       - name: Push Windows Export To Itch
         # if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler push ./exports/windows/KnotrisDesktop/Knotris.exe izook/knotris:win
