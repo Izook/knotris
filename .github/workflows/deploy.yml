@@ -3,9 +3,12 @@ name: Deploy Knotris
 on: [push]
 
 jobs:
-  BuildAndExport:
+  BuildAndRelease:
     runs-on: ubuntu-latest
     steps:
+      # ================================================
+      # ==================== Build ====================
+      # ================================================
       - name: Checkout Knotris Source Code
         uses: actions/checkout@v2.3.1
         with:
@@ -23,12 +26,45 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IS_MASTER: ${{contains(github.ref, 'master')}}
+      # ================================================
+      # =============== Itch.io Release ================
+      # ================================================
+      - name: Download + Authorize Butler
+        if: ${{ contains(github.ref, 'master') && success() }}
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+      - name: Login To Butler
+        if: ${{ contains(github.ref, 'master') && success() }}
+        run: ./butler login
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+      - name: Push Windows Export
+        if: ${{ contains(github.ref, 'master') && success() }}
+        run: ./butler push docs/exports/windows/Knotris.exe izook/knotris:win
+      - name: Push Mac Export
+        if: ${{ contains(github.ref, 'master') && success() }}
+        run: ./butler push docs/exports/mac/Knotris.zip izook/knotris:mac
+      - name: Push Linux Export
+        if: ${{ contains(github.ref, 'master') && success() }}
+        run: ./butler push docs/exports/linux/Knotris.pck izook/knotris:linux
+      - name: Compress Web Export
+        if: ${{ contains(github.ref, 'master') && success() }}
+        run: zip web.zip docs/exports/web
+      - name: Push Linux Export
+        if: ${{ contains(github.ref, 'master') && success() }}
+        run: ./butler push web.zip izook/knotris:web
+      # ================================================
+      # ============== Discord Reporting ===============
+      # ================================================
       - name: Send Discord Success Message
         if: ${{ contains(github.ref, 'master') && success() }}
         run: |
           curl --location --request POST $DISCORD_WEBHOOK \
           --header 'Content-Type: application/json' \
-          --data-raw '{"content": "Knotris has successfully released!"}'
+          --data-raw '{"content": "Knotris has successfully released and deployed!"}'
         env:
           DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
       - name: Send Discord Failure Message
@@ -36,13 +72,6 @@ jobs:
         run: |
           curl --location --request POST $DISCORD_WEBHOOK \
           --header 'Content-Type: application/json' \
-          --data-raw '{"content": "Knotris release has failed!"}'
+          --data-raw '{"content": "Knotris release and/or deployment has failed!"}'
         env:
           DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
-      - name: Download + Authorize Butler
-        run: |
-          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
-          unzip butler.zip
-          chmod +x butler
-          ./butler -V
-      - name:
