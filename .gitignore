@@ -1,7 +1,5 @@
 # Godot-specific ignores
 .import/
-export.cfg
-export_presets.cfg
 /**/*.import
 
 
@@ -12,10 +10,16 @@ export_presets.cfg
 /design/*.swf
 
 # Export Ignores
-/knotris/exports/android/*
-/knotris/exports/mac/*
-/knotris/exports/windows/*
-/knotris/exports/*.zip
+exports/web/*
+exports/web-ios/*
+exports/android/*
+exports/mac/*
+exports/windows/*
+exports/linux/*
+exports/*.zip
+
+# Android Export Ignore
+xandroid
 
 # Mono-specific ignores
 .mono/
