@@ -30,6 +30,17 @@ jobs:
           use_preset_export_path: true
           update_windows_icons: true
       # ================================================
+      # ================= Prepare Web ==================
+      # ================================================
+      - name: Make Folders
+        run: |
+          mkdir ./docs/web
+          mkdir ./docs/web/iOS
+      - name: Move Web Exports
+        run: |
+          mv ./exports/web/KnotrisHTML5/* ./docs/web/
+          mv ./exports/web-ios/KnotrisHTML5iOS/* ./docs/web/iOS/
+      # ================================================
       # =============== Itch.io Release ================
       # ================================================
       - name: Download + Authorize Butler
@@ -43,19 +54,19 @@ jobs:
         # if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler login
       - name: Print Export Folder
-        run: find ./docs/exports
+        run: find ./exports
       - name: Push Windows Export To Itch
         # if: ${{ contains(github.ref, 'master') && success() }}
-        run: ./butler push ./docs/exports/windows/Knotris.exe izook/knotris:win
+        run: ./butler push ./exports/windows/KnotrisDesktop/Knotris.exe izook/knotris:win
       - name: Push Mac Export To Itch
         if: ${{ contains(github.ref, 'master') && success() }}
-        run: ./butler push ./docs/exports/mac/Knotris.zip izook/knotris:mac
+        run: ./butler push ./exports/mac/KnotrisMac/Knotris.zip izook/knotris:mac
       - name: Push Linux Export To Itch
         if: ${{ contains(github.ref, 'master') && success() }}
-        run: ./butler push ./docs/exports/linux/Knotris.pck izook/knotris:linux
+        run: ./butler push ./exports/linux/KnotrisLinux/Knotris.pck izook/knotris:linux
       - name: Compress Web Export
         if: ${{ contains(github.ref, 'master') && success() }}
-        run: zip web.zip ./docs/exports/web
+        run: zip web.zip ./exports/web/KnotrisHTML5
       - name: Push Web Export To Itch
         if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler push ./web.zip izook/knotris:web

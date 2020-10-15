@@ -10,12 +10,13 @@
 /design/*.swf
 
 # Export Ignores
-docs/exports/web/*
-docs/exports/android/*
-docs/exports/mac/*
-docs/exports/windows/*
-docs/exports/linux/*
-docs/exports/*.zip
+exports/web/*
+exports/web-ios/*
+exports/android/*
+exports/mac/*
+exports/windows/*
+exports/linux/*
+exports/*.zip
 
 # Android Export Ignore
 xandroid
