@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Test Message
-        runs: |
+        run: |
           curl --location --request POST '$DISCORD_WEBHOOK' \
           --header 'Content-Type: application/json' \
           --data-raw '{"content": "Knotris has sent a test message!"}'
@@ -32,7 +32,7 @@ jobs:
           IS_MASTER: ${{contains(github.ref, 'master')}}
       - name: Send Discord Success Message
         if: ${{ contains(github.ref, 'master') && success() }}
-        runs: |
+        run: |
           curl --location --request POST '$DISCORD_WEBHOOK' \
           --header 'Content-Type: application/json' \
           --data-raw '{"content": "Knotris has successfully released!"}'
@@ -40,7 +40,7 @@ jobs:
           DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
       - name: Send Discord Failure Message
         if: ${{ contains(github.ref, 'master') && failure() }}
-        runs: |
+        run: |
           curl --location --request POST '$DISCORD_WEBHOOK' \
           --header 'Content-Type: application/json' \
           --data-raw '{"content": "Knotris release has failed!"}'
