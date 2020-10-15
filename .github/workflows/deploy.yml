@@ -6,17 +6,6 @@ jobs:
   build_game:
     runs-on: ubuntu-latest
     steps:
-      - name: Print Discord Webhook
-        run: echo $DISCORD_WEBHOOK
-        env:
-          DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
-      - name: Send Discord Test Message
-        run: |
-          curl --location --request POST $DISCORD_WEBHOOK \
-          --header 'Content-Type: application/json' \
-          --data-raw '{"content": "Knotris has sent a test message!"}'
-        env:
-          DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
       - name: Checkout Knotris Source Code
         uses: actions/checkout@v2.3.1
         with:
@@ -37,7 +26,7 @@ jobs:
       - name: Send Discord Success Message
         if: ${{ contains(github.ref, 'master') && success() }}
         run: |
-          curl --location --request POST '$DISCORD_WEBHOOK' \
+          curl --location --request POST $DISCORD_WEBHOOK \
           --header 'Content-Type: application/json' \
           --data-raw '{"content": "Knotris has successfully released!"}'
         env:
@@ -45,7 +34,7 @@ jobs:
       - name: Send Discord Failure Message
         if: ${{ contains(github.ref, 'master') && failure() }}
         run: |
-          curl --location --request POST '$DISCORD_WEBHOOK' \
+          curl --location --request POST $DISCORD_WEBHOOK \
           --header 'Content-Type: application/json' \
           --data-raw '{"content": "Knotris release has failed!"}'
         env:
