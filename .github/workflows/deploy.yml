@@ -44,19 +44,19 @@ jobs:
         run: ./butler login
       - name: Push Windows Export To Itch
         # if: ${{ contains(github.ref, 'master') && success() }}
-        run: ./butler push docs/exports/windows/Knotris.exe izook/knotris:win
+        run: ./butler push ./docs/exports/windows/Knotris.exe izook/knotris:win
       - name: Push Mac Export To Itch
         if: ${{ contains(github.ref, 'master') && success() }}
-        run: ./butler push docs/exports/mac/Knotris.zip izook/knotris:mac
+        run: ./butler push ./docs/exports/mac/Knotris.zip izook/knotris:mac
       - name: Push Linux Export To Itch
         if: ${{ contains(github.ref, 'master') && success() }}
-        run: ./butler push docs/exports/linux/Knotris.pck izook/knotris:linux
+        run: ./butler push ./docs/exports/linux/Knotris.pck izook/knotris:linux
       - name: Compress Web Export
         if: ${{ contains(github.ref, 'master') && success() }}
-        run: zip web.zip docs/exports/web
+        run: zip web.zip ./docs/exports/web
       - name: Push Web Export To Itch
         if: ${{ contains(github.ref, 'master') && success() }}
-        run: ./butler push web.zip izook/knotris:web
+        run: ./butler push ./web.zip izook/knotris:web
       # ================================================
       # ============== Discord Reporting ===============
       # ================================================
