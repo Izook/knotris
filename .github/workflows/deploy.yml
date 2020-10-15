@@ -49,6 +49,7 @@ jobs:
           git add ./docs/web/*
           git commit -m "Deploy most recent release!"
       - name: Push Most Recent Release
+        if: ${{ contains(github.ref, 'master') && success() }}
         run: |
           git push
       # ================================================
