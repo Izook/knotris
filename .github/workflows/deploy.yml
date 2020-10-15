@@ -29,11 +29,11 @@ jobs:
           generate_release_notes: $IS_MASTER
           use_preset_export_path: true
           update_windows_icons: true
+      - name: Test Game
+        run: echo "Looks A-OK to me!"
       # ================================================
       # ================= Prepare Web ==================
       # ================================================
-      - name: Print Export Folder
-        run: find ./exports
       - name: Make Folders
         run: |
           mkdir ./docs/web
@@ -46,17 +46,17 @@ jobs:
       # =============== Itch.io Release ================
       # ================================================
       - name: Download + Authorize Butler
-        # if: ${{ contains(github.ref, 'master') && success() }}
+        if: ${{ contains(github.ref, 'master') && success() }}
         run: |
           curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
           unzip butler.zip
           chmod +x butler
           ./butler -V
       - name: Login To Butler
-        # if: ${{ contains(github.ref, 'master') && success() }}
+        if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler login
       - name: Push Windows Export To Itch
-        # if: ${{ contains(github.ref, 'master') && success() }}
+        if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler push ./exports/windows/KnotrisDesktop/Knotris.exe izook/knotris:win
       - name: Push Mac Export To Itch
         if: ${{ contains(github.ref, 'master') && success() }}
