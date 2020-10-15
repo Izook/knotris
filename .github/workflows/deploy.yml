@@ -39,3 +39,10 @@ jobs:
           --data-raw '{"content": "Knotris release has failed!"}'
         env:
           DISCORD_WEBHOOK: ${{secrets.DISCORD_WEBHOOK}}
+      - name: Download + Authorize Butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+          chmod +x butler
+          ./butler -V
+      - name:
