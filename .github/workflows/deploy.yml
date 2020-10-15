@@ -63,7 +63,7 @@ jobs:
         run: ./butler push ./exports/mac/KnotrisMac/Knotris.zip izook/knotris:mac
       - name: Push Linux Export To Itch
         if: ${{ contains(github.ref, 'master') && success() }}
-        run: ./butler push ./exports/linux/KnotrisLinux/Knotris.pck izook/knotris:linux
+        run: ./butler push ./exports/linux/KnotrisLinux/Knotris.x86_64 izook/knotris:linux
       - name: Compress Web Export
         if: ${{ contains(github.ref, 'master') && success() }}
         run: zip web.zip ./exports/web/KnotrisHTML5
