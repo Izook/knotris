@@ -3,7 +3,7 @@ name: Deploy Knotris
 on: [push]
 
 jobs:
-  build_game:
+  BuildAndExport:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Knotris Source Code
