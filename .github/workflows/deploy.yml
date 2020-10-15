@@ -45,6 +45,8 @@ jobs:
       # ================================================
       # =============== Itch.io Release ================
       # ================================================
+      - name: Print Export Folder
+        run: find ./exports
       - name: Download + Authorize Butler
         if: ${{ contains(github.ref, 'master') && success() }}
         run: |
