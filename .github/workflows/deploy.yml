@@ -37,7 +37,7 @@ jobs:
           mkdir ~/.local/share/godot/templates/3.2.3.stable
           mv ./templates/* ~/.local/share/godot/templates/3.2.3.stable
           echo ~/.local/share/godot/templates/3.2.3.stable
-          ls -la ~/.local/share/templates/3.2.3.stable
+          ls -la ~/.local/share/godot/templates/3.2.3.stable
       - name: Make Exports Folder
         run: |
           mkdir exports
