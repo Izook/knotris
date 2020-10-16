@@ -80,6 +80,8 @@ jobs:
         run: |
           mkdir ./docs/web
           mkdir ./docs/web/iOS
+          ls -la
+          ls -la exports
       - name: Move Web Exports
         run: |
           mv ./exports/web/* ./docs/web/
