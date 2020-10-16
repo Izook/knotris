@@ -126,7 +126,7 @@ jobs:
     needs: [BuildAndPublish, ReleaseGithubPages, PushExportsToItch]
     if: ${{ always() }}
     env:
-      PREV_JOB_STATUS: ${{ !contains([needs.BuildAndPublish.result,needs.ReleaseGithubPages.result,needs.PushExportsToItch.result, 'failure' ])}}
+      PREV_JOB_STATUS: ${{ !contains([needs.BuildAndPublish.result,needs.ReleaseGithubPages.result,needs.PushExportsToItch.result], 'failure' )}}
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Success Message
