@@ -20,6 +20,7 @@ jobs:
         run: |
           curl -L -o godot.zip https://downloads.tuxfamily.org/godotengine/3.2.3/Godot_v3.2.3-stable_linux_headless.64.zip
           unzip godot.zip
+          ls godot
           chmod +x godot
           ./godot -V
       - name: Make Exports Folder
@@ -124,17 +125,19 @@ jobs:
   AlertPipelineResult:
     needs: [BuildAndPublish, ReleaseGithubPages, PushExportsToItch]
     if: ${{ always() }}
+    env:
+      PREV_JOB_STATUS: ${{ !contains([needs.BuildAndPublish.result,needs.ReleaseGithubPages.result,needs.PushExportsToItch.result, 'failure' ])}}
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Success Message
-        if: ${{ success() }}
+        if: ${{ env.PREV_JOB_STATUS }}
         # if: ${{ contains(github.ref, 'master') && success() }}
         run: |
           curl --location --request POST $DISCORD_WEBHOOK \
           --header 'Content-Type: application/json' \
           --data-raw '{"content": "Knotris has successfully released and deployed!"}'
       - name: Send Discord Failure Message
-        if: ${{ failure() }}
+        if: ${{ !env.PREV_JOB_STATUS }}
         # if: ${{ contains(github.ref, 'master') && failure() }}
         run: |
           curl --location --request POST $DISCORD_WEBHOOK \
