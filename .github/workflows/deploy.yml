@@ -27,17 +27,14 @@ jobs:
         run: |
           curl -L -o export_templates.zip https://downloads.tuxfamily.org/godotengine/3.2.3/Godot_v3.2.3-stable_export_templates.tpz
           unzip export_templates.zip
-          ls -la ~
+      - name: Install Export Templates
+        run: |
           mkdir ~/.local
-          ls -la ~/.local
           mkdir ~/.local/share
-          ls -la ~/.local/share
           mkdir ~/.local/share/godot/
           mkdir ~/.local/share/godot/templates
           mkdir ~/.local/share/godot/templates/3.2.3.stable
           mv ./templates/* ~/.local/share/godot/templates/3.2.3.stable
-          echo ~/.local/share/godot/templates/3.2.3.stable
-          ls -la ~/.local/share/godot/templates/3.2.3.stable
       - name: Make Exports Folder
         run: |
           mkdir exports
@@ -106,6 +103,7 @@ jobs:
           git push
   PushExportsToItch:
     needs: BuildAndPublish
+    # if: ${{ contains(github.ref, 'master') }}
     runs-on: ubuntu-latest
     steps:
       - name: Download Exports
@@ -113,29 +111,22 @@ jobs:
         with:
           name: exports
       - name: Download + Authorize Butler
-        if: ${{ contains(github.ref, 'master') && success() }}
         run: |
           curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
           unzip butler.zip
           chmod +x butler
           ./butler -V
       - name: Login To Butler
-        if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler login
       - name: Push Windows Export To Itch
-        if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler push ./exports/windows/Knotris.exe izook/knotris:win
       - name: Push Mac Export To Itch
-        if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler push ./exports/mac/Knotris.zip izook/knotris:mac
       - name: Push Linux Export To Itch
-        if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler push ./exports/linux/Knotris.x86_64 izook/knotris:linux
       - name: Compress Web Export
-        if: ${{ contains(github.ref, 'master') && success() }}
         run: zip web.zip ./exports/web/* -j
       - name: Push Web Export To Itch
-        if: ${{ contains(github.ref, 'master') && success() }}
         run: ./butler push ./web.zip izook/knotris:web
   AlertPipelineResult:
     needs: [BuildAndPublish, ReleaseGithubPages, PushExportsToItch]
