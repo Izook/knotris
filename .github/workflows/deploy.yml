@@ -141,15 +141,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Success Message
-        if: ${{ env.DID_PREV_JOBS_SUCCEED == 'true' }}
-        # if: ${{ contains(github.ref, 'master') && success() }}
+        if: ${{ contains(github.ref, 'master') && env.DID_PREV_JOBS_SUCCEED == 'true' }}
         run: |
           curl --location --request POST $DISCORD_WEBHOOK \
           --header 'Content-Type: application/json' \
           --data-raw '{"content": "Knotris has successfully released and deployed!"}'
       - name: Send Discord Failure Message
-        if: ${{ env.DID_PREV_JOBS_SUCCEED != 'true' }}
-        # if: ${{ contains(github.ref, 'master') && failure() }}
+        if: ${{ contains(github.ref, 'master') && env.DID_PREV_JOBS_SUCCEED != 'true' }}
         run: |
           curl --location --request POST $DISCORD_WEBHOOK \
           --header 'Content-Type: application/json' \
