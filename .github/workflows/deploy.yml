@@ -20,7 +20,8 @@ jobs:
         run: |
           curl -L -o godot.zip https://downloads.tuxfamily.org/godotengine/3.2.3/Godot_v3.2.3-stable_linux_headless.64.zip
           unzip godot.zip
-          mv Godot_v3.2.3-stable_linux_headless.64 godot.64
+          mv Godot_v3.2.3-stable_linux_headless.64 godot
+          ls
           chmod +x godot
           ./godot -V
       - name: Make Exports Folder
@@ -126,9 +127,7 @@ jobs:
     needs: [BuildAndPublish, ReleaseGithubPages, PushExportsToItch]
     if: ${{ always() }}
     env:
-      BUILD_AND_PUBLISH_STATUS: ${{ contains(needs.BuildAndPublish.result, 'success' ) }}
-      RELEASE_GH_PAGES_STATUS: ${{ contains(needs.ReleaseGithubPages.result, 'success' ) }}
-      PUSH_EXPORTS_ITCH_STATUS: ${{ contains(needs.PushExportsToItch.result, 'success' ) }}
+      DID_PREV_JOBS_SUCCEED: ${{ contains(needs.BuildAndPublish.result, 'success' ) && contains(needs.ReleaseGithubPages.result, 'success' ) && contains(needs.PushExportsToItch.result, 'success' ) }}
     runs-on: ubuntu-latest
     steps:
       - name: DEBUG
@@ -137,14 +136,14 @@ jobs:
           echo $RELEASE_GH_PAGES_STATUS
           echo $PUSH_EXPORTS_ITCH_STATUS
       - name: Send Discord Success Message
-        if: ${{ contains(needs.BuildAndPublish.result, 'success' ) && contains(needs.ReleaseGithubPages.result, 'success' ) && contains(needs.PushExportsToItch.result, 'success' )}}
+        if: ${{ env.DID_PREV_JOBS_SUCCEED == 'true' }}
         # if: ${{ contains(github.ref, 'master') && success() }}
         run: |
           curl --location --request POST $DISCORD_WEBHOOK \
           --header 'Content-Type: application/json' \
           --data-raw '{"content": "Knotris has successfully released and deployed!"}'
       - name: Send Discord Failure Message
-        if: ${{ failure() }}
+        if: ${{ env.DID_PREV_JOBS_SUCCEED != 'true' }}
         # if: ${{ contains(github.ref, 'master') && failure() }}
         run: |
           curl --location --request POST $DISCORD_WEBHOOK \
