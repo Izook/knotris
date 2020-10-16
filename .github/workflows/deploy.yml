@@ -23,7 +23,6 @@ jobs:
           mv Godot_v3.2.3-stable_linux_headless.64 godot
           ls
           chmod +x godot
-          ./godot --version
       - name: Download Export Templates
         run: |
           curl -L -o export_templates.zip https://downloads.tuxfamily.org/godotengine/3.2.3/Godot_v3.2.3-stable_export_templates.tpz
