@@ -126,18 +126,20 @@ jobs:
     needs: [BuildAndPublish, ReleaseGithubPages, PushExportsToItch]
     if: ${{ always() }}
     env:
-      PREV_JOB_STATUS: ${{ !contains([needs.BuildAndPublish.result,needs.ReleaseGithubPages.result,needs.PushExportsToItch.result], 'failure' )}}
+      BUILD_AND_PUBLISH_STATUS: ${{ contains(needs.BuildAndPublish.result, 'success' ) }}
+      RELEASE_GH_PAGES_STATUS: ${{ contains(needs.ReleaseGithubPages.result, 'success' ) }}
+      PUSH_EXPORTS_ITCH_STATUS: ${{ contains(needs.PushExportsToItch.result, 'success' ) }}
     runs-on: ubuntu-latest
     steps:
       - name: Send Discord Success Message
-        if: ${{ env.PREV_JOB_STATUS }}
+        if: ${{ env.BUILD_AND_PUBLISH_STATUS && env.RELEASE_GH_PAGES_STATUS && env.PUSH_EXPORTS_ITCH_STATUS}}
         # if: ${{ contains(github.ref, 'master') && success() }}
         run: |
           curl --location --request POST $DISCORD_WEBHOOK \
           --header 'Content-Type: application/json' \
           --data-raw '{"content": "Knotris has successfully released and deployed!"}'
       - name: Send Discord Failure Message
-        if: ${{ !env.PREV_JOB_STATUS }}
+        if: ${{ !env.BUILD_AND_PUBLISH_STATUS || !env.RELEASE_GH_PAGES_STATUS || !env.PUSH_EXPORTS_ITCH_STATUS}}
         # if: ${{ contains(github.ref, 'master') && failure() }}
         run: |
           curl --location --request POST $DISCORD_WEBHOOK \
