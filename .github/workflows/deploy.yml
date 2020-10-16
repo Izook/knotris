@@ -31,6 +31,8 @@ jobs:
           mkdir ~/share/templates
           mkdir ~/share/templates/3.2.3.stable
           mv ./templates/* ~/share/templates/3.2.3.stable
+          echo ~/share/templates/3.2.3.stable
+          echo ~/share/godot/templates/3.2.3.stable/windows_64_release.exe
           ls -la ~/share/templates/3.2.3.stable
       - name: Make Exports Folder
         run: |
