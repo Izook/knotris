@@ -28,6 +28,7 @@ jobs:
           curl -L -o export_templates.zip https://downloads.tuxfamily.org/godotengine/3.2.3/Godot_v3.2.3-stable_export_templates.tpz
           unzip export_templates.zip
           ls -la ~
+          mkdir ~/.local
           ls -la ~/.local
           mkdir ~/.local/share
           ls -la ~/.local/share
