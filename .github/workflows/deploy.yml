@@ -62,8 +62,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: exports
-          path: |
-            exports
+          path: exports
   ReleaseGithubPages:
     needs: BuildAndPublish
     runs-on: ubuntu-latest
@@ -76,6 +75,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: exports
+          path: exports
       - name: Make Folders
         run: |
           mkdir ./docs/web
@@ -112,6 +112,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: exports
+          path: exports
       - name: Download + Authorize Butler
         run: |
           curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
