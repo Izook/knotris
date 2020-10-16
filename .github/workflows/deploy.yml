@@ -20,7 +20,7 @@ jobs:
         run: |
           curl -L -o godot.zip https://downloads.tuxfamily.org/godotengine/3.2.3/Godot_v3.2.3-stable_linux_headless.64.zip
           unzip godot.zip
-          ls godot
+          ls
           chmod +x godot
           ./godot -V
       - name: Make Exports Folder
@@ -131,6 +131,11 @@ jobs:
       PUSH_EXPORTS_ITCH_STATUS: ${{ contains(needs.PushExportsToItch.result, 'success' ) }}
     runs-on: ubuntu-latest
     steps:
+      - name: DEBUG
+        run: |
+          echo $BUILD_AND_PUBLISH_STATUS
+          echo $RELEASE_GH_PAGES_STATUS
+          echo $PUSH_EXPORTS_ITCH_STATUS
       - name: Send Discord Success Message
         if: ${{ env.BUILD_AND_PUBLISH_STATUS && env.RELEASE_GH_PAGES_STATUS && env.PUSH_EXPORTS_ITCH_STATUS}}
         # if: ${{ contains(github.ref, 'master') && success() }}
