@@ -17,6 +17,7 @@ exports/mac/*
 exports/windows/*
 exports/linux/*
 exports/*.zip
+*-export/
 
 # Web Ignores
 docs/web/*
