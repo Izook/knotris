@@ -29,11 +29,7 @@ jobs:
           unzip export_templates.zip
       - name: Install Export Templates
         run: |
-          mkdir ~/.local
-          mkdir ~/.local/share
-          mkdir ~/.local/share/godot/
-          mkdir ~/.local/share/godot/templates
-          mkdir ~/.local/share/godot/templates/3.2.3.stable
+          mkdir -p ~/.local/share/godot/templates/3.2.3.stable
           mv ./templates/* ~/.local/share/godot/templates/3.2.3.stable
       - name: Make Exports Folder
         run: |
@@ -81,10 +77,8 @@ jobs:
           path: exports
       - name: Make Folders
         run: |
-          mkdir ./docs/web
-          mkdir ./docs/web/iOS
-          ls -la
-          ls -la exports
+          mkdir -p ./docs/web
+          mkdir -p ./docs/web/iOS
       - name: Move Web Exports
         run: |
           mv ./exports/web/* ./docs/web/
