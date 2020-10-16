@@ -27,13 +27,16 @@ jobs:
         run: |
           curl -L -o export_templates.zip https://downloads.tuxfamily.org/godotengine/3.2.3/Godot_v3.2.3-stable_export_templates.tpz
           unzip export_templates.zip
-          mkdir ~/share
-          mkdir ~/share/templates
-          mkdir ~/share/templates/3.2.3.stable
-          mv ./templates/* ~/share/templates/3.2.3.stable
-          echo ~/share/templates/3.2.3.stable
-          echo ~/share/godot/templates/3.2.3.stable/windows_64_release.exe
-          ls -la ~/share/templates/3.2.3.stable
+          ls -la ~
+          ls -la ~/.local
+          mkdir ~/.local/share
+          ls -la ~/.local/share
+          mkdir ~/.local/share/godot/
+          mkdir ~/.local/share/godot/templates
+          mkdir ~/.local/share/godot/templates/3.2.3.stable
+          mv ./templates/* ~/.local/share/godot/templates/3.2.3.stable
+          echo ~/.local/share/godot/templates/3.2.3.stable
+          ls -la ~/.local/share/templates/3.2.3.stable
       - name: Make Exports Folder
         run: |
           mkdir exports
