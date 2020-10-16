@@ -23,7 +23,15 @@ jobs:
           mv Godot_v3.2.3-stable_linux_headless.64 godot
           ls
           chmod +x godot
-          ./godot -V
+          ./godot --version
+      - name: Download Export Templates
+        run: |
+          curl -L -o export_templates.zip https://downloads.tuxfamily.org/godotengine/3.2.3/Godot_v3.2.3-stable_export_templates.tpz
+          ls
+          unzip export_templates.zip
+          ls
+          echo ~
+          pwd
       - name: Make Exports Folder
         run: |
           mkdir exports
@@ -130,11 +138,6 @@ jobs:
       DID_PREV_JOBS_SUCCEED: ${{ contains(needs.BuildAndPublish.result, 'success' ) && contains(needs.ReleaseGithubPages.result, 'success' ) && contains(needs.PushExportsToItch.result, 'success' ) }}
     runs-on: ubuntu-latest
     steps:
-      - name: DEBUG
-        run: |
-          echo $BUILD_AND_PUBLISH_STATUS
-          echo $RELEASE_GH_PAGES_STATUS
-          echo $PUSH_EXPORTS_ITCH_STATUS
       - name: Send Discord Success Message
         if: ${{ env.DID_PREV_JOBS_SUCCEED == 'true' }}
         # if: ${{ contains(github.ref, 'master') && success() }}
