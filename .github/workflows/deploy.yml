@@ -71,6 +71,9 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Checkout gh-pages Branch
+        run: |
+          git checkout gh-pages
       - name: Download Exports
         uses: actions/download-artifact@v2
         with:
@@ -92,12 +95,9 @@ jobs:
           git config --global user.name "KnotrisAction"
       - name: Remove .gitignore
         run: rm .gitignore
-      - name: Checkout gh-pages Branch
-        run: |
-          git checkout gh-pages
       - name: Commit Web Export
         run: |
-          git add ./docs/web/*
+          git add ./docs/*
           git commit -m "Deploy most recent release!"
       - name: Push Most Recent Release
         if: ${{ contains(github.ref, 'master') && success() }}
@@ -105,7 +105,7 @@ jobs:
           git push
   PushExportsToItch:
     needs: BuildAndPublish
-    # if: ${{ contains(github.ref, 'master') }}
+    if: ${{ contains(github.ref, 'master') }}
     runs-on: ubuntu-latest
     steps:
       - name: Download Exports
