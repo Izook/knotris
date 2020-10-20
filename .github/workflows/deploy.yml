@@ -97,6 +97,82 @@ jobs:
         if: ${{ contains(github.ref, 'master') && success() }}
         run: |
           git push
+  CreateNewGithubRelease:
+    needs: BuildAndPublish
+    # if: ${{ contains(github.ref, 'master') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Exports
+        uses: actions/download-artifact@v2
+        with:
+          name: exports
+          path: exports
+      - name: Checkout Knotris Source Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Get Last Commit Message
+        run: |
+          echo "LAST_COMMIT=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+      - name: Create New Release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Latest Update:
+              - $LAST_COMMIT
+          draft: false
+          prerelease: false
+      - name: Zip Windows Export
+        run: zip windows.zip ./exports/windows/* -j
+      - name: Upload Windows Export
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./windows.zip
+          asset_name: windows.zip
+          asset_content_type: application/zip
+      - name: Zip Linux Export
+        run: zip linux.zip ./exports/linux/* -j
+      - name: Upload Linux Export
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./linux.zip
+          asset_name: linux.zip
+          asset_content_type: application/zip
+      - name: Zip Mac Export
+        run: zip mac.zip ./exports/mac/* -j
+      - name: Upload Mac Export
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./mac.zip
+          asset_name: mac.zip
+          asset_content_type: application/zip
+      - name: Zip Web Export
+        run: zip web.zip ./exports/web/* -j
+      - name: Upload Web Export
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./web.zip
+          asset_name: web.zip
+          asset_content_type: application/zip
   PushExportsToItch:
     needs: BuildAndPublish
     if: ${{ contains(github.ref, 'master') }}
