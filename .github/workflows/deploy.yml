@@ -106,15 +106,15 @@ jobs:
     # if: ${{ contains(github.ref, 'master') }}
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Knotris Source Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Download Exports
         uses: actions/download-artifact@v2
         with:
           name: exports
           path: exports
-      - name: Checkout Knotris Source Code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: REMOVE ME
         run: ls -la
       - name: Zip Exports
