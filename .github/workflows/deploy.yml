@@ -118,11 +118,9 @@ jobs:
         uses: actions/create-release@v1
         id: create_release
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            Latest Update:
-              - $LAST_COMMIT
+          tag_name: ${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          body: $LAST_COMMIT
           draft: false
           prerelease: false
       - name: Zip Exports
