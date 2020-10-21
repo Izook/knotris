@@ -77,8 +77,7 @@ jobs:
       - name: Get Latest Code in Master
         run: |
           git add .
-          git reset --hard
-          git pull origin master
+          git reset --hard origin/master
       - name: Remove .gitignore
         run: rm .gitignore
       - name: Download Exports
@@ -116,6 +115,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: REMOVE ME
+        runs: ls -la
       - name: Zip Exports
         run: zip exports.zip ./exports/* -j
       - name: Create New Release
