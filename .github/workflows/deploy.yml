@@ -67,9 +67,19 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Set Git User
+        run: |
+          git config --global user.email "knotris@github.com"
+          git config --global user.name "KnotrisAction"
       - name: Checkout gh-pages Branch
         run: |
           git checkout gh-pages
+      - name: Get Latest Code in Master
+        run: |
+          git add .
+          git reset --hard origin/master
+      - name: Remove .gitignore
+        run: rm .gitignore
       - name: Download Exports
         uses: actions/download-artifact@v2
         with:
@@ -83,12 +93,6 @@ jobs:
         run: |
           mv ./exports/web/* ./docs/web/
           mv ./exports/web-ios/* ./docs/web/iOS/
-      - name: Set Git User
-        run: |
-          git config --global user.email "knotris@github.com"
-          git config --global user.name "KnotrisAction"
-      - name: Remove .gitignore
-        run: rm .gitignore
       - name: Commit Web Export
         run: |
           git add ./docs/*
@@ -97,6 +101,41 @@ jobs:
         if: ${{ contains(github.ref, 'master') && success() }}
         run: |
           git push
+  CreateNewGithubRelease:
+    needs: BuildAndPublish
+    if: ${{ contains(github.ref, 'master') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Knotris Source Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Download Exports
+        uses: actions/download-artifact@v2
+        with:
+          name: exports
+          path: exports
+      - name: Zip Exports
+        run: zip -r exports.zip exports
+      - name: Create New Release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          tag_name: ${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          body:
+          draft: false
+          prerelease: false
+      - name: Upload Exports
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./exports.zip
+          asset_name: exports.zip
+          asset_content_type: application/zip
   PushExportsToItch:
     needs: BuildAndPublish
     if: ${{ contains(github.ref, 'master') }}

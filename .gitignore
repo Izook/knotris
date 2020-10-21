@@ -10,6 +10,7 @@
 /design/*.swf
 
 # Export Ignores
+*.zip
 exports/web/*
 exports/web-ios/*
 exports/android/*
