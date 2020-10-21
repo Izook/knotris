@@ -1,3 +1,5 @@
+![Latest Build](https://github.com/izook/knotris/workflows/Deploy%20Knotris/badge.svg)
+
 <p align="center">
   <img width="auto" height="auto" src="./docs/assets/SocialCard.png">
 </p>
