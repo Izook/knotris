@@ -10,6 +10,7 @@
 /design/*.swf
 
 # Export Ignores
+*.zip
 exports/web/*
 exports/web-ios/*
 exports/android/*
@@ -17,6 +18,10 @@ exports/mac/*
 exports/windows/*
 exports/linux/*
 exports/*.zip
+*-export/
+
+# Web Ignores
+docs/web/*
 
 # Android Export Ignore
 xandroid
