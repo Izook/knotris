@@ -116,7 +116,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: REMOVE ME
-        runs: ls -la
+        run: ls -la
       - name: Zip Exports
         run: zip exports.zip ./exports/* -j
       - name: Create New Release
