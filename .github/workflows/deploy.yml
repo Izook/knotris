@@ -115,8 +115,6 @@ jobs:
         with:
           name: exports
           path: exports
-      - name: REMOVE ME
-        run: ls -la
       - name: Zip Exports
         run: zip -r exports.zip exports
       - name: Create New Release
