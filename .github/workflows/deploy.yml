@@ -103,7 +103,7 @@ jobs:
           git push
   CreateNewGithubRelease:
     needs: BuildAndPublish
-    # if: ${{ contains(github.ref, 'master') }}
+    if: ${{ contains(github.ref, 'master') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Knotris Source Code
