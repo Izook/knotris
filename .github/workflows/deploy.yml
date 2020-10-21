@@ -118,7 +118,7 @@ jobs:
       - name: REMOVE ME
         run: ls -la
       - name: Zip Exports
-        run: zip exports.zip ./exports/* -j
+        run: zip -r exports.zip exports
       - name: Create New Release
         uses: actions/create-release@v1
         id: create_release
