@@ -13,10 +13,7 @@ func _ready():
 	
 	# Set background to gray
 	VisualServer.set_default_clear_color(Color(0.25, 0.25, 0.25, 1))
-	
-	# Appropriately resize window
-	OS.set_window_size(Vector2(Global.GAME_WIDTH, Global.GAME_HEIGHT))
-	
+		
 	# Instantiate and place HUD
 	var hud_instance = HUD.instance()
 	hud_instance.rect_position = Vector2(0,0)
